@@ -1,6 +1,6 @@
 ### 多线程相关常用API
 Thread类api：
-```
+```java
 public class Thread() implements Runnable {
 
 /**
@@ -49,7 +49,7 @@ public State getState()
 
 
 Object类的api：
-```
+```java
 public class Object {
 
 /**
