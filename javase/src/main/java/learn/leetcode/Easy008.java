@@ -22,7 +22,7 @@ public class Easy008 {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode head = null;
         //这里构建了一个空的头结点，这个结点在返回结果时将被忽略
-        ListNode currentNode = new ListNode();
+        ListNode currentNode = new ListNode(-1);
 
         ListNode tempNode = null;
         while (l1 != null || l2 != null) {
@@ -98,19 +98,4 @@ public class Easy008 {
 
     }
 
-
-  public static class ListNode {
-      int val;
-      ListNode next;
-      ListNode() {}
-      ListNode(int val) { this.val = val; }
-      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-
-      @Override
-      public String toString() {
-          return "ListNode{" +
-                  "val=" + val +
-                  '}';
-      }
-  }
 }
