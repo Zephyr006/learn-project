@@ -9,48 +9,33 @@ package learn.leetcode;
  */
 public class ReverseLinkedList {
 
-    public LinkedNode reverse(LinkedNode nodes) {
-        LinkedNode resultList = new LinkedNode(-1, null);
+    public ListNode reverse(ListNode nodes) {
+        ListNode resultList = new ListNode(-1, null);
         resultList.next= nodes;
-        LinkedNode p = nodes;
-        LinkedNode pNext = p.next;
+        ListNode pNext = nodes.next;
+
         while (pNext!=null){
-            p.next = pNext.next;
+            nodes.next = pNext.next;
             pNext.next = resultList.next;
             resultList.next = pNext;
-            pNext=p.next;
+            pNext= nodes.next;
         }
         return resultList.next;
     }
 
 
     public static void main(String[] args) {
-        LinkedNode linkedNode1 = new LinkedNode(1, null);
-        LinkedNode linkedNode2 = new LinkedNode(2, linkedNode1);
-        LinkedNode linkedNode3 = new LinkedNode(3, linkedNode2);
-        LinkedNode linkedNode4 = new LinkedNode(4, linkedNode3);
+        ListNode listNode1 = new ListNode(1, null);
+        ListNode listNode2 = new ListNode(2, listNode1);
+        ListNode listNode3 = new ListNode(3, listNode2);
+        ListNode listNode4 = new ListNode(4, listNode3);
 
-        LinkedNode reverse = new ReverseLinkedList().reverse(linkedNode4);
+        ListNode reverse = new ReverseLinkedList().reverse(listNode4);
         while (reverse != null) {
             System.out.println(reverse.toString());
             reverse = reverse.next;
         }
     }
 
-    static class LinkedNode {
-        Integer val;
-        LinkedNode next;
-
-        public LinkedNode(Integer val, LinkedNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
-        @Override
-        public String toString() {
-            return "LinkedNode{" +
-                    "val=" + val +
-                    '}';
-        }
-    }
+    
 }

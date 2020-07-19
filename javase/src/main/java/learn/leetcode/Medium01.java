@@ -24,11 +24,11 @@ package learn.leetcode;
  * @author Zephyr
  * @date 2020/7/1.
  */
-public class Medium001 {
+public class Medium01 {
 
     public static void main(String[] args) {
         Integer integer = Integer.valueOf('0');
-        System.out.println(new Medium001().myAtoi("+0 123"));
+        System.out.println(new Medium01().myAtoi("+0 123"));
     }
 
 
