@@ -1,0 +1,5 @@
+- Redis
+- JUC / 锁底层
+- Mysql
+- 分布式
+- 消息队列（RocketMQ）
