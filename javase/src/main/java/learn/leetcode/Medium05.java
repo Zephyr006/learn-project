@@ -31,7 +31,7 @@ import java.util.List;
  * @date 2020/7/20.
  */
 public class Medium05 {
-
+// XXX
     public static void main(String[] args) {
         new Medium05().threeSum(new int[]{-1,0,1,2,-1,-4});
     }
@@ -44,6 +44,7 @@ public class Medium05 {
      * 当 sum == 0 时，nums[R] == nums[R-1] 则会导致结果重复，应该跳过，R--
      */
     public List<List<Integer>> threeSum(int[] nums) {
+        // 特殊输入值判断
         List<List<Integer>> result = new ArrayList<>();
         if (nums == null || nums.length<3){
             return result;

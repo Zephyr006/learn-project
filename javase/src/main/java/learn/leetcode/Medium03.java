@@ -38,6 +38,7 @@ public class Medium03 {
         int len = s.length();
         char[] chars = s.toCharArray();
         while (len > 1) {
+            // i <= s.length() - len ： 子串能在完整字符串s中的偏移次数
             for (int i = 0; i <= s.length() - len; i++) {
                 //String substring = s.substring(i, i + s.length() - len);
                 char[] copyOfRange = Arrays.copyOfRange(chars, i, i + len);
