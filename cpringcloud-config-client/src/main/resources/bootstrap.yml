@@ -1,0 +1,24 @@
+
+spring:
+    application:
+        name: me
+    security:
+        user:
+            password: JustDoIt2019
+    cloud:
+        config:
+            name: crm
+            profile: dev
+            label: master
+            uri: http://localhost:8888
+            username: user
+            password: JustDoIt2019
+eureka:
+    client:
+        service-url:
+            defaultZone:  http://39.106.73.19:8761/eureka
+    instance:
+        prefer-ip-address: true
+
+server:
+    port: 11009

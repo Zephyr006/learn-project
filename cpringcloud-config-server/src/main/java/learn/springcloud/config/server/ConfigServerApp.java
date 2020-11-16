@@ -1,0 +1,18 @@
+package learn.springcloud.config.server;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
+
+/**
+ * @author Zephyr
+ * @date 2020/10/9.
+ */
+@EnableConfigServer
+@SpringBootApplication
+public class ConfigServerApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApp.class);
+    }
+}

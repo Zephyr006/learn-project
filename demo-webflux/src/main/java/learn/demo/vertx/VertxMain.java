@@ -10,6 +10,6 @@ public class VertxMain {
     public static void main(String[] args){
         Vertx vertx = Vertx.vertx();
 
-        vertx.deployVerticle(MyFirstVerticle.class.getName());
+        vertx.deployVerticle(VertxCoreVerticle.class.getName());
     }
 }

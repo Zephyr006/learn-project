@@ -21,7 +21,7 @@ public class MyFirstVerticleTest {
     @Before
     public void setUp(TestContext context) {
         vertx = Vertx.vertx();
-        vertx.deployVerticle(MyFirstVerticle.class.getName(), context.asyncAssertSuccess());
+        vertx.deployVerticle(VertxCoreVerticle.class.getName(), context.asyncAssertSuccess());
     }
 
     @After
@@ -35,6 +35,7 @@ public class MyFirstVerticleTest {
 
         vertx.createHttpClient().getNow(8080, "localhost", "/", response -> {
             response.handler(body -> {
+                System.out.println(body.toString());
                 context.assertTrue(body.toString().contains("Hello"));
                 async.complete();
             });

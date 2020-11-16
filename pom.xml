@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.13.RELEASE</version>
+        <version>2.1.17.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,9 +22,25 @@
         <module>
             demo-webflux
         </module>
+        <module>
+            tech-test
+        </module>
+        <module>
+            base
+        </module>
+        <module>
+            springcloud-config-client
+        </module>
+        <module>
+            springcloud-config-server
+        </module>
     </modules>
 
     <properties>
+        <!-- Spring Boot 与 Spring Cloud 版本对应关系(*必须按要求对应*)： https://start.spring.io/actuator/info -->
+        <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
+        <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
+
         <vertx.version>3.8.5</vertx.version>
 
         <commons-lang3.version>3.9</commons-lang3.version>
@@ -32,9 +48,7 @@
         <jackson.version>2.10.2</jackson.version>
 
         <slf4j.version>1.7.30</slf4j.version>
-        <log4j2.version>2.12.1</log4j2.version>
-
-        <junit.version>4.13</junit.version>
+        <log4j2.version>2.13.3</log4j2.version>
 
 
         <java.version>1.8</java.version>
@@ -47,9 +61,43 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-client</artifactId>
+                <version>${spring-cloud-config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>${spring-cloud-config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bus-kafka</artifactId>
+                <version>2.2.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-core</artifactId>
                 <version>${vertx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-web</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-unit</artifactId>
+                <version>${vertx.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- common utils -->
@@ -73,6 +121,11 @@
 
             <!-- logger -->
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j2.version}</version>
@@ -95,49 +148,41 @@
 
             <!-- test -->
             <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-unit</artifactId>
-                <version>${vertx.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-test</artifactId>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <version>4.13</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <build>
-        <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.8.1</version>-->
-<!--                <configuration>-->
-<!--                    <compilerArgs>-->
-<!--                        &lt;!&ndash; 抑制 过期的方法的警告&ndash;&gt;-->
-<!--                        <arg>-Xlint:deprecation</arg>-->
-<!--                    </compilerArgs>-->
-<!--                    <compilerArguments>-->
-<!--                        &lt;!&ndash; 是否输出所有的编译信息（包括类的加载等）&ndash;&gt;-->
-<!--                        &lt;!&ndash;<verbose />&ndash;&gt;-->
-<!--                        &lt;!&ndash; 解决maven命令编译报错，因为rt.jar 和jce.jar在jre的lib下面，不在jdk的lib下面，-->
-<!--                        导致maven找不到（java7以后会出现这个问题），将这2个jar包拷贝到jdk的lib下面估计也好使&ndash;&gt;-->
-<!--                        <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>-->
-<!--                    </compilerArguments>-->
-<!--                    <source>${java.version}</source>-->
-<!--                    <target>${java.version}</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
 
-        </plugins>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <compilerArgs>
+                            <!-- 抑制 过期的方法的警告-->
+                            <arg>-Xlint:deprecation</arg>
+                        </compilerArgs>
+                        <compilerArguments>
+                            <!-- 是否输出所有的编译信息（包括类的加载等）-->
+                            <!--<verbose />-->
+                            <!-- 解决maven命令编译报错，因为rt.jar 和jce.jar在jre的lib下面，不在jdk的lib下面，
+                            导致maven找不到（java7以后会出现这个问题），将这2个jar包拷贝到jdk的lib下面估计也好使-->
+                            <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>
+                        </compilerArguments>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>

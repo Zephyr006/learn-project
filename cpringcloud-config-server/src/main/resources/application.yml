@@ -1,0 +1,21 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh,bus-env
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://git.tsingzone.com/public-server/configuration-dev.git
+          username: hanlipeng
+          password: 12345678
+  kafka:
+    bootstrap-servers: 192.168.2.55:9092
+  security:
+    user:
+      password: JustDoIt2019
+
+server:
+  port: 8888
