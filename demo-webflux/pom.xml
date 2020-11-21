@@ -23,6 +23,19 @@
     </properties>
 
     <dependencies>
+        <!-- webflux begin -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <!-- webflux end -->
+
+
+        <!-- vert.x begin -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
@@ -31,12 +44,13 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-unit</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- vert.x end -->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
