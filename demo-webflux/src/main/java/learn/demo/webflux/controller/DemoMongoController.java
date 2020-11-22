@@ -36,7 +36,7 @@ public class DemoMongoController {
     }
 
     @PostMapping("blog")
-    public Mono<Blog> insert(@RequestBody @NotNull @Valid Blog blog) {
+    public Mono<Blog> create(@RequestBody @NotNull @Valid Blog blog) {
         // 一律视为插入操作，不允许自带id，使用mongo自动生成的id
         blog.setId(null);
         return blogRepository.insert(blog);
