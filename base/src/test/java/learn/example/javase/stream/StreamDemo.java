@@ -1,7 +1,6 @@
 package learn.example.javase.stream;
 
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -60,7 +59,7 @@ public class StreamDemo {
 
         // reduce：按照指定的函数操作（参数函数）处理流中的每个元素
         Optional<String> reduceResult = stream5.reduce((e1, e2) -> e1 + e2);
-        System.out.println(reduceResult.get());
+        reduceResult.ifPresent(System.out::println);
         // count：统计流中元素的个数
         long count = stream3.count();
 
@@ -74,7 +73,7 @@ public class StreamDemo {
         forkJoinPool.submit(new Runnable() {
             @Override
             public void run() {
-                IntStream.range(1, 10).parallel().peek(System.out::println).count();
+                long count2 = IntStream.range(1, 10).parallel().peek(System.out::println).count();
             }
         });
         forkJoinPool.shutdown();

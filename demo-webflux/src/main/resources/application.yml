@@ -1,0 +1,16 @@
+spring:
+   data:
+        mongodb:
+#            使用uri属性配置所有连接相关信息，或者使用host、post等属性分开配置，不能混用！！
+#            uri连接格式：mongodb://[username:password@]host1[:port1][,host2[:port2],...][/[database_name][?options]]
+            host:
+            port: 10011
+            database: test_db
+#            username:
+#            password:
+
+
+logging:
+    level:
+        root: info
+        org.springframework.data.mongodb.core: debug

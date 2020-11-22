@@ -50,6 +50,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- spring cloud begin-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -72,6 +73,8 @@
                 <artifactId>spring-cloud-starter-bus-kafka</artifactId>
                 <version>${spring-cloud-bus-kafka.version}</version>
             </dependency>
+            <!-- spring cloud end -->
+
 
             <dependency>
                 <groupId>io.vertx</groupId>
@@ -90,7 +93,7 @@
                 <scope>test</scope>
             </dependency>
 
-            <!-- common utils -->
+            <!-- common utils begin -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -119,9 +122,10 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <!-- common utils end -->
 
 
-            <!-- logger -->
+            <!-- logger begin -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -142,10 +146,7 @@
                 <artifactId>log4j-core</artifactId>
                 <version>${log4j2.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-log4j2</artifactId>-->
-<!--            </dependency>-->
+            <!-- logger end -->
 
 
             <!-- test -->
