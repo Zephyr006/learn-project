@@ -1,5 +1,6 @@
-package learn.demo.webclient.impl;
+package learn.demo.webclient.controller;
 
+import learn.demo.webclient.api.IBlogApi;
 import learn.demo.webflux.entity.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

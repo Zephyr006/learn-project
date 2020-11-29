@@ -27,6 +27,7 @@ public class DemoMongoController {
 
     @GetMapping("blogs")
     public Flux<Blog> getAll() {
+        //return Flux.just(Blog.builder().id(String.valueOf(213)).name("测试的博客名").readCount(123).build());
         return blogRepository.findAll();
     }
 

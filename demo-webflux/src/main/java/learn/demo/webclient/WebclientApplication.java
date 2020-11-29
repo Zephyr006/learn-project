@@ -1,10 +1,12 @@
 package learn.demo.webclient;
 
-import learn.demo.webclient.impl.IBlogApi;
-import learn.demo.webclient.impl.ProxyCreator;
+import learn.demo.webclient.api.IBlogApi;
+import learn.demo.webclient.interfaces.impl.JdkProxyCreator;
+import learn.demo.webclient.interfaces.ProxyCreator;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -15,14 +17,28 @@ import org.springframework.context.annotation.Bean;
 public class WebclientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebclientApplication.class);
+        SpringApplication application = new SpringApplicationBuilder(WebclientApplication.class)
+                .profiles("webclient")
+                .headless(true)
+                .build();
+        application.run(args);
     }
 
+    /**
+     * jdk代理类创建的工具类
+     */
+    @Bean
+    public ProxyCreator jdkProxyCreator() {
+        return new JdkProxyCreator();
+    }
 
+    /**
+     * 提供FactoryBean，用于生成需要代理的对象实例
+     */
     @Bean
     public FactoryBean<IBlogApi> blogApiFactoryBean(ProxyCreator proxyCreator) {
         return new FactoryBean<IBlogApi>() {
-            // 返回代理的对象
+            // 返回代理的对象实例
             @Override
             public IBlogApi getObject() throws Exception {
                 return (IBlogApi) proxyCreator.create(this.getObjectType());

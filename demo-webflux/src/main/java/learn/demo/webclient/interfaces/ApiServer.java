@@ -1,4 +1,4 @@
-package learn.demo.webclient.impl;
+package learn.demo.webclient.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,8 +17,7 @@ public @interface ApiServer {
 
     /**
      * 要请求的目标url地址
-     * @return
      */
-    String url();
+    String baseUrl();
 
 }

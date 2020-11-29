@@ -1,5 +1,6 @@
-package learn.demo.webclient.impl;
+package learn.demo.webclient.api;
 
+import learn.demo.webclient.interfaces.ApiServer;
 import learn.demo.webflux.entity.Blog;
 import org.springframework.web.bind.annotation.GetMapping;
 import reactor.core.publisher.Flux;
@@ -10,9 +11,10 @@ import reactor.core.publisher.Flux;
  * @author Zephyr
  * @date 2020/11/22.
  */
-@ApiServer(url = "http://127.0.0.1:8080/mongo/blogs")
+@ApiServer(baseUrl = "http://127.0.0.1:8080/mongo")
 public interface IBlogApi {
 
     @GetMapping("/blogs")
     Flux<Blog> getAllBlog();
+
 }

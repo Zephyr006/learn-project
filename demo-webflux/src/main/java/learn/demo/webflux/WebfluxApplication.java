@@ -22,7 +22,7 @@ public class WebfluxApplication {
         SpringApplication application = new SpringApplicationBuilder(WebfluxApplication.class)
                 .bannerMode(Banner.Mode.CONSOLE)
                 .web(WebApplicationType.REACTIVE)
-                .profiles("default")
+                .profiles("webflux")
                 .headless(true)
                 .listeners()
                 .build();
