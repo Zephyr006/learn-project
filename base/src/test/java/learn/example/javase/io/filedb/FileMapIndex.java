@@ -1,6 +1,5 @@
 package learn.example.javase.io.filedb;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -59,7 +58,7 @@ public class FileMapIndex implements Serializable {
      * 使用长度为 IDX_MAX_LENGTH 的、满足index格式要求的字符串还原索引对象
      * @param indexStr 不能为空，且必须严格满足索引的格式
      */
-    public FileMapIndex(@NotNull String indexStr) {
+    public FileMapIndex(String indexStr) {
         String[] strings = StringUtils.split(indexStr.trim(), SEPARATOR);
         this.indexPosition = Long.parseLong(strings[0]);
         this.hash = Integer.parseInt(strings[1]);

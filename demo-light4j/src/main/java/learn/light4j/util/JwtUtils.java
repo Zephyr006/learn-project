@@ -1,14 +1,13 @@
-package learn.base.utils;
+package learn.light4j.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yiqischool.gaea.eventtracking.listener.constants.JwtConstants;
-import com.yiqischool.gaea.eventtracking.listener.exception.UnauthorizedException;
-import com.yiqischool.gaea.eventtracking.listener.model.UserIdModel;
-import org.jose4j.jwt.ReservedClaimNames;
+import learn.light4j.constants.JwtConstants;
+import learn.light4j.exception.UnauthorizedException;
+import learn.light4j.model.UserIdModel;
 
 /**
  * @author Zephyr
@@ -51,21 +50,24 @@ public class JwtUtils {
 
     /**
      * 对用户的 id 和 dataCenterId 进行编码得到 token
-     * @param hasExpire 是否设置过期时间
+     *
+     * @param ignoreExpiry 是否忽略过期时间
      * @return token
      */
-    public static String encode(Long appId, Long dataCenterId, String key, boolean hasExpire) {
-        if (hasExpire) {
+    public static String encode(Long appId, Long dataCenterId, String serviceName, String key, boolean ignoreExpiry) {
+        if (ignoreExpiry) {
             return JWT.create()
                     .withClaim(JwtConstants.APP_ID_KEY, appId)
                     .withClaim(JwtConstants.DATA_CENTER_ID_KEY, dataCenterId)
-                    // ReservedClaimNames.EXPIRATION_TIME == "exp"
-                    .withClaim(ReservedClaimNames.EXPIRATION_TIME, System.currentTimeMillis()/1000 + JwtConstants.JWT_EXP_TIME)
+                    .withClaim(JwtConstants.SERVICE_NAME_KEY, serviceName)
                     .sign(sign(key));
         } else {
             return JWT.create()
                     .withClaim(JwtConstants.APP_ID_KEY, appId)
                     .withClaim(JwtConstants.DATA_CENTER_ID_KEY, dataCenterId)
+                    .withClaim(JwtConstants.SERVICE_NAME_KEY, serviceName)
+                    // ReservedClaimNames.EXPIRATION_TIME == "exp" <- JwtConstants.EXPIRATION_TIME_KEY
+                    .withClaim("exp", System.currentTimeMillis()/1000 + JwtConstants.JWT_EXP_TIME)
                     .sign(sign(key));
         }
     }

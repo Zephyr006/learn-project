@@ -1,0 +1,22 @@
+# --------------------------------------------------------------------
+# ConfigInjection  has a public method called getInjectValue
+# which is used to generate the values which need to be injected
+# from environment variables or a specific file called "values.yaml".
+# [2]
+#    Inject from "values.yaml" first, then overwrite with the values in the system environment.
+# ---------------------------------------------------------------------
+
+server.httpPort: 8081
+server.enableHttp: true
+
+server.serviceId: light4j-service-1.0
+
+
+# -----------------------------------------------------------
+# ===== customer config =====
+# ===== usage: Light4jConfigValues.getAsString("key") =====
+# -----------------------------------------------------------
+
+
+jwt.key: test
+jwt.exp: 60000

@@ -77,21 +77,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <configuration>
-                    <compilerArgs>
-                        <!-- 抑制 过期的方法的警告-->
-                        <arg>-Xlint:deprecation</arg>
-                    </compilerArgs>
-                    <compilerArguments>
-                        <!-- 是否输出所有的编译信息（包括类的加载等）-->
-                        <!--<verbose />-->
-                        <!-- 解决maven命令编译报错，因为rt.jar 和jce.jar在jre的lib下面，不在jdk的lib下面，
-                        导致maven找不到（java7以后会出现这个问题），将这2个jar包拷贝到jdk的lib下面估计也好使-->
-                        <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>
-                    </compilerArguments>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
+                <!--<configuration>-->
+                <!--    <compilerArgs>-->
+                <!--        &lt;!&ndash; 抑制 过期的方法的警告&ndash;&gt;-->
+                <!--        <arg>-Xlint:deprecation</arg>-->
+                <!--    </compilerArgs>-->
+                <!--    <compilerArguments>-->
+                <!--        &lt;!&ndash; 是否输出所有的编译信息（包括类的加载等）&ndash;&gt;-->
+                <!--        &lt;!&ndash;<verbose />&ndash;&gt;-->
+                <!--        &lt;!&ndash; 解决maven命令编译报错，因为rt.jar 和jce.jar在jre的lib下面，不在jdk的lib下面，-->
+                <!--        导致maven找不到（java7以后会出现这个问题），将这2个jar包拷贝到jdk的lib下面估计也好使&ndash;&gt;-->
+                <!--        <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>-->
+                <!--    </compilerArguments>-->
+                <!--    <source>${java.version}</source>-->
+                <!--    <target>${java.version}</target>-->
+                <!--</configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

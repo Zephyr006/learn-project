@@ -1,11 +1,11 @@
-package learn.base.utils;
+package learn.light4j.util;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
  * System.currentTimeMillis() Cache
- * 
+ *
  * @author Zephyr
  * @date 2020/12/18.
  */
@@ -28,7 +28,7 @@ public class CurrentTimeMillisClock {
             now = System.currentTimeMillis();
         }, 1, 1, TimeUnit.MILLISECONDS);
 
-        //如果执行某一绝对时间(如2014/02/14 17:13:06)执行任务，此时可使用Timer
+        //如果执行某一绝对时间(如2012/12/12 12:12:12)执行任务，此时可使用Timer
         //new Timer("timer-current-time-millis", true).scheduleAtFixedRate(new TimerTask() {
         //    @Override
         //    public void run() {
@@ -51,30 +51,5 @@ public class CurrentTimeMillisClock {
 
     public static void main(String[] args) {
         long currentTimeMillis = CurrentTimeMillisClock.now();
-
-
-        int times = 1234;
-
-        long start = System.nanoTime();
-        for (int i = 0; i < times; i++) {
-            CurrentTimeMillisClock.now();
-        }
-
-        long start2 = System.nanoTime();
-        for (int i = 0; i < times; i++) {
-            System.currentTimeMillis();
-        }
-        long end = System.nanoTime();
-
-        System.out.println("-----------------");
-
-        long perCurr = (end - start2) / times;
-        System.out.println(String.format("调用 %d 次，一次 System.currentTimeMillis耗时 %d ns",times, perCurr));
-        System.out.println(String.format("调用 %d 次，一次 CurrentTimeMillisClock.now耗时 %d ns", times, (start2 - start)/times));
-        long lessTake = (end - 2 * start2 + start) / times;
-        System.out.println(String.format("平均每次调用比System.currentTimeMillis少耗时 %d ns，少耗时 %.3f%%",
-                lessTake,  (lessTake*1.0 / perCurr)*100.0));
-
-        System.out.println("-----------------");
     }
 }

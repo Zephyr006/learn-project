@@ -1,0 +1,13 @@
+# ---------------------------------------------------------------------------
+# customer response status definition
+# Note that the error code prefixed with ERR with another 5 digits
+# In order to make sure there is no conflict for error code allocation, here is the rule
+#   10000-19999 reserved for the framework/system
+#   10000-10100 security
+#   11000-11999 validation
+#   12000-12999 light-oauth2
+#   20000-29999 common error codes within your business domain.
+#   90000-99999 customize error code that cannot be found in common range.
+# customize status, see {@link https://doc.networknt.com/faq/customize-status}
+# ---------------------------------------------------------------------------
+

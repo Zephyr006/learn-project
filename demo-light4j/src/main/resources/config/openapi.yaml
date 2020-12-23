@@ -1,0 +1,192 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Swagger - Event Tracking Listener
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:8081'
+paths:
+  /event-tracking/token:
+    post:
+      summary: 生成 token
+      operationId: createToken
+      tags:
+        - generate token
+      requestBody:
+        description: id & dataCenterId & serviceName
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - applicationId
+                - dataCenterId
+                - serviceName
+              properties:
+                applicationId:
+                  description: app 的用户 id
+                  type: integer
+                  format: int64
+                  minimum: 0
+                dataCenterId:
+                  description: 数据中台的用户 id
+                  type: integer
+                  format: int64
+                  minimum: 0
+                serviceName:
+                  description: service名称
+                  type: string
+                  minLength: 2
+      responses:
+        '200':
+          description: 成功生成 token 并且返回
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+                type: object
+              example:
+                - code: SUCC_0001
+                  message: 操作成功
+                  data: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhQ2VudGVySWQiOjAsImFwcGxpY2F0aW9uSWQiOjIxNDc0ODM5OTl9.dN83MghyEZVQ3TNLfRqHkzTYMi7s6wA5meqcHSJN6F0
+  /event-tracking/kafka:
+    post:
+      summary: 发送埋点数据到 kafka
+      parameters:
+        - in: header
+          name: Authorization
+          description: 生成的token
+          required: true
+          schema:
+            type: string
+      tags:
+        - send data to kafka
+      requestBody:
+        required: true
+        description: 要发送到 kafka 的埋点数据
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: false
+              required:
+                - version
+                - deviceId
+                - deviceType
+                - deviceVersion
+                - data
+              properties:
+                version:
+                  description: 系统版本
+                  type: string
+                deviceId:
+                  description: 设备id
+                  type: string
+                deviceType:
+                  description: 设备类型(android,ios,pc)
+                  type: string
+                operationId:
+                  description: 埋点
+                  type: string
+                deviceVersion:
+                  description: 设备版本
+                  type: string
+                channelId:
+                  description: 渠道id
+                  type: string
+                pageId:
+                  description: 页面id
+                  type: string
+                spanId:
+                  description: 跟踪链路id(随机生成不重复字符串即可,可使用uuid)
+                  type: string
+                data:
+                  description: 埋点需要的数据
+                  type: object
+            example:
+              - version: "1.0"
+                deviceId: "s123456"
+                deviceType: "iphone"
+                deviceVersion: "10.3.4"
+                channelId: "s123456"
+                operationId: "op12"
+                pageId: "1"
+                spanId: "1"
+                data: {}
+      responses:
+        '200':
+          description: 发送数据到 kafka 并返回"发送成功"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+#  /pets:
+#    get:
+#      summary: List all pets
+#      operationId: listPets
+#      tags:
+#        - pets
+#      parameters:
+#        - name: limit
+#          in: query
+#          description: How many items to return at one time (max 100)
+#          required: false
+#          schema:
+#            type: integer
+#            format: int32
+#      security:
+#        - petstore_auth:
+#            - 'read:pets'
+#      responses:
+#        '200':
+#          description: An paged array of pets
+#          headers:
+#            x-next:
+#              description: A link to the next page of responses
+#              schema:
+#                type: string
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#              example:
+#                - id: 1
+#                  name: catten
+#                  tag: cat
+#                - id: 2
+#                  name: doggy
+#                  tag: dog
+components:
+  schemas:
+    Result:
+      type: object
+      required:
+        - code
+        - message
+        - data
+      properties:
+        code:
+          description: 响应码
+          type: string
+        message:
+          description: 响应的提示信息
+          type: string
+        data:
+          description: 响应的数据
+          type: object
+    UserIdModel:
+      type: object
+      required:
+        - id
+        - dataCenterId
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 0
+        dataCenterId:
+          type: integer
+          format: int64
+          minimum: 0
+

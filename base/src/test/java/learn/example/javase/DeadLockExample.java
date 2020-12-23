@@ -48,8 +48,8 @@ public class DeadLockExample {
         }, "thread2");
 
 
-        t1.start();
-        t2.start();
+        //t1.start();
+        //t2.start();
     }
 
 }

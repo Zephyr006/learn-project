@@ -1,0 +1,24 @@
+---
+# Metrics handler configuration
+
+# If metrics handler is enabled or not
+enabled: ${metrics.enabled:false}
+
+# If metrics handler is enable for JVM MBean or not
+enableJVMMonitor: false
+
+# influxdb protocal can be http, https
+influxdbProtocol: ${metrics.influxdbProtocol:http}
+# influxdb hostname
+influxdbHost: ${metrics.influxdbHost:192.168.2.55}
+# influxdb port number
+influxdbPort: ${metrics.influxdbPort:8086}
+# influxdb database name
+influxdbName: ${metrics.influxdbName:event_track_listener_metrics}
+# influxdb user
+influxdbUser: ${metrics.influxdbUser:admin}
+# influx db password
+influxdbPass: ${metrics.influxdbPass:admin2020}
+
+# report and reset metrics in minutes.
+reportInMinutes: ${metrics.reportInMinutes:1}
