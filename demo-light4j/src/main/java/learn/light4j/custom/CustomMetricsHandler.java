@@ -23,6 +23,7 @@ import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -180,30 +181,43 @@ public class CustomMetricsHandler implements MiddlewareHandler {
     }
 
 
+    /**
+     * 由于组件初始化顺序问题，当组件读取Server.currentPort的值用来初始化commonTags时，
+     * Server.currentPort其实还没初始化，所以要在主线程初始化完成后再次尝试初始化commonTags
+     */
     private void waitForServerInit() {
         new Thread(() -> {
-            //wait for init finish
             while (Server.currentPort == 0) {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(300);
+                    TimeUnit.MILLISECONDS.sleep(200);
                 } catch (InterruptedException ignore) { }
             }
             // init again
             if (commonTags.get("addr") == null) {
-                // in kubernetes pod, the hostIP is passed in as STATUS_HOST_IP environment
-                // variable. If this is null
-                // then get the current server IP as it is not running in Kubernetes.
-                String ipAddress = System.getenv("STATUS_HOST_IP");
-                logger.info("Registry IP from STATUS_HOST_IP is " + ipAddress);
-                if (ipAddress == null) {
-                    InetAddress inetAddress = Util.getInetAddress();
-                    ipAddress = inetAddress.getHostAddress();
-                    logger.info("Could not find IP from STATUS_HOST_IP, use the InetAddress " + ipAddress);
-                }
+                String ipAddress = this.getIpAddress();
                 commonTags.put("addr", ipAddress);
             }
             commonTags.put("port", "" + Server.currentPort);
             logger.info("MetricsHandler commonTags init again, now commonTags = " + commonTags);
         }).start();
+    }
+
+    // in kubernetes pod, the hostIP is passed in as STATUS_HOST_IP environment variable.
+    // If this is null, then get the current server IP as it is not running in Kubernetes.
+    private String getIpAddress() {
+        String ipAddress = System.getenv("STATUS_HOST_IP");
+        logger.info("Registry IP from STATUS_HOST_IP is " + ipAddress);
+        if (ipAddress == null) {
+            InetAddress inetAddress = null;
+            try {
+                inetAddress = InetAddress.getLocalHost();
+            } catch (IOException ioe) {
+                logger.error("Error in getting InetAddress", ioe);
+            }
+            assert inetAddress != null;
+            ipAddress = inetAddress.getHostAddress();
+            logger.info("Could not find IP from STATUS_HOST_IP, use the InetAddress " + ipAddress);
+        }
+        return ipAddress;
     }
 }

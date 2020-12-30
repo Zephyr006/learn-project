@@ -42,12 +42,17 @@ public class CurrentTimeMillisClock {
     }
 
     public static CurrentTimeMillisClock getInstance() {
-        return SingletonHolder.INSTANCE;
+        return SingletonHolder.INNER;
     }
 
+    /**
+     * 单例模式：静态内部类不会随着外部类的初始化而初始化，他是要单独去加载和初始化的
+     * 当第一次执行getInstance方法时，Inner类会被初始化。
+     */
     private static class SingletonHolder {
-        private static final CurrentTimeMillisClock INSTANCE = new CurrentTimeMillisClock();
+        private static final CurrentTimeMillisClock INNER = new CurrentTimeMillisClock();
     }
+
 
     public static void main(String[] args) {
         long currentTimeMillis = CurrentTimeMillisClock.now();
@@ -69,8 +74,9 @@ public class CurrentTimeMillisClock {
         System.out.println("-----------------");
 
         long perCurr = (end - start2) / times;
-        System.out.println(String.format("调用 %d 次，一次 System.currentTimeMillis耗时 %d ns",times, perCurr));
-        System.out.println(String.format("调用 %d 次，一次 CurrentTimeMillisClock.now耗时 %d ns", times, (start2 - start)/times));
+        System.out.println(String.format("调用 %d 次，一次 System.currentTimeMillis 耗时 %d ns",times, perCurr));
+        System.out.println(String.format("调用 %d 次，一次 CurrentTimeMillisClock.now 耗时 %d ns", times, (start2 - start)/times));
+
         long lessTake = (end - 2 * start2 + start) / times;
         System.out.println(String.format("平均每次调用比System.currentTimeMillis少耗时 %d ns，少耗时 %.3f%%",
                 lessTake,  (lessTake*1.0 / perCurr)*100.0));

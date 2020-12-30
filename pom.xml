@@ -36,7 +36,9 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <lombok.version>1.18.12</lombok.version>
         <jackson.version>2.10.2</jackson.version>
+        <fastjson.version>1.2.73</fastjson.version>
         <httpclient.version>4.5.12</httpclient.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j2.version>2.13.3</log4j2.version>
@@ -122,6 +124,23 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <!-- jackson 关于时间类型解析的依赖（如 LocalDate） -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>2.9.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!-- yaml parser -->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
             </dependency>
             <!-- common utils end -->
 

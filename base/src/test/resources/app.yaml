@@ -1,0 +1,8 @@
+spring:
+  profile: ccc
+
+test:
+  test2:
+    - 111
+    - 222
+    - 333

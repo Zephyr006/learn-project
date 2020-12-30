@@ -28,6 +28,10 @@
         <version.fastscanner>2.20.2</version.fastscanner>
         <version.java-jwt>3.8.3</version.java-jwt>
 
+        <version.mybatis>3.5.6</version.mybatis>
+        <version.druid>1.2.3</version.druid>
+        <version.mysql-connector>5.1.48</version.mysql-connector>
+
 
         <main.class>learn.light4j.Light4jServer</main.class>
         <java.version>1.8</java.version>
@@ -36,6 +40,10 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
@@ -195,6 +203,25 @@
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
             <scope>test</scope>
+        </dependency>
+
+
+        <!--mysql-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${version.mybatis}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${version.druid}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${version.mysql-connector}</version>
         </dependency>
     </dependencies>
 
