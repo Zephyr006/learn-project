@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TestConfigController {
-    @Value("${customer.inviteDay}")
+    @Value("${customer.inviteDay:7}")
     Integer inviteValidDay;
 
 
-    @GetMapping("testConfig")
+    @GetMapping("/testConfig")
     public String getConfig() {
         System.out.println("testttt");
         return String.valueOf(inviteValidDay);

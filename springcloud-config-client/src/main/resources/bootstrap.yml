@@ -1,5 +1,10 @@
 
 spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.20.47:3306/crm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: root
     application:
         name: me
     security:
@@ -13,6 +18,9 @@ spring:
             uri: http://localhost:8888
             username: user
             password: JustDoIt2019
+            enabled: false
+        bus:
+            enabled: false
 eureka:
     client:
         service-url:
