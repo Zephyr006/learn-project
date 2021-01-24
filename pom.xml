@@ -30,7 +30,7 @@
         <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
 
-        <mysql.version>5.1.47</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <druid.version>1.1.23</druid.version>
         <!--<mysql.version>8.0.21</mysql.version>-->
         <vertx.version>3.8.5</vertx.version>
