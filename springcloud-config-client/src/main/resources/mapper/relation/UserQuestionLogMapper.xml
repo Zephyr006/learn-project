@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="learn.datasource.mapper.relation.UserQuestionLogMapper">
+
+    <sql id="field">
+        id,user_id, question_id, submit_id, answer, correct, error_mark, cost_time, created_at, updated_at, status
+    </sql>
+
+    <select id="findByDataCenterIdAndCreatedBetween"
+            resultType="learn.datasource.entity.relation.UserQuestionLog">
+        select <include refid="field"/> from ${tableName}
+        where user_id = #{dataCenterId}
+        <if test="beginTime != null">
+            and created_at &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            and created_at &lt; #{endTime}
+        </if>
+        and status = 1
+    </select>
+
+    <select id="findByDataCenterIdAndSubmitIdIn"
+            resultType="learn.datasource.entity.relation.UserQuestionLog">
+        select <include refid="field"/> from ${tableName}
+        where user_id = #{dataCenterId}
+        and submit_id in
+            <foreach collection="submitIds" item="submitId" open="(" close=")" separator=",">
+                #{submitId}
+            </foreach>
+        and status = 1
+    </select>
+
+</mapper>
+
+

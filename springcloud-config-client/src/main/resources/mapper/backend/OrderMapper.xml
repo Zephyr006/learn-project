@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="learn.datasource.mapper.backend.OrderMapper">
+
+    <select id="findByDataCenterIdInAndPaidTimeBetweenAndStatusIn"
+            resultType="learn.datasource.entity.OrderEntity">
+        select  a.data_center_id, o.id as order_id,  o.pay_time, o.subject, o.price , o.status from orders  o
+        LEFT JOIN account a
+        on a.id = o.uid
+        <where>
+            <if test="dataCenterIds != null and dataCenterIds.size() > 0">
+                and a.data_center_id in
+                <foreach collection="dataCenterIds" item="dataCenterId" open="(" close=")" separator=",">
+                    #{dataCenterId}
+                </foreach>
+            </if>
+            <if test="beginTime != null">
+                and o.update_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and o.update_time &lt; #{endTime}
+            </if>
+            and o.status in
+            <foreach collection="statuses" item="status" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+            and o.price != 0 and o.pay_time is not null
+        </where>
+    </select>
+
+</mapper>
+
+

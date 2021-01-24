@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="learn.datasource.mapper.backend.DailyActiveMapper">
+
+    <select id="findByDataCenterIdInAndActiveTimeBetween"
+            resultType="learn.datasource.entity.DailyActiveEntity">
+        select a.data_center_id, d.active_time, d.longitude, d.latitude from  daily_active_log d
+        LEFT JOIN account a
+        on d.user_id = a.id
+        <where>
+            <if test="dataCenterIds != null and dataCenterIds.size() > 0">
+                and a.data_center_id in
+                <foreach collection="dataCenterIds" item="dataCenterId" open="(" close=")" separator=",">
+                    #{dataCenterId}
+                </foreach>
+            </if>
+            <if test="beginTime != null">
+                and d.active_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and d.active_time &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+    <select id="queryUserLoginInfo" resultType="learn.datasource.entity.UserLoginInfo">
+        select a.data_center_id, a.create_time, d.last_request_time, count(d.*) as activeCount
+        from  daily_active_log d
+        LEFT JOIN account a
+        on d.user_id = a.id
+        <where>
+            <if test="dataCenterIds != null and dataCenterIds.size() > 0">
+                and a.data_center_id in
+                <foreach collection="dataCenterIds" item="dataCenterId" open="(" close=")" separator=",">
+                    #{dataCenterId}
+                </foreach>
+            </if>
+        </where>
+        group by d.user_id
+    </select>
+    <select id="countByUserIds" resultType="learn.datasource.model.UserLoginCountModel">
+        select user_id, count(*) as login_count
+        from daily_active_log
+        <where>
+            <if test="userIdList != null and userIdList.size() > 0">
+                and user_id in
+                <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+        group by user_id
+    </select>
+
+</mapper>
+
+

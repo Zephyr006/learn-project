@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="learn.datasource.mapper.relation.SubmitLogMapper">
+
+    <sql id="field">
+        id,metadata,scenes_id,scenes_key,user_id,generic_key,created_at,updated_at,status
+    </sql>
+
+    <select id="findBySceneKeyAndSceneIdAndDataCenterId"
+            resultType="learn.datasource.entity.relation.SubmitLog">
+        select <include refid="field"/> from ${tableName}
+        where scenes_key = #{sceneKey}
+        and scenes_id = #{sceneId}
+        and user_id = #{dataCenterId}
+        and status = 1
+    </select>
+</mapper>
+
+
