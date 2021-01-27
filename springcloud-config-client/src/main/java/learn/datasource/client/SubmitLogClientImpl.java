@@ -1,8 +1,8 @@
 package learn.datasource.client;
 
 import learn.datasource.config.ShardingConfig;
-import learn.datasource.entity.relation.SubmitLog;
-import learn.datasource.mapper.relation.SubmitLogMapper;
+import learn.datasource.entity.gk.SubmitLog;
+import learn.datasource.mapper.gk.SubmitLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

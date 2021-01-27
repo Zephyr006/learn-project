@@ -2,14 +2,18 @@
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.20.47:3306/crm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://39.106.73.19:3306/crm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password: root
+        password:
+        hikari:
+            idle-timeout: 300000
+            max-lifetime: 0
+            maximum-pool-size: 15
     application:
         name: me
     security:
         user:
-            password: JustDoIt2019
+            password:
     cloud:
         config:
             name: crm
@@ -17,7 +21,7 @@ spring:
             label: master
             uri: http://localhost:8888
             username: user
-            password: JustDoIt2019
+            password:
             enabled: false
         bus:
             enabled: false
@@ -33,6 +37,9 @@ server:
 
 logging:
     level:
+        learn:
+            datasource:
+                mapper: info
         base-mybatis: info
 mybatis-plus:
     mapper-locations: /mapper/*.xml
@@ -41,18 +48,18 @@ base:
         log:
             enable: true
 datasource:
-    question:
+    jk:
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kjs?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
         username: qbdash_r
-        password: JustDoIt2020
-    relation:
+        password:
+    gk:
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kgk?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
         username: qbdash_r
-        password: JustDoIt2020
+        password:
     backend:
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kgk?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
         username: qbdash_r
-        password: JustDoIt2020
+        password:

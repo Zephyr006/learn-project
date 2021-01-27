@@ -10,12 +10,12 @@ spring:
         git:
           uri: http://git.tsingzone.com/public-server/configuration-dev.git
           username: Zephyr
-          password: 12345678
+          password:
   kafka:
     bootstrap-servers: 192.168.2.55:9092
   security:
     user:
-      password: JustDoIt2019
+      password:
 
 server:
   port: 8888

@@ -3,8 +3,10 @@ package learn.datasource.mapper.backend;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import learn.datasource.datasource.GkDataSource;
 import learn.datasource.entity.Account;
 import learn.datasource.registrar.DataServerMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,7 +16,8 @@ import java.util.List;
  * @author yangming
  * @date 2020/12/2
  */
-@DataServerMapper
+@Repository
+@DataServerMapper(dataSource = GkDataSource.class)
 public interface AccountMapper extends BaseMapper<Account> {
 
     default List<Account> findByDataCenterIdIn(Collection<Long> dataCenterIds) {

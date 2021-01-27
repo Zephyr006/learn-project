@@ -56,6 +56,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.zephyr006</groupId>
+                <artifactId>base</artifactId>
+                <version>1.0</version>
+            </dependency>
             <!-- spring cloud begin-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>

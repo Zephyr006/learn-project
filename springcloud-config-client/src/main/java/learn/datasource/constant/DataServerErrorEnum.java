@@ -13,7 +13,7 @@ public enum DataServerErrorEnum  {
 
 
     /**
-     * relation
+     * gk
      */
     USER_ID_NOT_EXISTS("gaea_crm_dataserver_01", "用户id不存在"),
     ;

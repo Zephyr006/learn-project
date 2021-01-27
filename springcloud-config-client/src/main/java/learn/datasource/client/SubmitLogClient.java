@@ -1,7 +1,7 @@
 package learn.datasource.client;
 
 
-import learn.datasource.entity.relation.SubmitLog;
+import learn.datasource.entity.gk.SubmitLog;
 
 import java.util.List;
 

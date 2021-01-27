@@ -1,7 +1,6 @@
 package learn.base.utils;
 
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -86,13 +85,24 @@ public class StopWatch {
     }
 
     public String prettyPrint() {
+        long timeMillisThreshold = 10_000L;
         if (this.state.isStopped()) {
-            long costTimes = this.stopTimeNanos - this.startTimeNanos;
-            return String.format("=== StopWatch :%s cost %d ns , means %d ms ===",
-                    "".equals(this.taskName) ? " " : " " + this.taskName, costTimes, TimeUnit.NANOSECONDS.toMillis(costTimes));
+            long costNanoTimes = this.stopTimeNanos - this.startTimeNanos;
+            long costMillis = TimeUnit.NANOSECONDS.toMillis(costNanoTimes);
+            if (costMillis < timeMillisThreshold) {
+                return String.format("=== StopWatch : %s cost %d ns , means %d ms ===",
+                        this.taskName, costNanoTimes, costMillis);
+            } else {
+                return String.format("=== StopWatch : %s cost %d ms , means %d s ===",
+                        this.taskName, costMillis, TimeUnit.NANOSECONDS.toSeconds(costNanoTimes));
+            }
         } else {
-            return "=== StopWatch is still running, start time is " +
-                    new Date(System.currentTimeMillis() - TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-startTimeNanos)) + " ===";
+            long costMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTimeNanos);
+            if (costMillis < timeMillisThreshold) {
+                return "=== StopWatch is still running, it has been started for " + costMillis + " ms ===";
+            } else {
+                return String.format("=== StopWatch is still running, it has been started for %d ms , means %d s ===", costMillis, costMillis / 1000);
+            }
         }
     }
 

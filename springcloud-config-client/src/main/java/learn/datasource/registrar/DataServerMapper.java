@@ -1,7 +1,6 @@
 package learn.datasource.registrar;
 
 import learn.datasource.datasource.AbstractDataSource;
-import learn.datasource.datasource.QuestionDataSource;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,6 +19,6 @@ public @interface DataServerMapper {
      * 属于哪个数据源
      * @return
      */
-    Class<? extends AbstractDataSource> dataSource() default QuestionDataSource.class;
+    Class<? extends AbstractDataSource> dataSource();
 
 }

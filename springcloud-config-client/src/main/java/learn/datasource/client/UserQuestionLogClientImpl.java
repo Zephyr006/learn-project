@@ -2,8 +2,8 @@ package learn.datasource.client;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import learn.datasource.config.ShardingConfig;
-import learn.datasource.entity.relation.UserQuestionLog;
-import learn.datasource.mapper.relation.UserQuestionLogMapper;
+import learn.datasource.entity.gk.UserQuestionLog;
+import learn.datasource.mapper.gk.UserQuestionLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

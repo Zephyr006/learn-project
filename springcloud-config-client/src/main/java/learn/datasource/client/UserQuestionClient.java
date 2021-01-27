@@ -1,6 +1,6 @@
 package learn.datasource.client;
 
-import learn.datasource.entity.relation.UserQuestion;
+import learn.datasource.entity.gk.UserQuestion;
 
 import java.util.List;
 
