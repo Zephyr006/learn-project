@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -17,23 +16,29 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class GkUser {
+public class GkUser extends User{
 
     @TableId(type = IdType.INPUT)
     private Long id;
-    private String phone;
+    //private String phone;
+    //
+    //private Long dataCenterId;
+    //private Timestamp createTime;
+    //private Timestamp updateTime;
+    //
+    //private String latestRequestTime;
+    //private Integer status;
+    //private Integer activeTimesOneMonth;
 
-    private Long dataCenterId;
-    private Timestamp createTime;
-    private Timestamp updateTime;
 
-    private String latestRequestTime;
-    private Integer status;
-    private Integer activeTimesOneMonth;
 
+    public GkUser(Long id, Integer activeTimesBothRegister) {
+        this.id = id;
+        this.activeTimesBothRegister = activeTimesBothRegister;
+    }
 
     @Override
     public boolean equals(Object o) {

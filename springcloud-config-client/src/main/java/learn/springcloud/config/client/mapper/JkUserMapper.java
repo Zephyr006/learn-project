@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import learn.springcloud.config.client.entity.JkUser;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Zephyr
@@ -79,4 +81,10 @@ public interface JkUserMapper extends BaseMapper<JkUser> {
         }
         return true;
     }
+
+    default <T> List<T> selectFieldList(SFunction<JkUser, T> selectFieldFunction) {
+        List<JkUser> users = selectList(Wrappers.<JkUser>lambdaQuery().select(selectFieldFunction));
+        return users.stream().map(selectFieldFunction).collect(Collectors.toList());
+    }
+
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -29,5 +30,17 @@ public interface JkMiddleDailyActiveMapper extends BaseMapper<JkMiddleDailyActiv
             +" where `active_time` < TIMESTAMPADD( DAY, 30, `user_create_time` ) "
             +" and `uid` in (${uids}) GROUP BY uid")
     List<JkMiddleDailyActive> count2020UidByUidInAndOneMonthRecently(@Param("uids") String uids);
+
+
+
+    @Select("SELECT count(uid) as `count` FROM `middle_daily_active`"
+            +" where `active_time` < TIMESTAMPADD( DAY, 30, ' ${createTime} ' ) "
+            +" and `uid` = ${uid} ")
+    Integer countUidByUidAndCreateTime(@Param("uid") Long uid, @Param("createTime") Timestamp createTime);
+
+    @Select("SELECT count(uid) as `count` FROM `middle_daily_active`"
+            +" where `active_time` < TIMESTAMPADD( DAY, 30, ' ${createTime} ' ) "
+            +" and `uid` = ${uid} ")
+    Integer count2020UidByUidAndCreateTime(@Param("uid") Long uid, @Param("createTime") Timestamp createTime);
 
 }
