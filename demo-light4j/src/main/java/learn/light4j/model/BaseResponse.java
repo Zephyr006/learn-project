@@ -1,6 +1,6 @@
 package learn.light4j.model;
 
-import com.alibaba.fastjson.JSON;
+import learn.base.utils.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ public class BaseResponse<T> {
     private T data;
 
     public static <T> String ok(T t) {
-        return JSON.toJSONString(BaseResponse.builder()
+        return JsonUtil.toJSONString(BaseResponse.builder()
                 .success(true).code("10000")
                 .message("操作成功").data(t).build());
     }
@@ -31,7 +31,7 @@ public class BaseResponse<T> {
     }
 
     public static String fail(String code, String message) {
-        return JSON.toJSONString(BaseResponse.builder()
+        return JsonUtil.toJSONString(BaseResponse.builder()
                 .success(false).code(code)
                 .message(message).build());
     }

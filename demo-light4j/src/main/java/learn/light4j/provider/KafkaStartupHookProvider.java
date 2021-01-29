@@ -1,9 +1,9 @@
 package learn.light4j.provider;
 
-import com.alibaba.fastjson.JSON;
 import com.networknt.config.Config;
 import com.networknt.server.StartupHookProvider;
 import com.networknt.utility.StringUtils;
+import learn.base.utils.JsonUtil;
 import learn.light4j.config.KafkaConfig;
 import learn.light4j.domain.EventTrackingMessage;
 import learn.light4j.domain.StatisticService;
@@ -71,7 +71,7 @@ public class KafkaStartupHookProvider implements StartupHookProvider {
             if (records.count() > 0) {
                 List<EventTrackingMessage> messages = new ArrayList<>();
                 for (ConsumerRecord<String, byte[]> record : records) {
-                    EventTrackingMessage message = JSON.parseObject(record.value(), EventTrackingMessage.class);
+                    EventTrackingMessage message = JsonUtil.parseObject(record.value(), EventTrackingMessage.class);
                     messages.add(message);
                 }
                 messageConsumer.accept(messages);

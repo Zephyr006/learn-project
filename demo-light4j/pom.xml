@@ -41,8 +41,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>cn.zephyr006</groupId>
+            <artifactId>base</artifactId>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>

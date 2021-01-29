@@ -23,6 +23,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.zephyr006</groupId>
+            <artifactId>base</artifactId>
+        </dependency>
         <!-- webflux begin -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

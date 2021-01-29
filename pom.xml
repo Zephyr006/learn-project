@@ -152,6 +152,11 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
             <!-- jackson 关于时间类型解析的依赖（如 LocalDate） -->
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>

@@ -1,6 +1,6 @@
 package learn.light4j.model;
 
-import com.alibaba.fastjson.JSON;
+import learn.base.utils.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class PageResponse<T> {
     private List<T> data;
 
     public static <T> String ok(List<T> t, Long totalCount) {
-        return JSON.toJSONString(PageResponse.<T>builder()
+        return JsonUtil.toJSONString(PageResponse.<T>builder()
                 .success(true).code("100000")
                 .message("操作成功")
                 .data(t).totalCount(totalCount).build());
