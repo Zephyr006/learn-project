@@ -86,6 +86,13 @@
             </dependency>
             <!-- spring cloud end -->
 
+            <!-- 依赖兼容列表：https://engr-z.com/wp-content/uploads/2021/01/kafka_client_compatibility.png -->
+            <!--<dependency>-->
+            <!--    <groupId>org.springframework.kafka</groupId>-->
+            <!--    <artifactId>spring-kafka</artifactId>-->
+            <!--    <version>2.4.7</version>-->
+            <!--</dependency>-->
+
             <!-- database -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

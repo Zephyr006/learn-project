@@ -1,9 +1,9 @@
 package learn.base.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -73,18 +73,18 @@ public class JsonUtil {
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
         try {
-            ObjectReader reader = MAPPER.readerFor(clazz);
-            return reader.<T>readValues(text).readAll();
+            //return MAPPER.readValue(text, new TypeReference<List<T>>() {});
+            //ObjectReader reader = MAPPER.readerFor(clazz);
+            return MAPPER.readerFor(clazz).<T>readValues(text).readAll();
         } catch (IOException e) {
             logger.error("JsonUtil.parseArray error, original text = " + text, e);
         }
         return null;
     }
 
-    public static <T> List<T> parseArrayFromFile(String filePath, Class<T> clazz) {
+    public static <T> List<T> parseArrayFromFile(String filePath) {
         try {
-            String json = MAPPER.readValue(new File(filePath), String.class);
-            return parseArray(json, clazz);
+            return MAPPER.readValue(new File(filePath), new TypeReference<List<T>>() {});
         } catch (IOException e) {
             logger.error("JsonUtil.parseArrayFromFile error. ", e);
         }
