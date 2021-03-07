@@ -204,9 +204,28 @@
             <version>${version.junit}</version>
             <scope>test</scope>
         </dependency>
+        <!-- for test start -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>5.3.5.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>com.zaxxer</groupId>-->
+        <!--    <artifactId>HikariCP</artifactId>-->
+        <!--    <version>4.0.3</version>-->
+        <!--    <scope>test</scope>-->
+        <!--</dependency>-->
+        <!-- for test end -->
 
 
         <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${version.mysql-connector}</version>
+        </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -217,11 +236,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${version.druid}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${version.mysql-connector}</version>
         </dependency>
     </dependencies>
 
