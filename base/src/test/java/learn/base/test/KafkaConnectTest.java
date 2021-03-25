@@ -1,6 +1,7 @@
-package learn;
+package learn.base.test;
 
-import learn.light4j.util.KafkaUtil;
+import learn.base.utils.FileLoader;
+import learn.base.utils.KafkaUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -8,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -16,18 +18,23 @@ import java.util.concurrent.Future;
  * @date 2021/3/7.
  */
 public class KafkaConnectTest {
+    private static final String FILE_PATH = "conn-test.properties";
     private static final String BOOTSTRAP_SERVERS_CONFIG_KEY = "kafka.server";
     private static final String KAFKA_TOPIC_KEY = "kafka.topic";
 
+
     @Test
     public void testConnect() throws ExecutionException, InterruptedException {
-        System.setProperty(BOOTSTRAP_SERVERS_CONFIG_KEY, "192.168.2.136:9092");
-        System.setProperty(KAFKA_TOPIC_KEY, "kafka_connect_test");
-        //System.out.println(System.getProperty(BOOTSTRAP_TOPIC_KEY));
-        //System.out.println(System.getProperty(BOOTSTRAP_SERVERS_CONFIG_KEY));
+        final String topic = "kafka_connect_test";
 
 
-        Future<RecordMetadata> sendResultFuture = KafkaUtil.send("这是一条用于测试kafka连接可用性的消息！");
+        final Properties props = FileLoader.loadProperties(FILE_PATH);
+        String host = String.valueOf(props.get("host"));
+        System.setProperty(BOOTSTRAP_SERVERS_CONFIG_KEY, host + ":10003");
+        System.setProperty(KAFKA_TOPIC_KEY, topic);
+
+        Future<RecordMetadata> sendResultFuture = KafkaUtil.send(
+                System.getProperty("kafka.topic"), "这是一条用于测试kafka连接可用性的消息！", KafkaUtil.DEFAULT_CALLBACK);
         RecordMetadata recordMetadata = sendResultFuture.get();
         System.out.println(recordMetadata.toString());
         Assert.assertNotNull(recordMetadata);

@@ -45,6 +45,12 @@
         <!--    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
         <!--</dependency>-->
         <!-- webflux end -->
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.22.Final</version>
+        </dependency>
 
 
         <!-- vert.x begin -->

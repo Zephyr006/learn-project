@@ -1,4 +1,4 @@
-package learn.light4j.util;
+package learn.base.utils;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -36,7 +36,7 @@ public class KafkaUtil {
     static {
         KafkaUtil.topic = System.getProperty("kafka.topic", "test_data_center");
         String kafkaServerUrl = System.getProperty("kafka.server", "192.168.2.55:9092");
-        logger.info("kafka server path use [{}]", kafkaServerUrl);
+        logger.debug("kafka server path use [{}]", kafkaServerUrl);
 
         initProducer(kafkaServerUrl);
         initConsumer(kafkaServerUrl, "test");

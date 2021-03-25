@@ -42,7 +42,7 @@ public class WebClientRestHandler implements RestHandler {
 
         // 发送http请求
         WebClient.ResponseSpec response = requestBodyUriSpec
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
                 // send request
                 .retrieve();
 

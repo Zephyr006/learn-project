@@ -1,8 +1,7 @@
-package learn.base.utils;
+package learn.base.test.util;
 
+import learn.base.utils.ConfigLoader;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Zephyr

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.10.RELEASE</version>
+        <version>2.3.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -26,12 +26,15 @@
 
     <properties>
         <!-- Spring Boot 与 Spring Cloud 版本对应关系(*必须按要求对应*)： https://start.spring.io/actuator/info -->
-        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
         <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
 
         <mysql.version>5.1.47</mysql.version>
         <druid.version>1.1.23</druid.version>
+        <HikariCP.version>3.4.5</HikariCP.version>
+        <kafka.version>2.5.1</kafka.version>
+        <elasticsearch.version>7.6.2</elasticsearch.version>
         <!--<mysql.version>8.0.21</mysql.version>-->
         <vertx.version>3.8.5</vertx.version>
 

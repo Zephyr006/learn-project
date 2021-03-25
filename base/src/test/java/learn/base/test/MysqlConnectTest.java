@@ -1,7 +1,8 @@
-package learn;
+package learn.base.test;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import learn.base.utils.FileLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +14,7 @@ import java.util.Properties;
  * @date 2021/3/7.
  */
 public class MysqlConnectTest {
+    private static final String FILE_PATH = "conn-test.properties";
     private static final String driverClassName = "com.mysql.jdbc.Driver";
     private static final String url_template = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false";
 
@@ -24,17 +26,18 @@ public class MysqlConnectTest {
     @Test
     public void testConnect() throws ClassNotFoundException {
         boolean needInsert = false;
+        final Properties props = FileLoader.loadProperties(FILE_PATH);
 
         //1 加载MySql的驱动类
-        Class<?> driverClass = Class.forName(driverClassName);
+        Class.forName(props.getOrDefault("jdbc.driverClassName", "com.mysql.jdbc.Driver").toString());
         //2 创建数据库的连接
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            String url = String.format(url_template, host, dbName);
+            String url = props.get("dataSource.jdbcUrl").toString().replace("{host}", props.get("host").toString());
             System.out.println(url);
-            connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, props.get("dataSource.username").toString(), props.get("dataSource.password").toString());
             // 推荐的连接可用性测试方案
             boolean isValid = connection.isValid(2);
             System.out.println("--- Mysql Connection is valid ? ---  " + isValid);
@@ -123,9 +126,19 @@ public class MysqlConnectTest {
     }
 
 
+    // 最终会调用HikariConfig类中的 setXxx 方法设值（如setPassword），不存在对应方法则抛异常
     private Properties initHikariCPProps() {
-        // 最终会调用HikariConfig类中的 setXxx 方法设值（如setPassword），不存在对应方法则抛异常
-        Properties properties = new Properties();
+        final Properties properties = FileLoader.loadProperties(FILE_PATH);
+        final Properties finalProps = new Properties();
+        properties.forEach((key, value) -> {
+            if (key.toString().startsWith("dataSource.")) {
+                finalProps.put(key.toString().substring("dataSource.".length()),
+                        value.toString().replace("{host}", properties.get("host").toString()));
+            }
+        });
+        return finalProps;
+
+        /*
         properties.setProperty("driverClassName", driverClassName);
         properties.setProperty("jdbcUrl", String.format(url_template, host, dbName));
         properties.setProperty("username", username);
@@ -143,8 +156,8 @@ public class MysqlConnectTest {
         properties.setProperty("maximumPoolSize", "10");
         // 连接池空闲连接的最小数量。默认minimumIdle与maximumPoolSize一样，为了性能考虑，不建议设置此值
         properties.setProperty("minimumIdle", "8");
-
         return properties;
+        */
     }
 
     private void close(AutoCloseable closeable) {
