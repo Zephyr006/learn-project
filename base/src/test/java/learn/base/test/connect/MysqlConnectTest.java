@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.test.connect;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

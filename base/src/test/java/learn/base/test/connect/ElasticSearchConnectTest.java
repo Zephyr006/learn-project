@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.test.connect;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
