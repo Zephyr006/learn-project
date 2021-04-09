@@ -15,6 +15,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -66,8 +67,8 @@ public class ExcelUtil {
                     Cell cell = row.createCell(j);
                     cell.setCellStyle(contentCellStyle);
                     Object dataValue = getMethods.get(j).apply(data);
-                    if (dataValue instanceof Double) {
-                        cell.setCellValue((Double) dataValue);
+                    if (dataValue instanceof Double || dataValue instanceof Long || dataValue instanceof Integer || dataValue instanceof Short || dataValue instanceof BigDecimal) {
+                        cell.setCellValue(((Number) dataValue).doubleValue());
                     } else if (dataValue instanceof Date) {
                         cell.setCellValue((Date) dataValue);
                     } else if (dataValue instanceof LocalDateTime) {
@@ -104,6 +105,7 @@ public class ExcelUtil {
             //font.setBold(true);
             // 单元格背景颜色
             style.setFillBackgroundColor(IndexedColors.LAVENDER.getIndex());
+            style.setAlignment(HorizontalAlignment.CENTER);
         } else {
             font.setFontHeightInPoints((short) 14);
         }
