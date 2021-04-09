@@ -90,18 +90,18 @@ public class StopWatch {
             long costNanoTimes = this.stopTimeNanos - this.startTimeNanos;
             long costMillis = TimeUnit.NANOSECONDS.toMillis(costNanoTimes);
             if (costMillis < timeMillisThreshold) {
-                return String.format("=== StopWatch : %s cost %d ns , means %d ms ===",
+                return String.format("=== StopWatch : %s cost %d ns , means %d ms ===\n",
                         this.taskName, costNanoTimes, costMillis);
             } else {
-                return String.format("=== StopWatch : %s cost %d ms , means %d s ===",
+                return String.format("=== StopWatch : %s cost %d ms , means %d s ===\n",
                         this.taskName, costMillis, TimeUnit.NANOSECONDS.toSeconds(costNanoTimes));
             }
         } else {
             long costMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTimeNanos);
             if (costMillis < timeMillisThreshold) {
-                return "=== StopWatch is still running, it has been started for " + costMillis + " ms ===";
+                return "=== StopWatch is still running, it has been started for " + costMillis + " ms ===\n";
             } else {
-                return String.format("=== StopWatch is still running, it has been started for %d ms , means %d s ===", costMillis, costMillis / 1000);
+                return String.format("=== StopWatch is still running, it has been started for %d ms , means %d s ===\n", costMillis, costMillis / 1000);
             }
         }
     }
