@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.test.connect;
 
 import learn.base.utils.FileLoader;
 import learn.base.utils.KafkaUtil;

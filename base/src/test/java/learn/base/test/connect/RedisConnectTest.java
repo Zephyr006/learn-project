@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.test.connect;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisFuture;
