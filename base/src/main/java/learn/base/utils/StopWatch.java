@@ -85,10 +85,10 @@ public class StopWatch {
     }
 
     public String prettyPrint() {
-        long timeMillisThreshold = 10_000L;
+        long timeMillisThreshold = 3_000L;
+        long costNanoTimes = (this.state.isStopped() ? this.stopTimeNanos : System.nanoTime()) - startTimeNanos;
+        long costMillis = TimeUnit.NANOSECONDS.toMillis(costNanoTimes);
         if (this.state.isStopped()) {
-            long costNanoTimes = this.stopTimeNanos - this.startTimeNanos;
-            long costMillis = TimeUnit.NANOSECONDS.toMillis(costNanoTimes);
             if (costMillis < timeMillisThreshold) {
                 return String.format("=== StopWatch : %s cost %d ns , means %d ms ===\n",
                         this.taskName, costNanoTimes, costMillis);
@@ -97,7 +97,6 @@ public class StopWatch {
                         this.taskName, costMillis, TimeUnit.NANOSECONDS.toSeconds(costNanoTimes));
             }
         } else {
-            long costMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTimeNanos);
             if (costMillis < timeMillisThreshold) {
                 return "=== StopWatch is still running, it has been started for " + costMillis + " ms ===\n";
             } else {

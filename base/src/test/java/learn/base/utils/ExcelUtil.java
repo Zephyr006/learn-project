@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 /**
@@ -30,6 +31,7 @@ public class ExcelUtil {
 
     /**
      * @apiNote titles的排列顺序必须与getMethods要调用的方法列表顺序一致 ！
+     * @apiNote 已支持的格式化类型：Date、LocalDate、LocalDateTime、数字类型，布尔值会显示为'TRUE、FALSE'，其他类型默认调用toString()
      */
     public static <E> void export(List<E> dataList, List<String> titles, List<Function<E, ?>> getMethods, OutputStream os) {
         if (CollectionUtils.isEmpty(dataList)) {
@@ -39,6 +41,8 @@ public class ExcelUtil {
         try (Workbook workbook = new SXSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("default sheet");
             sheet.setDefaultColumnWidth(sheet.getDefaultColumnWidth() * 2);
+            //short dateFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd");
+            //short dateTimeFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss");
 
             // fill title
             int titleRowCount = 0;
@@ -49,13 +53,16 @@ public class ExcelUtil {
                 for (int i = 0; i < titles.size(); i++) {
                     Cell cell = titleRow.createCell(i);
                     cell.setCellValue(titles.get(i));
-                    cell.setCellStyle(getCellStyle(workbook, true));
+                    cell.setCellStyle(getCellStyle(workbook, true, null));
                 }
             }
 
+            // init CellStyle
+            CellStyle contentCellStyle = getCellStyle(workbook, false, BuiltinFormats.getBuiltinFormat(0));
+            CellStyle dateCellStyle = getCellStyle(workbook, false, "yyyy-MM-dd");
+            CellStyle dateTimeCellStyle = getCellStyle(workbook, false, "yyyy-MM-dd HH:mm:ss");
             // fill content
             int skipCount = 0;
-            CellStyle contentCellStyle = getCellStyle(workbook, false);
             for (int i = 0; i < dataList.size(); i++) {
                 E data = dataList.get(i);
                 if (data == null) {
@@ -70,12 +77,15 @@ public class ExcelUtil {
                     if (dataValue instanceof Double || dataValue instanceof Long || dataValue instanceof Integer
                             || dataValue instanceof Short || dataValue instanceof BigDecimal || dataValue instanceof Float) {
                         cell.setCellValue(((Number) dataValue).doubleValue());
-                    //} else if (dataValue instanceof Date) {
-                    //    cell.setCellValue((Date) dataValue);
-                    //} else if (dataValue instanceof LocalDateTime) {
-                    //    cell.setCellValue((LocalDateTime) dataValue);
-                    //} else if (dataValue instanceof LocalDate) {  //LocalTime not support
-                    //    cell.setCellValue((LocalDate) dataValue);
+                    } else if (dataValue instanceof Date) {
+                        cell.setCellValue((Date) dataValue);
+                        cell.setCellStyle(dateTimeCellStyle);
+                    } else if (dataValue instanceof LocalDateTime) {
+                        cell.setCellValue((LocalDateTime) dataValue);
+                        cell.setCellStyle(dateTimeCellStyle);
+                    } else if (dataValue instanceof LocalDate) {  //LocalTime not support
+                        cell.setCellValue((LocalDate) dataValue);
+                        cell.setCellStyle(dateCellStyle);
                     } else if (dataValue instanceof Boolean) {
                         cell.setCellValue((Boolean) dataValue);
                     } else if (dataValue instanceof RichTextString) {
@@ -93,28 +103,29 @@ public class ExcelUtil {
         }
     }
 
-    private static CellStyle getCellStyle(final Workbook workbook, boolean isTitle) {
+    private static CellStyle getCellStyle(final Workbook workbook, boolean isTitle, String timeFormat) {
         CellStyle style = workbook.createCellStyle();
-        // 设置字体
         Font font = workbook.createFont();
         // 设置字体名字
         //font.setFontName("Courier New");
         if (isTitle) {
             // 设置字体大小
             font.setFontHeightInPoints((short) 16);
-            // 字体加粗
-            //font.setBold(true);
             // 单元格背景颜色
             style.setFillBackgroundColor(IndexedColors.LAVENDER.getIndex());
+            // 设置水平对齐和垂直对齐的样式
             style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(VerticalAlignment.BOTTOM);
         } else {
             font.setFontHeightInPoints((short) 14);
+            style.setAlignment(HorizontalAlignment.GENERAL);
+        }
+        // 设置数据格式化方式，具体样式参考Excel文件中的单元格格式设置界面，默认提供的格式在 {@link BuiltinFormats}.
+        if (timeFormat != null && !timeFormat.isEmpty()) {
+            style.setDataFormat(workbook.createDataFormat().getFormat(timeFormat));
         }
         // 在样式中应用设置的字体
         style.setFont(font);
-        // 设置水平对齐和垂直对齐的样式
-        style.setAlignment(HorizontalAlignment.GENERAL);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
         return style;
     }
 
@@ -134,15 +145,21 @@ public class ExcelUtil {
         LocalDateTime localDateTime = LocalDateTime.now();
         Date date = new Date();
         Boolean aBoolean = false;  // 大写的TRUE、FALSE
+        String string = "普通文本";
 
         // XXX 时间类型值会显示为double类型的格式，不如直接调用toString()可读性好，待改进，数值类型显示正常
-        public static void main(String[] args) throws FileNotFoundException {
+        public static void main(String[] args) {
             String exportFilePath = "/Users/wang/Desktop/TestExcel.xlsx";
-            ExcelUtil.export(Collections.singletonList(new Test()),
-                    Arrays.asList("Short", "BigDecimal", "Double", "Float", "LocalDate", "LocalTime", "LocalDateTime", "Date", "Boolean"),
-                    Arrays.asList(Test::getAShort, Test::getBigDecimal, Test::getADouble, Test::getAFloat,
-                            Test::getLocalDate, Test::getLocalTime, Test::getLocalDateTime, Test::getDate, Test::getABoolean),
-                    new FileOutputStream(new File(exportFilePath)));
+
+            try (FileOutputStream outputStream = new FileOutputStream(new File(exportFilePath))) {
+                ExcelUtil.export(Collections.singletonList(new Test()),
+                        Arrays.asList("Short", "BigDecimal", "Double", "Float", "LocalDate", "LocalTime", "LocalDateTime", "Date", "Boolean", "String"),
+                        Arrays.asList(Test::getAShort, Test::getBigDecimal, Test::getADouble, Test::getAFloat,
+                                Test::getLocalDate, Test::getLocalTime, Test::getLocalDateTime, Test::getDate, Test::getABoolean, Test::getString),
+                        outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

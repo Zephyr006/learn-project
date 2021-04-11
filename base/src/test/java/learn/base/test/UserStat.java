@@ -34,12 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 import static learn.base.test.UserQuestion.*;
@@ -220,13 +215,43 @@ public class UserStat {
     private static ConcurrentMap<Long, List<UserQuestion>> getUserIdToQuestionsMap(final HikariDataSource dataSource,
                     final Set<Long> allQuestionIds, final List<Long> allUserIds) throws InterruptedException {
         Map<Long, List<Long>> userIdMap = allUserIds.stream().collect(Collectors.groupingBy(userId -> userId % 100));
-        CountDownLatch countDownLatch = new CountDownLatch(userIdMap.size());
+        //CountDownLatch countDownLatch = new CountDownLatch(userIdMap.size());
         ConcurrentMap<Long, List<UserQuestion>> userIdToQuestionsMap = new ConcurrentHashMap<>(1024);
         String questionIdStr = StringUtils.join(allQuestionIds, ",");
 
         int parallelism = 25;
         System.out.println("并发查询用户相关做题记录，并发线程数 = " + parallelism);
         ExecutorService executorService = Executors.newWorkStealingPool(parallelism);
+
+        // 使用executorService.invokeAll()一次提交多个callable并返回结果集 -- ??invokeAll方法会阻塞吗？？
+        /*final List<Callable<List<UserQuestion>>> actions = userIdMap.entrySet().stream().map(entry -> {
+            Callable<List<UserQuestion>> callable = () -> {
+                List<UserQuestion> userQuestionList = new ArrayList<>();
+                try (Connection connection2 = dataSource.getConnection();
+                     Statement statement = connection2.createStatement()) {
+                    ResultSet resultSet = statement.executeQuery(String.format(
+                            userQuestionSql, entry.getKey(), StringUtils.join(entry.getValue(), ","), questionIdStr));
+                    while (resultSet.next()) {
+                        userQuestionList.add(new UserQuestion(resultSet));
+                    }
+                    resultSet.close();
+                    System.out.println("完成查询做题记录任务 " + entry.getKey());
+                    return userQuestionList;
+                }
+            };
+            return callable;
+        }).collect(Collectors.toList());
+        // block, and may ignore some exceptions.
+        List<Future<List<UserQuestion>>> futures = executorService.invokeAll(actions);
+        futures.forEach(future -> {
+            try {
+                List<UserQuestion> userQuestions = future.get();
+                userIdToQuestionsMap.putAll(userQuestions.stream().collect(Collectors.groupingBy(UserQuestion::getUserId)))
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });*/
+
         for (Map.Entry<Long, List<Long>> entry : userIdMap.entrySet()) {
             CompletableFuture.supplyAsync(() -> {
                 List<UserQuestion> userQuestionList = new ArrayList<>();
@@ -243,15 +268,20 @@ public class UserStat {
                     e.printStackTrace();
                 }
                 return userQuestionList;
-            }, executorService).whenComplete(((userQuestions, throwable) -> {
+            // 转换 userQuestionList 为 userIdToQuestionsMap 的一部分
+            }, executorService).handleAsync(((userQuestions, throwable) -> {
                 if (throwable == null) {
-                    userIdToQuestionsMap.putAll(userQuestions.stream().collect(Collectors.groupingBy(UserQuestion::getUserId)));
+                    return userQuestions.stream().collect(Collectors.groupingBy(UserQuestion::getUserId));
+                } else {
+                    return Collections.<Long, List<UserQuestion>>emptyMap();
                 }
-                countDownLatch.countDown();
-            }));
+                //countDownLatch.countDown();
+            }), executorService).thenAccept(userIdToQuestionsMap::putAll);
         }
-        countDownLatch.await();
+        //countDownLatch.await();
         executorService.shutdown();
+        // Blocks until all tasks have completed execution after a shutdown request, instead of CountDownLatch
+        executorService.awaitTermination(6, TimeUnit.MINUTES);
         System.out.println("所有用户的总做题记录数 = " + userIdToQuestionsMap.values().stream().mapToInt(Collection::size).sum());  // 16_5733
         //System.out.println("所有用户的总做题记录数 = " + userQuestions.size());  // 16_5733
         return userIdToQuestionsMap;
