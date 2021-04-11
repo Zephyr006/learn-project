@@ -1,5 +1,6 @@
 package learn.base.test.connect;
 
+import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import learn.base.utils.KafkaUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -17,7 +18,7 @@ import java.util.concurrent.Future;
  * @author Zephyr
  * @date 2021/3/7.
  */
-public class KafkaConnectTest {
+public class KafkaConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
     private static final String BOOTSTRAP_SERVERS_CONFIG_KEY = "kafka.server";
     private static final String KAFKA_TOPIC_KEY = "kafka.topic";
@@ -25,6 +26,9 @@ public class KafkaConnectTest {
 
     @Test
     public void testConnect() throws ExecutionException, InterruptedException {
+        if (!checkContext()) {
+            return;
+        }
         final String topic = "kafka_connect_test";
 
 

@@ -2,6 +2,7 @@ package learn.base.test.connect;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import java.util.Properties;
  * @author Zephyr
  * @date 2021/3/7.
  */
-public class MysqlConnectTest {
+public class MysqlConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
     private static final String driverClassName = "com.mysql.jdbc.Driver";
     private static final String url_template = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false";
@@ -25,6 +26,9 @@ public class MysqlConnectTest {
 
     @Test
     public void testConnect() throws ClassNotFoundException {
+        if (!checkContext()) {
+            return;
+        }
         boolean needInsert = false;
         final Properties props = FileLoader.loadProperties(FILE_PATH);
 
@@ -88,6 +92,9 @@ public class MysqlConnectTest {
 
     @Test
     public void testConnectionByHikariCP() {
+        if (!checkContext()) {
+            return;
+        }
         HikariConfig hikariConfig = new HikariConfig(initHikariCPProps());
 
         try (final HikariDataSource dataSource = new HikariDataSource(hikariConfig);

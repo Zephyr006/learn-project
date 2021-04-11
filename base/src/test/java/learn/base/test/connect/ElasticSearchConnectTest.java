@@ -1,5 +1,6 @@
 package learn.base.test.connect;
 
+import learn.base.BaseTest;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
@@ -16,12 +17,15 @@ import java.io.IOException;
  * @author Zephyr
  * @date 2021/3/25.
  */
-public class ElasticSearchConnectTest {
+public class ElasticSearchConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
 
 
     @Test
     public void testConnect() throws IOException {
+        if (!checkContext()) {
+            return;
+        }
         final RestClientBuilder clientBuilder = RestClient.builder(
                 new HttpHost("42.193.126.83", 9200, "http"));
 

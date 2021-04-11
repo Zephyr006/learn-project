@@ -1,5 +1,8 @@
 package learn.base.test;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +14,8 @@ import java.util.Collection;
  * @author Zephyr
  * @date 2021/4/8.
  */
+@Getter
+@Setter
 public class UserQuestion {
     public static String userQuestionSql = "select user_id,question_id,answer_count,sum_cost_time,correct_count " +
             "from user_question_%s \n where user_id in (%s) \n and question_id in (%s) and answer_count > 0";
@@ -76,6 +81,8 @@ public class UserQuestion {
     }
 
     public static class UserStatistics implements Serializable {
+        public static String PRINT_TEMPLATE = "档位%s , 平均正确率为 %.2f%%  ， 平均每道题的答题速度为 %d 秒 ，对应总用户数 %d 人";
+
         static int separate = UserStat.separate;
         private Integer level;
         private Double correctRate;
@@ -85,11 +92,14 @@ public class UserQuestion {
         public UserStatistics(final Integer level, final Double correctRate, final Integer speed, final Integer count) {
             this.level = level;
             this.correctRate = correctRate;
+            if (level > 1 && correctRate < 1) {
+                this.correctRate *= 100;
+            }
             this.speed = speed;
             this.count = count;
         }
 
-        public String getLevelDesc() {
+        public String getLevelRateDesc() {
             int i = level * separate;
             if (i == 100) {
                 return "100% - 100%";
@@ -109,48 +119,10 @@ public class UserQuestion {
         public Integer getCount() {
             return count;
         }
-    }
 
-
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(final Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(final Long questionId) {
-        this.questionId = questionId;
-    }
-
-    public Integer getAnswerCount() {
-        return answerCount;
-    }
-
-    public void setAnswerCount(final Integer answerCount) {
-        this.answerCount = answerCount;
-    }
-
-    public Integer getSumCostTime() {
-        return sumCostTime;
-    }
-
-    public void setSumCostTime(final Integer sumCostTime) {
-        this.sumCostTime = sumCostTime;
-    }
-
-    public Integer getCorrectCount() {
-        return correctCount;
-    }
-
-    public void setCorrectCount(final Integer correctCount) {
-        this.correctCount = correctCount;
+        public String toFormatString() {
+            return String.format(PRINT_TEMPLATE, level, correctRate, speed / 1000, count);
+        }
     }
 
 }

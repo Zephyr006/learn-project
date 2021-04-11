@@ -238,6 +238,7 @@
                             <arg>-Xlint:deprecation</arg>
                         </compilerArgs>
                         <compilerArguments>
+                            <!--<skipTest>true</skipTest>-->
                             <!-- 是否输出所有的编译信息（包括类的加载等），注释掉则为不输出详细信息 -->
                             <!--<verbose />-->
                             <!-- 解决maven命令编译报错，因为rt.jar 和jce.jar在jre的lib下面，不在jdk的lib下面，

@@ -1,5 +1,6 @@
 package learn.example.javase.juc;
 
+import learn.base.BaseTest;
 import org.junit.Test;
 
 import java.util.concurrent.*;
@@ -12,10 +13,13 @@ import java.util.function.Function;
  * @author Zephyr
  * @date 2021/4/6.
  */
-public class CompletableFutureExample {
+public class CompletableFutureExample extends BaseTest {
 
     @Test
     public void testApi() throws InterruptedException, ExecutionException {
+        if (!checkContext()) {
+            return;
+        }
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         // ForkJoinPool.getCommonPoolParallelism() == Runtime.getRuntime().availableProcessors() - 1

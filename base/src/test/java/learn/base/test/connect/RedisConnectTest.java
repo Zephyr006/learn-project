@@ -7,6 +7,7 @@ import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
+import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,11 +21,14 @@ import java.util.concurrent.ExecutionException;
  * @author Zephyr
  * @date 2021/3/7.
  */
-public class RedisConnectTest {
+public class RedisConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
 
     @Test
     public void testConnect() throws ExecutionException, InterruptedException {
+        if (!checkContext()) {
+            return;
+        }
         final Properties props = FileLoader.loadProperties(FILE_PATH);
 
         // <1> 创建单机连接的连接信息
