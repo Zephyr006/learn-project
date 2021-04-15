@@ -38,6 +38,10 @@ server:
 logging:
     level:
         learn:
+            springcloud:
+                config:
+                    client:
+                        mapper: info
             datasource:
                 mapper: info
         base-mybatis: info
@@ -46,20 +50,20 @@ mybatis-plus:
 base:
     mybatis:
         log:
-            enable: true
+            enable: false
 datasource:
     jk:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kjs?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-        username: qbdash_r
+        url:
+        username:
         password:
     gk:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kgk?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-        username: qbdash_r
+        url: jdbc:mysql://host?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+        username:
         password:
     backend:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://rdsvn7bjyvn7bjyo.mysql.rds.aliyuncs.com:3306/data-17kgk?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-        username: qbdash_r
-        password:
+        url: jdbc:mysql://192.168.20.47:3306/question_bank?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+        username: root
+        password: root
