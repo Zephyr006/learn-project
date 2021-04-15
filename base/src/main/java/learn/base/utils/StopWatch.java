@@ -21,16 +21,12 @@ public class StopWatch {
     private long stopTimeNanos;
 
 
-    public StopWatch() {
-        this("");
-    }
-
-    public StopWatch(String taskName) {
+    private StopWatch(String taskName) {
         this.taskName = taskName;
     }
 
     public static StopWatch createAndStart(String taskName) {
-        StopWatch stopWatch = new StopWatch(taskName);
+        StopWatch stopWatch = new StopWatch(taskName == null ? "" : taskName);
         stopWatch.start();
         return stopWatch;
     }

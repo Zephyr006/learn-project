@@ -2,11 +2,20 @@ package learn.base.utils;
 
 import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,13 +23,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 /**
@@ -33,9 +39,9 @@ public class ExcelUtil {
      * @apiNote titles的排列顺序必须与getMethods要调用的方法列表顺序一致 ！
      * @apiNote 已支持的格式化类型：Date、LocalDate、LocalDateTime、数字类型，布尔值会显示为'TRUE、FALSE'，其他类型默认调用toString()
      */
-    public static <E> void export(List<E> dataList, List<String> titles, List<Function<E, ?>> getMethods, OutputStream os) {
+    public static <E> void export(List<E> dataList, List<String> titles, List<Function<E, ?>> getMethods, OutputStream os) throws IOException {
         if (CollectionUtils.isEmpty(dataList)) {
-            System.err.println("导出Excel：数据为空");
+            System.err.println("导出Excel错误：数据为空！");
             return;
         }
         try (Workbook workbook = new SXSSFWorkbook()) {
@@ -91,15 +97,13 @@ public class ExcelUtil {
                     } else if (dataValue instanceof RichTextString) {
                         cell.setCellValue((RichTextString) dataValue);
                     } else {
-                        cell.setCellValue(dataValue.toString());
+                        cell.setCellValue(dataValue == null ? "" : dataValue.toString());
                     }
                 }
             }
 
             workbook.write(os);
-            System.out.println("Excel导出完成。");
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Excel导出成功。");
         }
     }
 
@@ -112,13 +116,13 @@ public class ExcelUtil {
             // 设置字体大小
             font.setFontHeightInPoints((short) 16);
             // 单元格背景颜色
-            style.setFillBackgroundColor(IndexedColors.LAVENDER.getIndex());
+            style.setFillBackgroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
             // 设置水平对齐和垂直对齐的样式
             style.setAlignment(HorizontalAlignment.CENTER);
             style.setVerticalAlignment(VerticalAlignment.BOTTOM);
         } else {
             font.setFontHeightInPoints((short) 14);
-            style.setAlignment(HorizontalAlignment.GENERAL);
+            style.setAlignment(HorizontalAlignment.CENTER);
         }
         // 设置数据格式化方式，具体样式参考Excel文件中的单元格格式设置界面，默认提供的格式在 {@link BuiltinFormats}.
         if (timeFormat != null && !timeFormat.isEmpty()) {

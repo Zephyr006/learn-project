@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.utils;
 
 import java.util.Properties;
 
@@ -6,7 +6,7 @@ import java.util.Properties;
  * @author Zephyr
  * @date 2021/4/8.
  */
-public class HikariConnectProps {
+public class HikariConfigUtil {
 
 
     public static Properties initProps() {
@@ -14,7 +14,7 @@ public class HikariConnectProps {
         String dbName = "relation";
         String username = "root";
         String password = "root";
-        return HikariConnectProps.initProps(host, dbName, username, password);
+        return HikariConfigUtil.initProps(host, dbName, username, password);
     }
 
     /**

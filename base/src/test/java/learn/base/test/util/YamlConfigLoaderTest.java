@@ -1,14 +1,14 @@
 package learn.base.test.util;
 
 import learn.base.BaseTest;
-import learn.base.utils.ConfigLoader;
+import learn.base.utils.YamlConfigLoader;
 import org.junit.Test;
 
 /**
  * @author Zephyr
  * @date 2020/12/29.
  */
-public class ConfigLoaderTest extends BaseTest {
+public class YamlConfigLoaderTest extends BaseTest {
     String path = "/app.yaml";
 
     @Test
@@ -17,7 +17,7 @@ public class ConfigLoaderTest extends BaseTest {
             return;
         }
 
-        Object yaml = ConfigLoader.loadYaml(path);
+        Object yaml = YamlConfigLoader.loadYaml(path);
         System.out.println(yaml);
     }
 
@@ -26,7 +26,7 @@ public class ConfigLoaderTest extends BaseTest {
         if (!checkContext()) {
             return;
         }
-        String s = ConfigLoader.loadText(path);
+        String s = YamlConfigLoader.loadText(path);
         System.out.println(s);
     }
 }

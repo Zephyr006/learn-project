@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  * @author Zephyr
  * @date 2020/12/29.
  */
-public class ConfigLoader {
+public class YamlConfigLoader {
 
     /**
      * 解析 yaml 配置文件
@@ -20,7 +20,7 @@ public class ConfigLoader {
      * 使用#load(), #loadAs()方法无法解析 yaml 文件中的"---"分隔符，必须使用 #loadAll() 方法
      */
     public static Object loadYaml(String filePath) {
-        InputStream inputStream = ConfigLoader.loadAsInputStream(filePath);
+        InputStream inputStream = YamlConfigLoader.loadAsInputStream(filePath);
 
         Yaml yaml = new Yaml();
         Object load = yaml.load(inputStream);
@@ -30,10 +30,10 @@ public class ConfigLoader {
     }
 
     public static String loadText(String filePath) {
-        InputStream inputStream = ConfigLoader.loadAsInputStream(filePath);
+        InputStream inputStream = YamlConfigLoader.loadAsInputStream(filePath);
 
         try {
-            return ConfigLoader.inputStreamToString(inputStream, StandardCharsets.UTF_8);
+            return YamlConfigLoader.inputStreamToString(inputStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             return null;
         }
@@ -45,9 +45,9 @@ public class ConfigLoader {
     private static InputStream loadAsInputStream(String filePath) {
         assert filePath != null;
         if (filePath.startsWith("/")) {
-            return ConfigLoader.class.getResourceAsStream(filePath);
+            return YamlConfigLoader.class.getResourceAsStream(filePath);
         } else {
-            return ConfigLoader.class.getClassLoader().getResourceAsStream(filePath);
+            return YamlConfigLoader.class.getClassLoader().getResourceAsStream(filePath);
         }
     }
 
