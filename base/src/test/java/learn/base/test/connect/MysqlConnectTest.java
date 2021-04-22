@@ -7,7 +7,12 @@ import learn.base.utils.FileLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -144,27 +149,6 @@ public class MysqlConnectTest extends BaseTest {
             }
         });
         return finalProps;
-
-        /*
-        properties.setProperty("driverClassName", driverClassName);
-        properties.setProperty("jdbcUrl", String.format(url_template, host, dbName));
-        properties.setProperty("username", username);
-        properties.setProperty("password", password);
-        // 连接只读数据库时配置为true， 保证安全
-        properties.setProperty("readOnly", "true");
-        // 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
-        properties.setProperty("idleTimeout", "60000");
-        // 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
-        properties.setProperty("connectionTimeout", "9000");
-        // 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，
-        // 建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
-        properties.setProperty("maxLifetime", "1800000");
-        // 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
-        properties.setProperty("maximumPoolSize", "10");
-        // 连接池空闲连接的最小数量。默认minimumIdle与maximumPoolSize一样，为了性能考虑，不建议设置此值
-        properties.setProperty("minimumIdle", "8");
-        return properties;
-        */
     }
 
     private void close(AutoCloseable closeable) {

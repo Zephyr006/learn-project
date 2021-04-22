@@ -133,7 +133,7 @@ public class UserStat {
 
     private static void outputToExcel(List<Statistics> statistics, Function<Statistics, Object> levelGetter,  String filePath) {
         try (FileOutputStream outputStream = new FileOutputStream(new File(filePath))) {
-            ExcelUtil.export(statistics,
+            ExcelUtil.exportCommonData(statistics,
                     Arrays.asList("档位", "正确率", "答题速度(秒)", "人数"),
                     Arrays.asList(levelGetter, Statistics::getCorrectRateDesc, Statistics::getSpeedSecond, Statistics::getCount),
                     outputStream);

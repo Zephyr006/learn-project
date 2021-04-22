@@ -3,13 +3,23 @@ package learn.base.test.connect;
 import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import learn.base.utils.KafkaUtil;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.ConsumerGroupDescription;
+import org.apache.kafka.clients.admin.DescribeClusterResult;
+import org.apache.kafka.clients.admin.DescribeConsumerGroupsResult;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.KafkaFuture;
+import org.apache.kafka.common.Node;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -57,5 +67,25 @@ public class KafkaConnectTest extends BaseTest {
                 //messageConsumer.accept(new ArrayList<>());
             }
         }
+    }
+
+    @Test
+    public void testKafkaAdminClient() throws ExecutionException, InterruptedException {
+        Properties props = new Properties();
+        props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "39.:10003");
+        props.setProperty(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "3111");
+
+        final AdminClient adminClient = AdminClient.create(props);
+        DescribeClusterResult clusterResult = adminClient.describeCluster();
+        KafkaFuture<Collection<Node>> nodes = clusterResult.nodes();
+        nodes.get().forEach(System.out::println);
+
+        String consumerGroupId = "submit-log-group";
+        DescribeConsumerGroupsResult consumerGroupsResult = adminClient.describeConsumerGroups(Arrays.asList(consumerGroupId));
+        KafkaFuture<Map<String, ConsumerGroupDescription>> allConsumerGroup = consumerGroupsResult.all();
+        ConsumerGroupDescription consumerGroupDescription = allConsumerGroup.get().get(consumerGroupId);
+        System.out.println(consumerGroupDescription);
+
+
     }
 }

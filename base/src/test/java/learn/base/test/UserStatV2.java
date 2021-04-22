@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
@@ -46,33 +47,35 @@ import static learn.base.test.entity.UserQuestion.UserQuestionSummary;
 import static learn.base.test.entity.UserQuestion.userQuestionSql;
 
 /**
+ * map_questiontype - 客观：1、2、4 、5    ；主观：3
  * @author Zephyr
  * @date 2021/4/7.
  */
 public class UserStatV2 {
 
-    static UserDataConfig config = new UserDataConfig.JkSearch6();
-    static int parallelism = 25;
-    static ExecutorService executorService = Executors.newFixedThreadPool(parallelism);
+    static UserDataConfig config = new UserDataConfig.JkSearch4();
+    static int parallelism = 20;
+    static ExecutorService executorService = Executors.newWorkStealingPool(parallelism);
 
 
     public static void main(String[] args) throws InterruptedException {
         StopWatch stopWatch = StopWatch.createAndStart("学员做题情况统计");
         List<Long> allUserIds = UserStat.readFromExcel(config.getExcelPath());
         Map<Long, List<Long>> partitionToUserIdMap = allUserIds.stream().collect(Collectors.groupingBy(userId -> userId % 100));
-        System.out.println("开始并发查询用户相关做题记录，并发线程数 = " + parallelism);
+        System.out.println("开始并发查询用户相关做题记录，并发线程数 = " + parallelism + "，学员总数 = " + allUserIds.size());
 
 
         String dbName = "relation";
         String password = "";
+        DataSourceHolder dataSourceHolder = null;
         try {
             HikariConfig hikariConfig = new HikariConfig(HikariConfigUtil.initProps(
                     config.dbHostAndUsername().getLeft(), dbName, config.dbHostAndUsername().getRight(), password));
-            DataSourceHolder dataSourceHolder = DataSourceHolder.hold(new HikariDataSource(hikariConfig));
+            dataSourceHolder = DataSourceHolder.hold(new HikariDataSource(hikariConfig));
 
 
             Connection mainConnection = dataSourceHolder.getConnection();
-            System.out.println("\nDB connected ? " + mainConnection.isValid(4));
+            System.out.println("\nDB connected ? " + mainConnection.isValid(2));
 
             // 1 以tagTreeId做查询条件查询标签
             Tag.TagTreeNode treeRoot = new Tag.TagTreeNode(config.getTreeRoot().getRight(), config.getTreeRoot().getLeft(), null);
@@ -85,15 +88,16 @@ public class UserStatV2 {
             }
             System.out.println("叶子节点个数为 " + allLeafTag.size());
             // 2. 查询标签下的题目question
+            DataSourceHolder finalDataSourceHolder = dataSourceHolder;
             List<Callable<Pair<Tag, Set<Long>>>> questionIdCallableList = allLeafTag.stream().map(tag -> (Callable<Pair<Tag, Set<Long>>>) () -> {
                     Set<Long> allQuestionIds;
-                Connection connection = dataSourceHolder.getConnection();
-                if (config.isForTag()) {
-                    allQuestionIds = UserStatV2.getAllQuestionIdByTagId(connection, Collections.singletonList(tag.getId()));
-                } else {
-                    allQuestionIds = UserStatV2.getAllQuestionIdByKnowledgeId(connection, Collections.singletonList(tag.getId()));
-                }
-                return new ImmutablePair<>(tag, allQuestionIds);
+                    Connection connection = finalDataSourceHolder.getConnection();
+                    if (config.isForTag()) {
+                        allQuestionIds = UserStatV2.getAllQuestionIdByTagId(connection, Collections.singletonList(tag.getId()));
+                    } else {
+                        allQuestionIds = UserStatV2.getAllQuestionIdByKnowledgeId(connection, Collections.singletonList(tag.getId()));
+                    }
+                    return new ImmutablePair<>(tag, allQuestionIds);
             }).collect(Collectors.toList());
 
             List<Future<Pair<Tag, Set<Long>>>> futureList = executorService.invokeAll(questionIdCallableList);
@@ -102,18 +106,15 @@ public class UserStatV2 {
                 try {
                     return future.get();
                 } catch (InterruptedException | ExecutionException e) {
+                    System.err.println("跳过了节点的做题情况统计，因为其题目查询出现了异常");
                     e.printStackTrace();
                     return null;
                 }
-            }).collect(Collectors.toList());
+            }).filter(Objects::nonNull).collect(Collectors.toList());
 
 
             List<Statistics> resultList = new ArrayList<>();
             for (Pair<Tag, Set<Long>> tagAndQuestionIds : tagToQuestionIdList) {
-                if (tagAndQuestionIds == null) {
-                    System.err.println("跳过了节点的做题情况统计，因为其题目查询出现了异常");
-                    continue;
-                }
                 if (tagAndQuestionIds.getRight().size() < UserDataConfig.doQuestionSize) {
                     System.err.println(String.format("跳过了节点【%s】的做题情况统计，因为其题目题目数量过少 (%d)",
                             tagAndQuestionIds.getKey().getName(), tagAndQuestionIds.getRight().size()));
@@ -157,10 +158,15 @@ public class UserStatV2 {
             outputToExcel(resultList, Statistics::getLevel, config.getExcelSavePath());
 
 
-            dataSourceHolder.close();
-            executorService.shutdown();
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (dataSourceHolder != null) {
+                try {
+                    dataSourceHolder.close();
+                } catch (IOException ignore) { }
+            }
+            executorService.shutdown();
         }
         System.out.println(stopWatch.stopAndPrint());
     }
@@ -219,7 +225,7 @@ public class UserStatV2 {
 
     private static void outputToExcel(List<Statistics> statistics, Function<Statistics, Object> levelGetter,  String filePath) {
         try (FileOutputStream outputStream = new FileOutputStream(new File(filePath))) {
-            ExcelUtil.export(statistics,
+            ExcelUtil.exportCommonData(statistics,
                     Arrays.asList("标签名称", "档位", "正确率", "答题速度(秒)", "人数"),
                     Arrays.asList(Statistics::getName, levelGetter, Statistics::getCorrectRateDesc, Statistics::getSpeedSecond, Statistics::getCount),
                     outputStream);
@@ -387,14 +393,19 @@ public class UserStatV2 {
                         entry.getKey(), StringUtils.join(entry.getValue(), ","), questionIdStr);
                 Connection connection = dataSourceHolder.getConnection();
                 try (Statement statement = connection.createStatement()) {
-                    //final long millis = System.currentTimeMillis();
+                    final long startTime = System.currentTimeMillis();
                     ResultSet resultSet = statement.executeQuery(sql);
+                    long costTime = System.currentTimeMillis() - startTime;
                     while (resultSet.next()) {
-                        userQuestionList.add(new UserQuestion(resultSet));
+                        UserQuestion uq = new UserQuestion(resultSet);
+                        //if (uq.getAnswerCount() / uq.getSumCostTime() > 15 && uq.getCorrectCount() / uq.getAnswerCount() == 1) {
+                            userQuestionList.add(uq);
+                        //}
                     }
+                    System.out.println("query cost " + costTime + " ,result.size = " + userQuestionList.size());
                     resultSet.close();
                     //System.out.println("完成查询做题记录子任务 " + entry.getKey() + ", 题目数量 " + userQuestionList.size()
-                    //        + " ,耗时（ms） " + (System.currentTimeMillis() - millis));
+                    //        + " ,耗时（ms） " + (System.currentTimeMillis() - startTime));
                 } catch (SQLException e) {
                     e.printStackTrace();
                     System.err.println("error sql = " + sql);
@@ -408,9 +419,9 @@ public class UserStatV2 {
                         userIdToQuestionsMap.put(key, list);
                     }
                 });
-                //userIdToQuestionsMap.putAll(subQuestionMap);
                 countDownLatch.countDown();
             }), executorService);
+            //break;
         }
         countDownLatch.await();
 
