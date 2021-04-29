@@ -1,5 +1,7 @@
 package learn.base.utils;
 
+import com.zaxxer.hikari.HikariConfig;
+
 import java.util.Properties;
 
 /**
@@ -9,12 +11,16 @@ import java.util.Properties;
 public class HikariConfigUtil {
 
 
-    public static Properties initProps() {
+    public static Properties initDefaultProps() {
         String host = "192.168.2.136";
         String dbName = "relation";
         String username = "root";
         String password = "root";
         return HikariConfigUtil.initProps(host, dbName, username, password);
+    }
+
+    public static HikariConfig buildHikariConfig(String host, String dbName, String username, String password) {
+        return new HikariConfig(initProps(host, dbName, username, password));
     }
 
     /**

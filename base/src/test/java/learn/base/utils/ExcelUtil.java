@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -68,6 +69,7 @@ public class ExcelUtil {
             Cell headerCell = headerRow.createCell(i);
             headerCell.setCellStyle(headerCellStyle);
             headerCell.setCellValue(headers.get(i));
+            sheet.setColumnWidth(i, headers.get(i).getBytes().length * 256 + 1024);
         }
 
         if (needLock) {
@@ -107,7 +109,6 @@ public class ExcelUtil {
         try (Workbook workbook = new SXSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("default sheet");
             sheet.setDefaultColumnWidth(sheet.getDefaultColumnWidth() * 2);
-            sheet.protectSheet("");
             //short dateFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd");
             //short dateTimeFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -120,8 +121,10 @@ public class ExcelUtil {
                 CellStyle headerStyle = createCellStyle(workbook, true, null);
                 for (int i = 0; i < headers.size(); i++) {
                     Cell cell = headerRow.createCell(i);
-                    cell.setCellValue(headers.get(i));
+                    String headerValue = headers.get(i);
+                    cell.setCellValue(headerValue);
                     cell.setCellStyle(headerStyle);
+                    sheet.setColumnWidth(i, headerValue.getBytes(StandardCharsets.UTF_8).length * 256 + 1024);
                 }
             }
 

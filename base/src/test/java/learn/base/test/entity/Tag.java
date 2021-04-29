@@ -28,7 +28,7 @@ public class Tag {
         //String name;
         //Long id;
         //Long parentId;
-        List<TagTreeNode> childNodes = new ArrayList<>(5);
+        List<TagTreeNode> childNodes = new ArrayList<>(4);
 
         public TagTreeNode(final String name, final Long id, final Long parentId) {
             this.name = name;
@@ -57,12 +57,12 @@ public class Tag {
             return grew;
         }
 
-        public static List<Tag.TagTreeNode> getAllLeafTag(TagTreeNode root) {
+        public static List<Tag> getAllLeafTag(TagTreeNode root) {
             // 只有根节点，返回自己
             if (root.childNodes.isEmpty()) {
                 return Collections.singletonList(root);
             }
-            List<Tag.TagTreeNode> leafTagIds = new ArrayList<>();
+            List<Tag> leafTagIds = new ArrayList<>();
             for (TagTreeNode childNode : root.childNodes) {
                 if (childNode.childNodes.isEmpty()) {
                     leafTagIds.add(childNode);

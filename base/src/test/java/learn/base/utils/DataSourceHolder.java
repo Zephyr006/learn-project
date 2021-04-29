@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * 按照线程持有数据库连接，每个线程持有一个有效的数据库连接
+ *
  * @author Zephyr
  * @date 2021/4/15.
  */
