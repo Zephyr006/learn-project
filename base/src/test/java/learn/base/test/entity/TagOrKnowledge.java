@@ -1,8 +1,10 @@
 package learn.base.test.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -14,9 +16,11 @@ import java.util.List;
  * @date 2021/4/13.
  */
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class TagOrKnowledge {
 
     Long id;
     Long parentId;
@@ -24,50 +28,48 @@ public class Tag {
 
 
     @Getter
-    public static class TagTreeNode extends Tag {
-        //String name;
-        //Long id;
-        //Long parentId;
-        List<TagTreeNode> childNodes = new ArrayList<>(4);
+    public static class TreeNode extends TagOrKnowledge {
 
-        public TagTreeNode(final String name, final Long id, final Long parentId) {
+        List<TreeNode> childNodes = new ArrayList<>(4);
+
+        public TreeNode(final String name, final Long id, final Long parentId) {
             this.name = name;
             this.id = id;
             this.parentId = parentId;
         }
 
-        public boolean grow(List<Tag> tags) {
+        public boolean grow(List<TagOrKnowledge> tags) {
             if (CollectionUtils.isEmpty(tags)) {
                 return false;
             }
 
             boolean grew = false;
             if (CollectionUtils.isEmpty(childNodes)) { //叶子节点
-                for (Tag tag : tags) {
+                for (TagOrKnowledge tag : tags) {
                     if (tag.getParentId().compareTo(id) == 0) {
-                        childNodes.add(new TagTreeNode(tag.getName(), tag.getId(), tag.getParentId()));
+                        childNodes.add(new TreeNode(tag.getName(), tag.getId(), tag.getParentId()));
                         grew = true;
                     }
                 }
             } else {
-                for (TagTreeNode tagNode : childNodes) {
+                for (TreeNode tagNode : childNodes) {
                     grew = Boolean.logicalOr(grew, tagNode.grow(tags));
                 }
             }
             return grew;
         }
 
-        public static List<Tag> getAllLeafTag(TagTreeNode root) {
+        public static List<TagOrKnowledge> getAllLeafTag(TreeNode root) {
             // 只有根节点，返回自己
             if (root.childNodes.isEmpty()) {
                 return Collections.singletonList(root);
             }
-            List<Tag> leafTagIds = new ArrayList<>();
-            for (TagTreeNode childNode : root.childNodes) {
+            List<TagOrKnowledge> leafTagIds = new ArrayList<>();
+            for (TreeNode childNode : root.childNodes) {
                 if (childNode.childNodes.isEmpty()) {
                     leafTagIds.add(childNode);
                 } else {
-                    leafTagIds.addAll(TagTreeNode.getAllLeafTag(childNode));
+                    leafTagIds.addAll(TreeNode.getAllLeafTag(childNode));
                 }
             }
             return leafTagIds;

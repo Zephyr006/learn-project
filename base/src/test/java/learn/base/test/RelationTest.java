@@ -114,7 +114,7 @@ public class RelationTest {
 
 
     HikariDataSource initDataSource() {
-        Properties props = HikariConfigUtil.initProps();
+        Properties props = HikariConfigUtil.initDefaultProps();
         return new HikariDataSource(new HikariConfig(props));
     }
 }

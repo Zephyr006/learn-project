@@ -1,14 +1,10 @@
 package learn.base.test.entity;
 
-import learn.base.test.UserStat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Collection;
 
 /**
@@ -20,7 +16,8 @@ import java.util.Collection;
 @Setter
 public class UserQuestion {
     public static String userQuestionSql = "select user_id,question_id,answer_count,sum_cost_time,correct_count " +
-            "from user_question_%s \n where user_id in (%s) \n and question_id in (%s) and answer_count > 0 and sum_cost_time > 0";
+            "from user_question_%s \n where user_id in (%s) \n and question_id in (%s) \n and answer_count > 0 and status = 1" +
+            " and sum_cost_time > 700";
 
     private Long userId;
     private Long questionId;
@@ -34,16 +31,15 @@ public class UserQuestion {
 
 
     public UserQuestion(ResultSet resultSet) throws SQLException {
-        this.userId = resultSet.getLong(1);
-        this.questionId = resultSet.getLong(2);
-        this.answerCount = resultSet.getInt(3);
-        this.sumCostTime = resultSet.getInt(4);
-        this.correctCount = resultSet.getInt(5);
-        //calQuestionStat();
+        this.userId = resultSet.getLong("user_id");
+        this.questionId = resultSet.getLong("question_id");
+        this.answerCount = resultSet.getInt("answer_count");
+        this.sumCostTime = resultSet.getInt("sum_cost_time");
+        this.correctCount = resultSet.getInt("correct_count");
     }
 
     /**
-     * 每个用户的答题统计
+     * 一个用户对一批题的答题统计
      */
     @Getter
     public static class UserQuestionSummary implements Comparable<UserQuestionSummary> {
@@ -84,66 +80,6 @@ public class UserQuestion {
             } else {
                 return this.averageCorrectRate.compareTo(other.averageCorrectRate);
             }
-        }
-    }
-
-
-    @Getter
-    @AllArgsConstructor
-    public static class Statistics implements Serializable, Comparable<Statistics> {
-        public static String PRINT_TEMPLATE = "档位%s , 平均正确率为 %.2f%%  ， 平均每道题的答题速度为 %d 秒 ，对应总用户数 %d 人";
-
-        static int separate = UserStat.separate;
-        private String name;
-        private Integer level;
-        private Double correctRate;
-        private Integer speed;  // 单位：毫秒
-        private Integer count;
-
-        //public Statistics(String name, Integer level, Double correctRate, Integer speed, Integer count) {
-        //    this.name = name;
-        //    this.level = level;
-        //    this.correctRate = correctRate * 100;
-        //    this.speed = speed;
-        //    this.count = count;
-        //}
-
-        public static Statistics EMPTY = new Statistics("", 0, 0d, 0, 0);
-
-        public String getPercentDesc() {
-            int i = level * separate;
-            if (i == 100) {
-                return "100% - 100%";
-            } else {
-                return String.format("%d%% - %d%%", i, (level + 1) * separate);
-            }
-        }
-
-        public String getCorrectRateDesc() {
-            if (correctRate < 0) {
-                return "-";
-            }
-            if (correctRate == 0) {
-                return "0%";
-            }
-            return new DecimalFormat("#0.00%").format(correctRate);
-        }
-
-        public Integer getSpeedSecond() {
-            return speed / 1000;
-        }
-
-        public String toFormatString() {
-            return String.format(PRINT_TEMPLATE, level, correctRate, getSpeedSecond(), count);
-        }
-
-        @Override
-        public int compareTo(final Statistics o) {
-            return this.correctRate.compareTo(o.correctRate);
-        }
-
-        public void setLevel(final Integer level) {
-            this.level = level;
         }
     }
 

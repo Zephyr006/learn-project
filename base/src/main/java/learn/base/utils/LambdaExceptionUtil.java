@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 /**
  * 在lambda表达式中处理异常的工具类
@@ -28,6 +29,11 @@ public final class LambdaExceptionUtil {
     @FunctionalInterface
     public interface FunctionWithExceptions<T, R, E extends Exception> {
         R apply(T t) throws E;
+    }
+
+    @FunctionalInterface
+    public interface UnaryOperatorWithExceptions<T, E extends Exception> extends FunctionWithExceptions<T, T, E>  {
+        T apply(T t) throws E;
     }
 
     @FunctionalInterface
@@ -70,6 +76,17 @@ public final class LambdaExceptionUtil {
         return t -> {
             try {
                 return function.apply(t);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+                return null;
+            }
+        };
+    }
+
+    public static <T, E extends Exception> UnaryOperator<T> rethrowUnaryOperator(UnaryOperatorWithExceptions<T, E> unaryOperator) throws E {
+        return t -> {
+            try {
+                return unaryOperator.apply(t);
             } catch (Exception exception) {
                 throwAsUnchecked(exception);
                 return null;

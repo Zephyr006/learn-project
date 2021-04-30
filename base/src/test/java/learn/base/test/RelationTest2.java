@@ -130,7 +130,7 @@ public class RelationTest2 {
 
 
     HikariDataSource initDataSource() {
-        Properties properties = HikariConfigUtil.initProps();
+        Properties properties = HikariConfigUtil.initDefaultProps();
         return new HikariDataSource(new HikariConfig(properties));
     }
 }
