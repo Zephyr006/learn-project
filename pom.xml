@@ -27,7 +27,7 @@
     <properties>
         <!-- Spring Boot 与 Spring Cloud 版本对应关系(*必须按要求对应*)： https://start.spring.io/actuator/info -->
         <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
-        <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
+        <spring-cloud-config.version>2.2.0.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
 
         <mysql.version>8.0.22</mysql.version>
