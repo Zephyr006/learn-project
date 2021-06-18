@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import learn.base.utils.HikariConfigUtil;
 import learn.base.utils.StopWatch;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,7 +33,7 @@ public class RelationTest2 {
     private static String realSql = null;
     private static ConcurrentMap<Long, Connection> connectionMap = new ConcurrentHashMap<>();
 
-    @Test
+    // @Test
     public void selectRelation() throws SQLException {
         String userSql = "select id from user.user order by id desc limit 1";
 

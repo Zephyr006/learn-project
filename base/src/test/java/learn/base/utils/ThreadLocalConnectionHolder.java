@@ -2,7 +2,7 @@ package learn.base.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.io.Closeable;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,26 +16,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Zephyr
  * @date 2021/4/15.
  */
-public class DataSourceHolder implements Closeable {
+public class ThreadLocalConnectionHolder implements ConnectionHolder {
 
     private HikariDataSource dataSource;
     private ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
     private List<Connection> connectionList = new ArrayList<>();
     private final AtomicBoolean isShutdown = new AtomicBoolean();
 
-    private DataSourceHolder() { }
+    private ThreadLocalConnectionHolder() { }
 
-    public static DataSourceHolder hold(HikariDataSource dataSource) {
+    public static ThreadLocalConnectionHolder hold(HikariDataSource dataSource) {
         assert dataSource != null && dataSource.isRunning();
 
-        DataSourceHolder dataSourceHolder = new DataSourceHolder();
+        ThreadLocalConnectionHolder dataSourceHolder = new ThreadLocalConnectionHolder();
         dataSourceHolder.dataSource = dataSource;
         return dataSourceHolder;
     }
 
+    @Override
     public Connection getConnection() {
         if (isShutdown.get()) {
-            throw new IllegalStateException("DataSource in " + DataSourceHolder.class.getSimpleName() + " already closed！");
+            throw new IllegalStateException("DataSource in " + ThreadLocalConnectionHolder.class.getSimpleName() + " already closed！");
         }
         Connection connection = connectionHolder.get();
         try {
@@ -61,6 +62,10 @@ public class DataSourceHolder implements Closeable {
         }
     }
 
+    @Override
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
     @Override
     public void close() throws IOException {

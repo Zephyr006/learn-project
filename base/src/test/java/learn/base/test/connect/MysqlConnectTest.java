@@ -29,7 +29,11 @@ public class MysqlConnectTest extends BaseTest {
     private static final String username = "root";
     private static final String password = "root";
 
-    @Test
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        new MysqlConnectTest().testConnect();
+    }
+
     public void testConnect() throws ClassNotFoundException {
         if (!checkContext()) {
             return;

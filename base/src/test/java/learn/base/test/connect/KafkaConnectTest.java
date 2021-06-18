@@ -14,7 +14,6 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.Node;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -34,7 +33,10 @@ public class KafkaConnectTest extends BaseTest {
     private static final String KAFKA_TOPIC_KEY = "kafka.topic";
 
 
-    @Test
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        new KafkaConnectTest().testConnect();
+    }
+
     public void testConnect() throws ExecutionException, InterruptedException {
         if (!checkContext()) {
             return;
@@ -44,7 +46,7 @@ public class KafkaConnectTest extends BaseTest {
 
         final Properties props = FileLoader.loadProperties(FILE_PATH);
         String host = String.valueOf(props.get("host"));
-        System.setProperty(BOOTSTRAP_SERVERS_CONFIG_KEY, host + ":10003");
+        System.setProperty(BOOTSTRAP_SERVERS_CONFIG_KEY, "localhost:9092");
         System.setProperty(KAFKA_TOPIC_KEY, topic);
 
         Future<RecordMetadata> sendResultFuture = KafkaUtil.send(
@@ -69,7 +71,7 @@ public class KafkaConnectTest extends BaseTest {
         }
     }
 
-    @Test
+    // @Test
     public void testKafkaAdminClient() throws ExecutionException, InterruptedException {
         Properties props = new Properties();
         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "39.:10003");

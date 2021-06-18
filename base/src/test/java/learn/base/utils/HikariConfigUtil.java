@@ -5,6 +5,13 @@ import com.zaxxer.hikari.HikariConfig;
 import java.util.Properties;
 
 /**
+ *
+ * 使用游标分批获取查询的数据的条件 {@see com.mysql.cj.jdbc.StatementImpl#useServerFetch()}：其中useCursorFetch和FetchSize参数值需要手动设置
+ * 游标查询的效果：查询时会强制使用PreparedStatement，发送查询语句数据包时会在数据包头包含FetchSize的值，数据库最多返回FetchSize条结果值
+ *              数据库返回的查询结果会缓存在 ResultSet.ResultsetRows.rows，形式为一个list
+ *              当消费完当前已返回的结果后，会调用{@see com.mysql.cj.protocol.a.result.ResultsetRowsCursor#hasNext()}查询下一批数据
+ *
+ *
  * @author Zephyr
  * @date 2021/4/8.
  */
@@ -29,7 +36,7 @@ public class HikariConfigUtil {
      */
     public static Properties initProps(String host, String dbName, String username, String password) {
         Properties properties = new Properties();
-        String url_template = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true";
+        String url_template = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&useCursorFetch=true";
 
         properties.setProperty("driverClassName", "com.mysql.cj.jdbc.Driver");
         properties.setProperty("jdbcUrl", String.format(url_template, host, dbName));

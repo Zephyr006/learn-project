@@ -80,7 +80,18 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
+            <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>com.baomidou</groupId>-->
+        <!--    <artifactId>mybatis-plus-extension</artifactId>-->
+        <!--    <version>3.3.2</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
@@ -109,6 +120,7 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>

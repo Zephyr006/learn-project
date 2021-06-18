@@ -5,9 +5,10 @@ import learn.base.test.entity.Statistics;
 import learn.base.test.entity.TagOrKnowledge;
 import learn.base.test.entity.UserDataConfig;
 import learn.base.test.entity.UserQuestion;
-import learn.base.utils.DataSourceHolder;
+import learn.base.utils.ConnectionHolder;
 import learn.base.utils.HikariConfigUtil;
 import learn.base.utils.StopWatch;
+import learn.base.utils.ThreadLocalConnectionHolder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -36,41 +37,51 @@ import static learn.base.test.entity.UserQuestion.UserQuestionSummary;
  * @author Zephyr
  * @date 2021/4/7.
  */
-public class UserStatV2 extends UserStatBase {
-
-
+public class UserStatV2 extends BaseUserStat {
+    // 必须初始化
+    //static {
+    //    config = new UserDataConfig.JkSearch2();
+    //    connectionHolder = ThreadLocalConnectionHolder.hold(
+    //            new HikariDataSource(HikariConfigUtil.buildHikariConfig(
+    //                    config.dbHostAndUsername().getLeft(), UserDataConfig.dbName,
+    //                    config.dbHostAndUsername().getRight(), UserDataConfig.password)));
+    //}
 
     public static void main(String[] args) throws InterruptedException {
         StopWatch stopWatch = StopWatch.createAndStart("学员做题情况统计");
-        List<Long> allUserIds = readFromExcel(UserStatV2.config.getExcelPath());
-        Map<Long, List<Long>> partitionToUserIdMap = allUserIds.stream().collect(Collectors.groupingBy(userId -> userId % 100));
+        Map<Long, List<Long>> partitionToUserIdMap = allUserIds.stream()
+                .collect(Collectors.groupingBy(userId -> userId % 100));
         System.out.println("开始并发查询用户相关做题记录，并发线程数 = " + parallelism + "，学员总数 = " + allUserIds.size());
 
+        mainProcess(partitionToUserIdMap);
+        System.out.println(stopWatch.stopAndPrint());
+    }
 
-        try (DataSourceHolder dataSourceHolder = DataSourceHolder.hold(
+    private static void mainProcess(final Map<Long, List<Long>> partitionToUserIdMap) throws InterruptedException {
+        try (ConnectionHolder connectionHolder = ThreadLocalConnectionHolder.hold(
                 new HikariDataSource(HikariConfigUtil.buildHikariConfig(
-                        config.dbHostAndUsername().getLeft(), UserDataConfig.dbName,
-                        config.dbHostAndUsername().getRight(), UserDataConfig.password)))) {
-            Connection mainConnection = dataSourceHolder.getConnection();
+                config.dbHostAndUsername().getLeft(), UserDataConfig.dbName,
+                config.dbHostAndUsername().getRight(), UserDataConfig.password)))) {
+            Connection mainConnection = connectionHolder.getConnection();
             System.out.println("\nDB connected ? " + mainConnection.isValid(2));
 
 
-            boolean onlyLeafNode = config.onlyLeafNode();
             // 1 以tagTreeId做查询条件查询标签
             TagOrKnowledge.TreeNode treeRoot = new TagOrKnowledge.TreeNode(config.getTreeRoot().getRight(), config.getTreeRoot().getLeft(), null);
-            List<TagOrKnowledge> allNeedTag = getTagTreeNodes(treeRoot, mainConnection, onlyLeafNode);
-            if (allNeedTag.isEmpty()) {
+            List<TagOrKnowledge> needQueryTreeNodeList = getNeedQueryTreeNodes(treeRoot, mainConnection);
+            if (needQueryTreeNodeList.isEmpty()) {
                 System.err.println("要查询的节点个数为0！！！");
                 return;
             }
-            System.out.println("根节点名称【" + config.getTreeRoot().getRight() + "】，要查询的目标节点个数为 " + allNeedTag.size());
+            System.out.println("根节点名称【" + config.getTreeRoot().getRight() + "】，要查询的目标节点个数为 " + needQueryTreeNodeList.size());
 
             //查询做题数据
+            boolean onlyLeafNode = config.onlyLeafNode();
             List<Statistics> statistics;
             if (onlyLeafNode) {
-                statistics = queryLeafNodeStatistics(allNeedTag, partitionToUserIdMap, dataSourceHolder);
+                statistics = queryLeafNodeStatistics(needQueryTreeNodeList, partitionToUserIdMap, connectionHolder);
             } else {
-                statistics = queryAllTagNodeStatistics(allNeedTag, partitionToUserIdMap, dataSourceHolder);
+                statistics = queryAllTagNodeStatistics(needQueryTreeNodeList, partitionToUserIdMap, connectionHolder);
             }
 
             if (CollectionUtils.isNotEmpty(statistics)) {
@@ -84,24 +95,23 @@ public class UserStatV2 extends UserStatBase {
         } finally {
             executorService.shutdown();
         }
-        System.out.println(stopWatch.stopAndPrint());
     }
 
-    private static List<Statistics> queryAllTagNodeStatistics(final List<TagOrKnowledge> allNeedTag, final Map<Long, List<Long>> partitionToUserIdMap, final DataSourceHolder dataSourceHolder) throws SQLException, InterruptedException {
+    private static List<Statistics> queryAllTagNodeStatistics(final List<TagOrKnowledge> allNeedTag, final Map<Long, List<Long>> partitionToUserIdMap, final ConnectionHolder connectionHolder) throws SQLException, InterruptedException {
 
         // 2. 查询标签下的题目question
         List<Long> allTagIds = allNeedTag.stream().map(TagOrKnowledge::getId).collect(Collectors.toList());
         Set<Long> allQuestionIds;
         if (config.isForTag()) {
-            allQuestionIds = getAllQuestionIdByTagId(dataSourceHolder.getConnection(), allTagIds);
+            allQuestionIds = getAllQuestionIdByTagId(connectionHolder.getConnection(), allTagIds);
         } else {
-            allQuestionIds = getAllQuestionIdByKnowledgeId(dataSourceHolder.getConnection(), allTagIds);
+            allQuestionIds = getAllQuestionIdByKnowledgeId(connectionHolder.getConnection(), allTagIds);
         }
         System.out.println("查询完所有标签及题目元数据，总题目数 = " + allQuestionIds.size());
 
 
         Predicate<UserQuestion> meetConditionsUserPredicate = Objects::nonNull;
-        Map<Long, List<UserQuestion>> userIdToQuestionsMap = getUserIdToQuestionsMap(dataSourceHolder, allQuestionIds, partitionToUserIdMap, meetConditionsUserPredicate);
+        Map<Long, List<UserQuestion>> userIdToQuestionsMap = getUserIdToQuestionsMap(connectionHolder, allQuestionIds, partitionToUserIdMap, meetConditionsUserPredicate);
 
         List<Statistics> statisticsList = new ArrayList<>();
         List<UserQuestionSummary> userQuestionSummaryList;
@@ -128,12 +138,12 @@ public class UserStatV2 extends UserStatBase {
         return statisticsList;
     }
 
-    static List<Statistics> queryLeafNodeStatistics(final List<TagOrKnowledge> allNeedTag, final Map<Long, List<Long>> partitionToUserIdMap, final DataSourceHolder dataSourceHolder) throws SQLException, InterruptedException {
+    static List<Statistics> queryLeafNodeStatistics(final List<TagOrKnowledge> allNeedTag, final Map<Long, List<Long>> partitionToUserIdMap, final ConnectionHolder connectionHolder) throws SQLException, InterruptedException {
 
         // 2. 查询标签下的题目question
         List<Callable<Pair<TagOrKnowledge, Set<Long>>>> questionIdCallableList = allNeedTag.stream().map(tag -> (Callable<Pair<TagOrKnowledge, Set<Long>>>) () -> {
             Set<Long> allQuestionIds;
-            Connection connection = dataSourceHolder.getConnection();
+            Connection connection = connectionHolder.getConnection();
             if (config.isForTag()) {
                 allQuestionIds = getAllQuestionIdByTagId(connection, Collections.singletonList(tag.getId()));
             } else {
@@ -142,7 +152,7 @@ public class UserStatV2 extends UserStatBase {
             return new ImmutablePair<>(tag, allQuestionIds);
         }).collect(Collectors.toList());
 
-        List<Future<Pair<TagOrKnowledge, Set<Long>>>> futureList = UserStatBase.executorService.invokeAll(questionIdCallableList);
+        List<Future<Pair<TagOrKnowledge, Set<Long>>>> futureList = BaseUserStat.executorService.invokeAll(questionIdCallableList);
         List<Pair<TagOrKnowledge, Set<Long>>> tagToQuestionIdList = futureList.stream().map(future -> {
             try {
                 return future.get();
@@ -174,7 +184,7 @@ public class UserStatV2 extends UserStatBase {
 
             List<UserQuestionSummary> userQuestionSummaryList;
             TagOrKnowledge tag = tagAndQuestionIds.getLeft();
-            Map<Long, List<UserQuestion>> userIdToQuestionsMap = getUserIdToQuestionsMap(dataSourceHolder, tagAndQuestionIds.getRight(), partitionToUserIdMap, meetConditionsUserPredicate);
+            Map<Long, List<UserQuestion>> userIdToQuestionsMap = getUserIdToQuestionsMap(connectionHolder, tagAndQuestionIds.getRight(), partitionToUserIdMap, meetConditionsUserPredicate);
 
             if (userIdToQuestionsMap.size() >= 60) {
                 System.out.println(String.format("节点【%s】：满足题目覆盖率要求的用户 %d 人",
@@ -202,41 +212,6 @@ public class UserStatV2 extends UserStatBase {
         }
 
         return resultList;
-    }
-
-    static List<TagOrKnowledge> getTagTreeNodes(final TagOrKnowledge.TreeNode treeRoot, final Connection connection, final boolean onlyLeafNode) throws SQLException {
-        List<TagOrKnowledge> allTags;
-        boolean isTreeId = config.isTreeId();
-        boolean isForTag = config.isForTag();
-        if (isForTag && isTreeId) {
-            allTags = getAllTagByTreeId(config.getTreeRoot().getLeft(), connection);
-        }
-        else if (!isForTag && isTreeId) {
-            allTags = getAllKnowledgeByTreeId(config.getTreeRoot().getLeft(), connection);
-        }
-        else if (isForTag && !isTreeId){
-            allTags = getAllTagByParentId(config.getTreeRoot().getLeft(), connection);
-        } else {
-            System.err.println("getTagTreeNodes error : not support");
-            allTags = Collections.emptyList();
-        }
-
-        if (!onlyLeafNode) {
-            return allTags;
-        }
-
-        if (isTreeId) {
-            List<Long> parentTagIds = allTags.stream()
-                    .filter(tag -> 0 == tag.getParentId())
-                    .map(tag -> {
-                        treeRoot.getChildNodes().add(new TagOrKnowledge.TreeNode(tag.getName(), tag.getId(), tag.getParentId()));
-                        return tag.getId();
-                    }).collect(Collectors.toList());
-            parseTreeStructure(treeRoot, allTags, parentTagIds);
-        } else {
-            parseTreeStructure(treeRoot, allTags, Collections.singletonList(treeRoot.getId()));
-        }
-        return TagOrKnowledge.TreeNode.getAllLeafTag(treeRoot);
     }
 
 }

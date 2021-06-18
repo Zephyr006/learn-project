@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,7 +18,7 @@ import java.util.Random;
 public class WeChatCrawlerTest {
 
 
-    @Test
+    // @Test
     public void testCrawlingWeChat() throws IOException {
         String url = "https://mp.weixin.qq.com/s/dSXqy5C5MIUbHB1VZDeiHw";
         URL htmlUrl2 = new URL(url);

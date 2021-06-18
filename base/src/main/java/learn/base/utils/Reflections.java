@@ -44,7 +44,7 @@ public class Reflections {
 
 
     /**
-     * 取得当前类路径下的所有类
+     * 取得(同一jar包下)当前类路径下的所有类
      */
     public static List<Class<?>> getClasses(Class<?> cls) throws ClassNotFoundException {
         String pk = cls.getPackage().getName();
@@ -52,6 +52,17 @@ public class Reflections {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         URL url = classloader.getResource(path);
         return getClasses(new File(Objects.requireNonNull(url).getFile()), pk);
+    }
+
+    /**
+     * 取得(同一jar包下)当前类路径下的所有类
+     * @param packagePath 以'.'分隔的java包路径
+     */
+    public static List<Class<?>> getClasses(String packagePath) throws ClassNotFoundException {
+        String path = packagePath.replace('.', '/');
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        URL url = classloader.getResource(path);
+        return getClasses(new File(Objects.requireNonNull(url).getFile()), packagePath);
     }
 
 

@@ -10,7 +10,6 @@ import io.lettuce.core.api.sync.RedisCommands;
 import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -24,7 +23,11 @@ import java.util.concurrent.ExecutionException;
 public class RedisConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
 
-    @Test
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        new RedisConnectTest().testConnect();
+    }
+
     public void testConnect() throws ExecutionException, InterruptedException {
         if (!checkContext()) {
             return;

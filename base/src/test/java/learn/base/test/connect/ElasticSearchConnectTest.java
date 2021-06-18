@@ -21,7 +21,10 @@ public class ElasticSearchConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
 
 
-    @Test
+    public static void main(String[] args) throws IOException {
+        new ElasticSearchConnectTest().testConnect();
+    }
+
     public void testConnect() throws IOException {
         if (!checkContext()) {
             return;

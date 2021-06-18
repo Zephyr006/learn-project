@@ -4,7 +4,8 @@ import learn.base.test.entity.Statistics;
 import learn.base.test.entity.TagOrKnowledge;
 import learn.base.test.entity.UserDataConfig;
 import learn.base.test.entity.UserQuestion;
-import learn.base.utils.DataSourceHolder;
+import learn.base.test.entity.UserQuestionLog;
+import learn.base.utils.ConnectionHolder;
 import learn.base.utils.ExcelUtil;
 import learn.base.utils.ResultSetUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,6 +31,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,47 +54,21 @@ import static learn.base.test.entity.UserQuestion.userQuestionSql;
  * @author Zephyr
  * @date 2021/4/7.
  */
-public class UserStatBase {
-    public static final UserDataConfig config = new UserDataConfig.JkSearch2();
+public abstract class BaseUserStat {
+    static UserDataConfig config = new UserDataConfig.JkSearch2();
     static int parallelism = 20;
     static ExecutorService executorService = Executors.newWorkStealingPool(parallelism);
+    //static ConnectionHolder connectionHolder;
+    static List<Long> allUserIds = readFromExcel(config.getExcelPath());
 
 
-    static Map<Long, List<UserQuestion>> getUserIdToQuestionsMap(final DataSourceHolder dataSourceHolder,
+    static Map<Long, List<UserQuestion>> getUserIdToQuestionsMap(final ConnectionHolder connectionHolder,
                                                                  final Set<Long> allQuestionIds, Map<Long, List<Long>> partitionToUserIdMap,
                                                                  Predicate<UserQuestion> meetConditionsUserPredicate) throws InterruptedException {
         long startTime = System.currentTimeMillis();
         CountDownLatch countDownLatch = new CountDownLatch(partitionToUserIdMap.size());
         Map<Long, List<UserQuestion>> userIdToQuestionsMap = new ConcurrentHashMap<>(64);
         String questionIdStr = StringUtils.join(allQuestionIds, ",");
-
-        // 使用executorService.invokeAll()一次提交多个callable并返回结果集 -- invokeAll方法会阻塞直到所有任务都完成
-        /*final List<Callable<List<UserQuestion>>> actions = partitionToUserIdMap.entrySet().stream().map(entry ->
-                (Callable<List<UserQuestion>>) () -> {
-                    List<UserQuestion> userQuestionList = new ArrayList<>(500);
-                    try (Connection connection2 = dataSource.getConnection();
-                            Statement statement = connection2.createStatement()) {
-                        ResultSet resultSet = statement.executeQuery(String.format(
-                                userQuestionSql, entry.getKey(), StringUtils.join(entry.getValue(), ","), questionIdStr));
-                        while (resultSet.next()) {
-                            userQuestionList.add(new UserQuestion(resultSet));
-                        }
-                        resultSet.close();
-                        System.out.println("完成查询做题记录子任务 " + entry.getKey() + ", 题目数量 " + userQuestionList.size());
-                        return userQuestionList;
-                    }
-                }
-        ).collect(Collectors.toList());
-        // block, and may ignore some exceptions.
-        List<Future<List<UserQuestion>>> futures = executorService.invokeAll(actions);
-        futures.forEach(future -> {
-            try {
-                List<UserQuestion> userQuestions = future.get();
-                userIdToQuestionsMap.putAll(userQuestions.stream().collect(Collectors.groupingBy(UserQuestion::getUserId)));
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        });*/
 
         int minDoQuestionSize = config.getDoQuestionSize(); //(int) (allQuestionIds.size() * doQuestionRate)
         for (Map.Entry<Long, List<Long>> entry : partitionToUserIdMap.entrySet()) {
@@ -101,7 +77,7 @@ public class UserStatBase {
                 String sql = String.format(userQuestionSql,
                         entry.getKey(), StringUtils.join(entry.getValue(), ","), questionIdStr);
                 //System.out.println(sql);
-                Connection connection = dataSourceHolder.getConnection();
+                Connection connection = connectionHolder.getConnection();
                 try (Statement statement = connection.createStatement()) {
                     ResultSet resultSet = statement.executeQuery(sql);
                     //long costTime = System.currentTimeMillis() - startTime;
@@ -121,7 +97,7 @@ public class UserStatBase {
                 }
                 return userQuestionList;
                 // 转换 userQuestionList 为 userIdToQuestionsMap 的一部分
-            }, UserStatBase.executorService).thenAcceptAsync(((userQuestions) -> {
+            }, BaseUserStat.executorService).thenAcceptAsync(((userQuestions) -> {
                 Map<Long, List<UserQuestion>> subQuestionMap = userQuestions.stream().collect(Collectors.groupingBy(UserQuestion::getUserId));
                 subQuestionMap.forEach((key,list) -> {
                     if (list.size() >= minDoQuestionSize) {
@@ -129,7 +105,7 @@ public class UserStatBase {
                     }
                 });
                 countDownLatch.countDown();
-            }), UserStatBase.executorService);
+            }), BaseUserStat.executorService);
             //break;
         }
         countDownLatch.await();
@@ -157,15 +133,19 @@ public class UserStatBase {
     }
 
     static List<TagOrKnowledge> getAllKnowledgeByTreeId(final long treeId, final Connection connection) throws SQLException {
-        ResultSet resultSet = connection.createStatement().executeQuery(
-                String.format("select id,parent_id,name from `question`.`knowledge` where root_id = %s and status = 1", treeId));
-        return (List<TagOrKnowledge>) ResultSetUtils.parseCollection(resultSet, new ArrayList<>(), TagOrKnowledge.class, true);
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(
+                    String.format("select id,parent_id,name from `question`.`knowledge` where root_id = %s and status = 1", treeId));
+            return (List<TagOrKnowledge>) ResultSetUtils.parseCollection(resultSet, new ArrayList<>(), TagOrKnowledge.class, true);
+        }
     }
 
     static List<TagOrKnowledge> getAllTagByTreeId(final long treeId, final Connection connection) throws SQLException {
-        ResultSet tagResultSet = connection.createStatement().executeQuery(
-                String.format("select id,parent_id,name from `question`.`tag` where treeId = %s and status = 1 and type = 1", treeId));
-        return (List<TagOrKnowledge>) ResultSetUtils.parseCollection(tagResultSet, new ArrayList<>(), TagOrKnowledge.class, true);
+        try (Statement statement = connection.createStatement()) {
+             ResultSet tagResultSet = statement.executeQuery(
+                     String.format("select id,parent_id,name from `question`.`tag` where treeId = %s and status = 1 and type = 1", treeId));
+            return (List<TagOrKnowledge>) ResultSetUtils.parseCollection(tagResultSet, new ArrayList<>(), TagOrKnowledge.class, true);
+        }
     }
 
     static List<TagOrKnowledge> getAllTagByParentId(final long treeId, final Connection connection) throws SQLException {
@@ -186,6 +166,42 @@ public class UserStatBase {
             }
         }
         return allTags;
+    }
+
+    static List<TagOrKnowledge> getNeedQueryTreeNodes(final TagOrKnowledge.TreeNode treeRoot, final Connection connection) throws SQLException {
+        final boolean onlyLeafNode = config.onlyLeafNode();
+        List<TagOrKnowledge> allTags;
+        boolean isTreeId = config.isTreeId();
+        boolean isForTag = config.isForTag();
+        if (isForTag && isTreeId) {
+            allTags = getAllTagByTreeId(config.getTreeRoot().getLeft(), connection);
+        }
+        else if (!isForTag && isTreeId) {
+            allTags = getAllKnowledgeByTreeId(config.getTreeRoot().getLeft(), connection);
+        }
+        else if (isForTag && !isTreeId){
+            allTags = getAllTagByParentId(config.getTreeRoot().getLeft(), connection);
+        } else {
+            System.err.println("getTagTreeNodes error : not support");
+            allTags = Collections.emptyList();
+        }
+
+        if (!onlyLeafNode) {
+            return allTags;
+        }
+
+        if (isTreeId) {
+            List<Long> parentTagIds = allTags.stream()
+                    .filter(tag -> 0 == tag.getParentId())
+                    .map(tag -> {
+                        treeRoot.getChildNodes().add(new TagOrKnowledge.TreeNode(tag.getName(), tag.getId(), tag.getParentId()));
+                        return tag.getId();
+                    }).collect(Collectors.toList());
+            parseTreeStructure(treeRoot, allTags, parentTagIds);
+        } else {
+            parseTreeStructure(treeRoot, allTags, Collections.singletonList(treeRoot.getId()));
+        }
+        return TagOrKnowledge.TreeNode.getAllLeafTag(treeRoot);
     }
 
     static List<Statistics> countByCorrectRate(
@@ -225,7 +241,7 @@ public class UserStatBase {
             questionIds.add(resultSet.getLong(1));
         }
 
-        return filterQuestionIds(questionIds, config.getSubjective, connection);
+        return filterQuestionIds(questionIds, connection);
     }
 
     /**
@@ -309,11 +325,12 @@ public class UserStatBase {
         while (questionR.next()) {
             questionIds.add(questionR.getLong(1));
         }
-        return filterQuestionIds(questionIds, config.getSubjective, connection);
+        return filterQuestionIds(questionIds, connection);
     }
 
-    static Set<Long> filterQuestionIds(Set<Long> questionIds, Boolean getSubjective, Connection connection) throws SQLException {
-        if (CollectionUtils.isEmpty(questionIds)) {
+    static Set<Long> filterQuestionIds(Set<Long> questionIds, Connection connection) throws SQLException {
+        Boolean getSubjective = config.getSubjective;
+        if (CollectionUtils.isEmpty(questionIds) || getSubjective == null) {
             return questionIds;
         }
         // 查询主观题id
@@ -325,16 +342,39 @@ public class UserStatBase {
             subjectiveQuestionIds.add(resultSet.getLong(1));
         }
 
-        if (getSubjective != null && getSubjective) {
+        if (getSubjective) {
             return new HashSet<>(subjectiveQuestionIds);
-        } else if (getSubjective != null && CollectionUtils.isNotEmpty(subjectiveQuestionIds)) {
+        } else if (CollectionUtils.isNotEmpty(subjectiveQuestionIds)) {
             questionIds.removeIf(subjectiveQuestionIds::contains);
         }
         return questionIds;
     }
 
+    /**
+     * 根据用户的答题记录（user_question_log）*加权*计算用户的答题速度和正确率
+     */
+    static UserQuestionSummary buildUserQuestionSummaryByQuestionLogs(Long userId, Collection<UserQuestionLog> questionLogs) {
+        if (questionLogs == null || questionLogs.isEmpty()) {
+            return null;
+        }
+        // 正确率：权重* 总正确题数/总题数     答题速度：权重* 总时间/总题数
+        double totalCorrectRate = 0d;
+        int totalAverageSpeed = 0, totalWeight = 0;
+        Map<Integer, List<UserQuestionLog>> sceneToQuestionLogsMap = questionLogs.stream().collect(Collectors.groupingBy(UserQuestionLog::getScenesKey));
+        for (Map.Entry<Integer, List<UserQuestionLog>> entry : sceneToQuestionLogsMap.entrySet()) {
+            int weight = UserQuestionLog.SCENE_WEIGHT.getOrDefault(entry.getKey(), 1);
+            int sceneCostTimeSum = entry.getValue().stream().mapToInt(UserQuestionLog::getCostTime).sum();
+            int sceneCorrectCount = (int)entry.getValue().stream().filter(UserQuestionLog::getCorrect).count();
+            totalWeight += weight;
+            totalAverageSpeed += weight * (sceneCostTimeSum / entry.getValue().size());
+            totalCorrectRate += weight * ((double) sceneCorrectCount / entry.getValue().size());
+        }
+
+        return new UserQuestionSummary(userId, totalAverageSpeed / totalWeight, totalCorrectRate / totalWeight);
+    }
+
     static List<Long> readFromExcel(final String excelPath) {
-        List<Long> result = new ArrayList<>(2 << 14);
+        List<Long> result = new ArrayList<>(2000);
         try (InputStream fis = new FileInputStream(excelPath)) {
             Workbook workbook = null;
             if (excelPath.endsWith(".xlsx")) {

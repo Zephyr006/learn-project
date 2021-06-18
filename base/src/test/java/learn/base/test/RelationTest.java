@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import learn.base.utils.HikariConfigUtil;
 import learn.base.utils.StopWatch;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -30,7 +29,7 @@ public class RelationTest {
     private static final String driverClassName = "com.mysql.jdbc.Driver";
     private static final String url_template = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false";
 
-    @Test
+    // @Test
     public void selectRelation() throws SQLException {
         String userSql = "select id from user.user order by id desc limit 1";
 

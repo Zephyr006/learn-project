@@ -1,6 +1,8 @@
 package learn.base.test.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.ResultSet;
@@ -42,6 +44,8 @@ public class UserQuestion {
      * 一个用户对一批题的答题统计
      */
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserQuestionSummary implements Comparable<UserQuestionSummary> {
         public Long userId;
         // 平均做题速度
@@ -49,7 +53,7 @@ public class UserQuestion {
         // 平均正确率
         private Double averageCorrectRate;
         // 总做题数
-        private Integer totalCount;
+        //private Integer totalCount;
 
         public UserQuestionSummary(Collection<UserQuestion> collection) {
             if (collection == null || collection.isEmpty()) {
@@ -62,7 +66,7 @@ public class UserQuestion {
             this.userId = collection.iterator().next().getUserId();
             this.averageCorrectRate = (double) totalCorrectCount / totalAnswerCount;
             this.averageSpeed = totalCostTime / totalAnswerCount;
-            this.totalCount = collection.size();
+            //this.totalCount = collection.size();
         }
 
         @Override

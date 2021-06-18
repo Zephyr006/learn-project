@@ -34,7 +34,7 @@ public class KafkaUtil {
     private static String topic;
 
     static {
-        KafkaUtil.topic = System.getProperty("kafka.topic", "test_data_center");
+        KafkaUtil.topic = System.getProperty("kafka.topic", "test_topic");
         String kafkaServerUrl = System.getProperty("kafka.server", "192.168.2.55:9092");
         logger.debug("kafka server path use [{}]", kafkaServerUrl);
 

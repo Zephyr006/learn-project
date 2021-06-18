@@ -50,7 +50,7 @@ public class ExcelUtil {
             throw new IllegalArgumentException("Excel导出模板中的表头不能为空！");
         }
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(sheetName == null ? "default" : sheetName);
+        XSSFSheet sheet = workbook.createSheet(sheetName == null ? "Sheet" : sheetName);
         sheet.setDefaultColumnWidth(sheet.getDefaultColumnWidth() * 4);
         if (needLock) {
             sheet.protectSheet("87654321");
@@ -107,7 +107,7 @@ public class ExcelUtil {
             return;
         }
         try (Workbook workbook = new SXSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("default sheet");
+            Sheet sheet = workbook.createSheet("Sheet");
             sheet.setDefaultColumnWidth(sheet.getDefaultColumnWidth() * 2);
             //short dateFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd");
             //short dateTimeFormat = workbook.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss");
@@ -197,7 +197,7 @@ public class ExcelUtil {
         } else {
             font.setFontHeightInPoints((short) 14);
             style.setAlignment(HorizontalAlignment.CENTER);
-            style.setWrapText(true);
+            style.setWrapText(false);
         }
         // 设置数据格式化方式，具体样式参考Excel文件中的单元格格式设置界面，默认提供的格式在 {@link BuiltinFormats}.
         if (timeFormat != null && !timeFormat.isEmpty()) {

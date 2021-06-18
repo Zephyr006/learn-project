@@ -1,6 +1,7 @@
 package learn.base.test.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.text.DecimalFormat;
  * @date 2021/4/30.
  */
 @Getter
+@Builder
 @AllArgsConstructor
 public class Statistics implements Serializable, Comparable<Statistics> {
     public static String PRINT_TEMPLATE = "档位%s , 平均正确率为 %.2f%%  ， 平均每道题的答题速度为 %d 秒 ，对应总用户数 %d 人";
