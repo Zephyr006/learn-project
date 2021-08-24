@@ -1,5 +1,6 @@
 package learn.example.javase;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +22,22 @@ public class SleepUtil {
             unit.sleep(timeout);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean randomSleep(int atLeast, int bound, TimeUnit timeUnit) {
+        timeUnit = (timeUnit == null) ? TimeUnit.MILLISECONDS : timeUnit;
+        atLeast = Math.toIntExact(timeUnit.toMillis(atLeast));
+        bound = Math.toIntExact(timeUnit.toMillis(bound));
+
+        Random random = new Random();
+        while (true) {
+            int i = random.nextInt(bound);
+            if (i > atLeast) {
+                System.out.println(Thread.currentThread().getName() + " 线程将睡眠 " + (i / 1000) + " 秒 ...");
+                SleepUtil.sleep(i);
+                return true;
+            }
         }
     }
 }
