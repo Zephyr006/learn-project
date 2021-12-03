@@ -2,7 +2,6 @@ package learn.base.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 import learn.base.test.mapper.TestMapper;
-import learn.base.test.mybatisshard.MybatisShardInterceptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -50,7 +49,8 @@ public final class MybatisUtils {
                     assert dataSource != null;
                     assert mapperClassPackage != null;
                     try {
-                        List<Class<?>> mappers = StringUtils.isEmpty(mapperClassPackage) ? Collections.emptyList() : Reflections.getClasses(mapperClassPackage);
+                        List<Class<?>> mappers = StringUtils.isEmpty(mapperClassPackage)
+                                ? Collections.emptyList() : Reflections.getClasses(mapperClassPackage);
                         sqlSessionFactory = buildSqlSessionFactory(dataSource, mappers);
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -73,12 +73,24 @@ public final class MybatisUtils {
         // 事务
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("development", transactionFactory, dataSource);
+
         Configuration configuration = new Configuration(environment);
         // 注入mapper
         Optional.ofNullable(mappers).ifPresent(ms -> ms.forEach(configuration::addMapper));
-        configuration.addInterceptor(new MybatisShardInterceptor());
+        // 将数据库字段的下划线命名转驼峰
+        configuration.setMapUnderscoreToCamelCase(true);
+        // 超时时间，它决定驱动等待数据库响应的 秒数。
+        configuration.setDefaultStatementTimeout(8);
+        // 为驱动的结果集获取数量（fetchSize）设置一个提示值。此参数只可以在查询设置中被覆盖。
+        configuration.setDefaultFetchSize(3000);
+        // 关闭缓存
+        configuration.setCacheEnabled(false);
+
+        // 注入拦截器
+        // configuration.addInterceptor(new MybatisShardInterceptor());
         // configuration.addInterceptor(paginationInterceptor());
-        // 一级缓存/本地缓存将会在执行update、事务提交或回滚，以及关闭 session 时清空。对于某个对象，MyBatis 将返回在本地缓存中唯一对象的引用。因此不要对 MyBatis 所返回的对象作出更改
+        // 一级缓存/本地缓存将会在执行update、事务提交或回滚，以及关闭 session 时清空。
+        // 对于某个对象，MyBatis 将返回在本地缓存中唯一对象的引用。因此不要对 MyBatis 所返回的对象作出更改
         configuration.setLocalCacheScope(LocalCacheScope.STATEMENT);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
         return sqlSessionFactory;

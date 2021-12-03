@@ -34,9 +34,10 @@ public class ColorfulCloudTest {
             System.out.println("token = " + token);
 
             // 模拟新用户注册后的兑换间隔
-            SleepUtil.randomSleep(30, 50, TimeUnit.MINUTES);
+            SleepUtil.randomSleep(25, 55, TimeUnit.MINUTES);
 
             inviteNewUser(token);
+
             if (LocalTime.now().getHour() >= 20) {  // 晚上7点后不再执行
                 SleepUtil.sleep(13, TimeUnit.HOURS);
             }

@@ -17,12 +17,12 @@ import java.io.IOException;
  * @author Zephyr
  * @date 2021/3/25.
  */
-public class ElasticSearchConnectTest extends BaseTest {
+public class ElasticsearchConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";
 
 
     public static void main(String[] args) throws IOException {
-        new ElasticSearchConnectTest().testConnect();
+        new ElasticsearchConnectTest().testConnect();
     }
 
     public void testConnect() throws IOException {
