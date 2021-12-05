@@ -27,6 +27,10 @@
             <groupId>cn.zephyr006</groupId>
             <artifactId>base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
         <!-- webflux begin -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

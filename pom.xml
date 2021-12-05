@@ -22,10 +22,12 @@
         <module>springcloud-config-client</module>
         <module>springcloud-config-server</module>
         <module>demo-light4j</module>
+        <module>simple-springboot</module>
     </modules>
 
     <properties>
         <!-- Spring Boot 与 Spring Cloud 版本对应关系(*必须按要求对应*)： https://start.spring.io/actuator/info -->
+        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
         <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
@@ -41,7 +43,7 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <lombok.version>1.18.12</lombok.version>
-        <jackson.version>2.12.1</jackson.version>
+        <jackson.version>2.11.3</jackson.version>
         <fastjson.version>1.2.73</fastjson.version>
         <httpclient.version>4.5.12</httpclient.version>
         <snakeyaml.version>1.26</snakeyaml.version>
@@ -95,6 +97,24 @@
             <!--    <artifactId>spring-kafka</artifactId>-->
             <!--    <version>2.4.7</version>-->
             <!--</dependency>-->
+
+            <!-- spring boot start -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <!-- spring cloud end -->
 
             <!-- database -->
             <dependency>

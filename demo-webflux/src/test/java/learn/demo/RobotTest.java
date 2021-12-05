@@ -1,16 +1,72 @@
 package learn.demo;
 
+import org.junit.Test;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Zephyr
  * @date 2021/11/21.
  */
 public class RobotTest {
+
+    @Test
+    public void openTom() throws IOException, AWTException {
+        String readmeFileUrlTemp = "https://raw.githubusercontent.com/{placeholder}/master/README.md";
+        List<String> githubUrls = new ArrayList<>();
+        githubUrls.add("https://github.com/tangmu6626/tomfabudizhi1");
+        githubUrls.add("https://github.com/tom45261/tangmu");
+
+
+        for (String github : githubUrls) {
+            String readmeFileUri = readmeFileUrlTemp.replace("{placeholder}", new URL(github).getPath());
+            URLConnection connection = new URL(readmeFileUri).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+
+            InputStream inputStream = (InputStream) connection.getContent();
+            int contentLength = connection.getContentLength();
+            byte[] bytebuffer = new byte[contentLength];
+            int readCount = 0;
+            while (readCount < contentLength) {
+                readCount += inputStream.read(bytebuffer, readCount, contentLength - readCount);
+            }
+            String s = new String(bytebuffer, 0, readCount, StandardCharsets.UTF_8);
+
+            Pattern urlPattern = Pattern.compile("https://www.*.com");
+            Matcher matcher = urlPattern.matcher(s.toLowerCase());
+            String tomUrl;
+            if (matcher.find() && (tomUrl = matcher.group(0)).contains("tom")) {
+                System.out.println(tomUrl);
+
+                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+                Robot robot = new Robot();
+                // 必要的延迟，事件生成后自动休眠指定的时间间隔。不能删
+                robot.setAutoDelay(200);
+                clip.setContents(new StringSelection("chrome"), null);
+                openSoftware(robot);
+                ctrl(robot, KeyEvent.VK_T);
+                clip.setContents(new StringSelection(tomUrl), null);
+                ctrl(robot, KeyEvent.VK_V);
+                keyPressAndRelease(robot, KeyEvent.VK_ENTER);
+            }
+        }
+    }
+
 
     public static void main(String[] args) throws AWTException {
         // 获取系统剪切板
@@ -65,7 +121,7 @@ public class RobotTest {
 
         //robot.delay(100);
         ctrl(robot, KeyEvent.VK_V);
-        robot.delay(400);
+        robot.delay(300);
         keyPressAndRelease(robot, KeyEvent.VK_ENTER);
     }
 

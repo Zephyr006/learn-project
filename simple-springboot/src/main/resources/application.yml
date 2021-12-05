@@ -1,0 +1,10 @@
+spring:
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+
+
+logging:
+  level:
+    org.elasticsearch.client.*: debug
+    org.springframework.data.elasticsearch: debug
