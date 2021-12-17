@@ -23,6 +23,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
+            <version>${spring-cloud-config.version}</version>
         </dependency>
         <!--用于通知配置刷新-->
         <!--<dependency>-->

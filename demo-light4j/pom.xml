@@ -43,6 +43,7 @@
         <dependency>
             <groupId>cn.zephyr006</groupId>
             <artifactId>base</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
@@ -166,7 +167,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${version.jackson}</version>
+            <version>2.9.8</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
