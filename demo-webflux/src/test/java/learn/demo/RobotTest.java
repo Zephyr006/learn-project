@@ -8,8 +8,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,8 @@ public class RobotTest {
 
         for (String github : githubUrls) {
             String readmeFileUri = readmeFileUrlTemp.replace("{placeholder}", new URL(github).getPath());
-            URLConnection connection = new URL(readmeFileUri).openConnection();
+            URL url = new URL(readmeFileUri);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.connect();
@@ -46,6 +47,7 @@ public class RobotTest {
                 readCount += inputStream.read(bytebuffer, readCount, contentLength - readCount);
             }
             String s = new String(bytebuffer, 0, readCount, StandardCharsets.UTF_8);
+            connection.disconnect();
 
             Pattern urlPattern = Pattern.compile("https://www.*.com");
             Matcher matcher = urlPattern.matcher(s.toLowerCase());

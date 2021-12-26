@@ -4,10 +4,6 @@ import learn.base.utils.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/8 7:04 下午
- */
 @Builder
 @Data
 public class BaseResponse<T> {

@@ -23,10 +23,6 @@ import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/7 7:08 下午
- */
 @Slf4j
 public class MysqlStartupHookProvider implements StartupHookProvider {
 

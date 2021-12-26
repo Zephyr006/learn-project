@@ -5,10 +5,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/7 7:07 下午
- */
 public interface StatisticMapper {
 
     int insertOrUpdate(List<StatisticEntity> statisticCountEntities);

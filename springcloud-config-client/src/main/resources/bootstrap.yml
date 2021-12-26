@@ -51,19 +51,3 @@ base:
     mybatis:
         log:
             enable: false
-datasource:
-    jk:
-        driver-class-name: com.mysql.jdbc.Driver
-        url:
-        username:
-        password:
-    gk:
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://host?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-        username:
-        password:
-    backend:
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.20.47:3306/question_bank?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
-        username: root
-        password: root

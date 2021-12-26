@@ -20,6 +20,15 @@ public class FileUtils {
             message = "Unable to create directory " + directory;
             throw new IOException(message);
         }
+    }
+
+    public static File changeSuffix(File oldFile, String newSuffix) {
+        String oldFilePath = oldFile.getAbsolutePath();
+        int lastIndexOfPoint = oldFilePath.lastIndexOf('.');
+        String newFilePath = oldFilePath.substring(0, lastIndexOfPoint + 1) + newSuffix;
+        File dest = new File(newFilePath);
+        oldFile.renameTo(dest);
+        return dest;
 
     }
 }

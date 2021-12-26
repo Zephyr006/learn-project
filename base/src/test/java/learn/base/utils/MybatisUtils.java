@@ -1,7 +1,7 @@
 package learn.base.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
-import learn.base.test.mapper.TestMapper;
+import learn.base.test.business.mapper.TestMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -32,7 +32,7 @@ public final class MybatisUtils {
         String pwd = "JustDoIt2019";
 
         HikariDataSource dataSource = new HikariDataSource(HikariConfigUtil.buildHikariConfig(host, dbName, username, pwd));
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory(dataSource, "learn.base.test.mapper");
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory(dataSource, "learn.base.test.business.mapper");
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             TestMapper testMapper = sqlSession.getMapper(TestMapper.class);
             List<Object> result = testMapper.selectAll(1, true);

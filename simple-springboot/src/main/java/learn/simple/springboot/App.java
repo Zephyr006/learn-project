@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @date 2021/11/27.
  */
 @SpringBootApplication
+        //(scanBasePackages = {"learn.simple.datasource.lesson", "learn.simple.datasource.question"})
 public class App {
 
     public static void main(String[] args) {

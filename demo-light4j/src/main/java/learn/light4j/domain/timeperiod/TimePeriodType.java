@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/9 3:12 下午
- */
 @AllArgsConstructor
 @Getter
 public enum TimePeriodType {
