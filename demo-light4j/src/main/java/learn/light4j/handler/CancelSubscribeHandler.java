@@ -3,7 +3,6 @@ package learn.light4j.handler;
 import com.networknt.utility.CollectionUtil;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import learn.light4j.constants.ErrorEnum;
 import learn.light4j.domain.subscribe.SubscribeService;
 import learn.light4j.model.BaseResponse;
 

@@ -21,11 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-/**
- * 统计执行器
- * @author: caoyanan
- * @time: 2020/12/7 5:37 下午
- */
 @Slf4j
 public class StatisticService {
 

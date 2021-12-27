@@ -3,10 +3,6 @@ package learn.light4j.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/8 7:07 下午
- */
 @Getter
 @AllArgsConstructor
 public enum ErrorEnum implements ResponseCode {

@@ -6,10 +6,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/22 4:18 下午
- */
 @Builder
 @Data
 public class PageResponse<T> {

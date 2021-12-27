@@ -1,8 +1,8 @@
 package learn.demo.webclient;
 
 import learn.demo.webclient.api.IBlogApi;
-import learn.demo.webclient.interfaces.impl.JdkProxyCreator;
 import learn.demo.webclient.interfaces.ProxyCreator;
+import learn.demo.webclient.interfaces.impl.JdkProxyCreator;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

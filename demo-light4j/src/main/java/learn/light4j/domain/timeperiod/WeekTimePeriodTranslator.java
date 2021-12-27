@@ -2,10 +2,6 @@ package learn.light4j.domain.timeperiod;
 
 import java.util.Calendar;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/9 3:27 下午
- */
 public class WeekTimePeriodTranslator implements TimePeriodTranslator {
 
     public static final Calendar CALENDAR = Calendar.getInstance();

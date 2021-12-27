@@ -4,10 +4,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/1 2:22 下午
- */
 @Data
 public class StatisticQueryCriteria {
 

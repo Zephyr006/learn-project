@@ -9,10 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author: caoyanan
- * @time: 2020/12/8 5:36 下午
- */
 public class StatisticManager {
 
     private StatisticManager(){}

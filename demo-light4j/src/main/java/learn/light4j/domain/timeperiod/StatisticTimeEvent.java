@@ -5,10 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * @author: caoyanan
- * @time: 2020/11/30 6:25 下午
- */
+
 @Data
 @AllArgsConstructor
 public class StatisticTimeEvent {

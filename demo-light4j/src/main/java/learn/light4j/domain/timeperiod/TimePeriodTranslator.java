@@ -1,10 +1,6 @@
 package learn.light4j.domain.timeperiod;
 
-/**
- * 时间周期转换器
- * @author: caoyanan
- * @time: 2020/12/9 3:16 下午
- */
+
 public interface TimePeriodTranslator {
 
     /**
