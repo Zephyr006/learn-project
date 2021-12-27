@@ -34,16 +34,6 @@ public class DataServerMapperScanner extends ClassPathBeanDefinitionScanner {
     super(registry, false);
   }
 
-  public static void main(String[] args) {
-    int i = 31;  //1000
-    i |= (i >>  1); // 0100 | 1000  1100
-    i |= (i >>  2); // 0011 | 1100  1111
-    i |= (i >>  4);
-    i |= (i >>  8);
-    i |= (i >> 16);
-    // 得到一个从当前参数最高位开始，每一位都是1的数
-    System.out.println(i - (i >>> 1));
-  }
   @Override
   public Set<BeanDefinitionHolder> doScan(String... basePackages) {
 

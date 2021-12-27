@@ -2,7 +2,6 @@ package learn.base.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 import learn.base.test.business.mapper.TestMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.LocalCacheScope;
@@ -49,7 +48,7 @@ public final class MybatisUtils {
                     assert dataSource != null;
                     assert mapperClassPackage != null;
                     try {
-                        List<Class<?>> mappers = StringUtils.isEmpty(mapperClassPackage)
+                        List<Class<?>> mappers = mapperClassPackage.isEmpty()
                                 ? Collections.emptyList() : Reflections.getClasses(mapperClassPackage);
                         sqlSessionFactory = buildSqlSessionFactory(dataSource, mappers);
                     } catch (ClassNotFoundException e) {
@@ -69,7 +68,7 @@ public final class MybatisUtils {
      *   Blog blog = mapper.selectBlog(101);
      * }
      */
-    public static SqlSessionFactory buildSqlSessionFactory(DataSource dataSource, List<Class<?>> mappers) {
+    private static SqlSessionFactory buildSqlSessionFactory(DataSource dataSource, List<Class<?>> mappers) {
         // 事务
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("development", transactionFactory, dataSource);

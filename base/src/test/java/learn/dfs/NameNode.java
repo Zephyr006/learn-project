@@ -29,8 +29,4 @@ public class NameNode {
         }
     }
 
-    public static void main(String[] args) {
-        NameNode nameNode = new NameNode();
-
-    }
 }

@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +26,7 @@ import java.util.Map;
  * @date 2021/1/29.
  */
 public class JsonUtil {
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
+    // private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
     private static ObjectMapper MAPPER = new ObjectMapper();
 
     static {
@@ -48,7 +46,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            logger.error("JsonUtil.toJSONString error. ", e);
+            // logger.error("JsonUtil.toJSONString error. ", e);
         }
         return null;
     }
@@ -57,7 +55,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(text, clazz);
         } catch (JsonProcessingException e) {
-            logger.error("JsonUtil.parseObject error, original text = " + text, e);
+            // logger.error("JsonUtil.parseObject error, original text = " + text, e);
         }
         return null;
     }
@@ -66,7 +64,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(bytes, clazz);
         } catch (IOException e) {
-            logger.error("JsonUtil.parseObject error. ", e);
+            // logger.error("JsonUtil.parseObject error. ", e);
         }
         return null;
     }
@@ -77,7 +75,7 @@ public class JsonUtil {
             //ObjectReader reader = MAPPER.readerFor(clazz);
             return MAPPER.readerFor(clazz).<T>readValues(text).readAll();
         } catch (IOException e) {
-            logger.error("JsonUtil.parseArray error, original text = " + text, e);
+            // logger.error("JsonUtil.parseArray error, original text = " + text, e);
         }
         return null;
     }
@@ -86,7 +84,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(new File(filePath), new TypeReference<List<T>>() {});
         } catch (IOException e) {
-            logger.error("JsonUtil.parseArrayFromFile error. ", e);
+            // logger.error("JsonUtil.parseArrayFromFile error. ", e);
         }
         return null;
     }
@@ -96,7 +94,7 @@ public class JsonUtil {
             MapType mapType = MAPPER.getTypeFactory().constructRawMapType(LinkedHashMap.class);
             return MAPPER.readValue(text, mapType);
         } catch (JsonProcessingException e) {
-            logger.error("JsonUtil.parseMap error. ", e);
+            // logger.error("JsonUtil.parseMap error. ", e);
         }
         return null;
     }
