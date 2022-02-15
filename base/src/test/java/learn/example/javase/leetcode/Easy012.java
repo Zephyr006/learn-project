@@ -63,4 +63,33 @@ public class Easy012 {
     public static void main(String[] args) {
         System.out.println(new Easy012().searchInsert(new int[]{1,3}, 2));;
     }
+
+    private int searchInsert2(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0] == target ? 0 : (nums[0] > target ? 0 : 1);
+        }
+
+        int len = nums.length;
+        int left = 0, right = len >> 1;
+        int rightNum = nums[right];
+        // 注意停止循环的条件
+        while (left < right) {
+            // 如果右侧指针值等于目标值，直接返回结果'right'
+            if (rightNum == target) {
+                return right;
+            // 如果右侧指针值小于目标值，说明目标值在right指针的右侧，取当前right指针与数组结尾的'折半'位置
+            } else if (rightNum < target) {
+                left = right;
+                right = (left + len) >> 1;
+            // right指针值大于target值，取left指针与right指针的'折半'
+            } else {
+                right = (left + right) >> 1;
+            }
+        }
+        // 退出循环后，当前right指针所在位置可能是target值的左侧一个位置，要考虑是否需要右移一位
+        return rightNum < target ? right + 1 : right;
+    }
 }

@@ -16,14 +16,15 @@ import java.nio.charset.StandardCharsets;
  * @author Zephyr
  * @date 2021/12/19.
  */
-public class NetTests {
+public class InetAddressExample {
     private static final int port = 19999;
 
     @Test
-    public void testInteAddress() throws UnknownHostException {
+    public void testInetAddress() throws UnknownHostException {
         InetAddress[] addressList = InetAddress.getAllByName("github.com");
         for (InetAddress address : addressList) {
             System.out.println(address.getHostAddress());
+            System.out.println(address.getHostName());
         }
     }
 

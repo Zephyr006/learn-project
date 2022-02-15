@@ -68,4 +68,26 @@ public class Easy013 {
 
 
     }
+
+    public String countAndSay2(int n) {
+        String str = "1";
+        // 从2开始，列举每一种输入值的对应输出值
+        for (int i = 2; i <= n; i++) {
+            StringBuilder sb = new StringBuilder();
+            int start = 0;
+            int pos = 0;
+
+            while (pos < str.length()) {
+                // 字符相同，指针右移（累加计数），直到出现不同字符，或者字符串遍历完成为止
+                while (pos < str.length() && str.charAt(pos) == str.charAt(start)) {
+                    pos++;
+                }
+                sb.append((pos - start)).append(str.charAt(start));
+                start = pos;
+            }
+            // 每次遍历完成，都等价于得到了一个i值对应的输出值
+            str = sb.toString();
+        }
+        return str;
+    }
 }

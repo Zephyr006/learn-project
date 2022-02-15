@@ -1,6 +1,8 @@
 package learn.example.javase.leetcode;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,12 +34,26 @@ import java.util.Set;
 public class Easy002 {
 
     public static void main(String[] args) {
-        String s = "abcabcbdkgz";
+        String s = "asdfghjj";
         System.out.println(new Easy002().lengthOfLongestSubstring(s));
+
+
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        int max = 0;
+        int left = 0;
+        for(int i = 0; i < s.length(); i ++){
+            if(map.containsKey(s.charAt(i))){
+                // 滑动窗口的重点：将left指针移动到重复元素的右侧
+                left = Math.max(left, map.get(s.charAt(i)) + 1);
+            }
+            map.put(s.charAt(i),i);
+            max = Math.max(max,i-left+1);
+        }
+        System.out.println(max);
     }
 
     /**
-     * 找出 从每一个字符开始的，不包含重复字符的最长子串，那么其中最长的那个字符串即为答案。
+     * 暴力枚举法：找出 从每一个字符开始的，不包含重复字符的最长子串，那么其中最长的那个字符串即为答案。
      * 自己写的实现
      * @param s
      * @return
@@ -49,12 +65,9 @@ public class Easy002 {
             for (int j = i; j < s.length(); j++) {
                 char c = s.charAt(j);
                 if (set.contains(c)) {
-                    if (set.size() > maxLen)
-                        maxLen = set.size();
+                    maxLen = Math.max(maxLen, set.size());
                     set.clear();
                     break;
-                } else {
-                    maxLen = Math.max(maxLen, set.size());
                 }
                 set.add(c);
             }
@@ -62,6 +75,22 @@ public class Easy002 {
         return Math.max(maxLen, set.size());
     }
 
+    /**
+     * 滑动窗口方法: map (k, v)，其中 key 值为字符，value 值为字符下标位置
+     */
+    public int lengthOfLongestSubstring3(String s) {
+        int max = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for(int left = 0, right = 0; right < s.length(); right++){
+            char element = s.charAt(right);
+            if(map.containsKey(element)){
+                left = Math.max(map.get(element) + 1, left); //map.get()的地方进行+1操作
+            }
+            max = Math.max(max, right - left + 1);
+            map.put(element, right);
+        }
+        return max;
+    }
     /**
      * 官方写的实现
      * @param s
@@ -73,7 +102,7 @@ public class Easy002 {
         int n = s.length();
         // 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
         int rk = -1, ans = 0;
-            for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             if (i != 0) {
                 // 左指针向右移动一格，移除一个字符
                 occ.remove(s.charAt(i - 1));

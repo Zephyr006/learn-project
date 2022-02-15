@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 13. 罗马数字转整数    （关联题目：整数转罗马数字 - learn.example.javase.leetcode.Medium04）
+ * 13. 罗马数字转整数    （关联题目：整数转罗马数字 - {@link learn.example.javase.leetcode.Medium04}）
  *
  * 罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
  *

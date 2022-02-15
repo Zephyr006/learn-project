@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
  */
 public class HttpUrlUtils {
 
-    public static String sendGetRequest(String completeUrl) throws IOException {
+    public static String sendGetRequest(String completeUrl, int timeout) throws IOException {
         URL url = new URL(completeUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+        connection.setConnectTimeout(timeout);
+        connection.setReadTimeout(timeout);
         connection.connect();
         if (HttpURLConnection.HTTP_OK != connection.getResponseCode()) {
             System.err.println(connection);
@@ -78,7 +80,7 @@ public class HttpUrlUtils {
     /**
      * 序列化请求参数：只能处理String、Long这种简单类型的参数，不支持数组和对象类型的参数
      */
-    public static String serializeParams(String contentType, Map<String, ?> params) throws IOException {
+    public static String serializeParams(String contentType, Map<String, ?> params) {
         switch (contentType) {
             case "application/x-www-form-urlencoded":
                 return params.entrySet().stream()

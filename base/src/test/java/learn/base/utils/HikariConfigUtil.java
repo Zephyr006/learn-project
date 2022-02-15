@@ -43,7 +43,7 @@ public class HikariConfigUtil {
         properties.setProperty("username", username);
         properties.setProperty("password", password);
         // 连接只读数据库时配置为true， 保证安全
-        properties.setProperty("readOnly", "true");
+        properties.setProperty("readOnly", "false");
         // 是否自动提交事务
         properties.setProperty("autoCommit", "false");
         // 设置在创建新连接时将在所有新连接上执行的SQL字符串，然后再将其添加到池中。如果此查询失败，它将被视为失败的连接尝试。
