@@ -15,11 +15,11 @@ public class Reflections {
     public static void main(String[] args) {
         try {
             System.out.println("接口实现类：");
-            for (Class<JsonUtil> c : getAllAssignedClass(JsonUtil.class)) {
+            for (Class<CurrentTimeMillisClock> c : getAllAssignedClass(CurrentTimeMillisClock.class)) {
                 System.out.println(c.getName());
             }
             System.out.println("子类：");
-            for (Class<JsonUtil> c : getAllAssignedClass(JsonUtil.class)) {
+            for (Class<CurrentTimeMillisClock> c : getAllAssignedClass(CurrentTimeMillisClock.class)) {
                 System.out.println(c.getName());
             }
         } catch (ClassNotFoundException e) {

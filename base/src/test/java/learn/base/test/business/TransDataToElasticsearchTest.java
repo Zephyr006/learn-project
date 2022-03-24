@@ -1,10 +1,10 @@
 package learn.base.test.business;
 
+import com.alibaba.fastjson.JSON;
 import com.zaxxer.hikari.HikariDataSource;
 import learn.base.test.business.entity.LessonWatchTimeLog;
 import learn.base.test.business.mapper.LessonWatchTimeLogMapper;
 import learn.base.utils.HikariConfigUtil;
-import learn.base.utils.JsonUtil;
 import learn.base.utils.MybatisUtils;
 import org.apache.http.HttpHost;
 import org.apache.ibatis.session.SqlSession;
@@ -17,7 +17,6 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.Objects;
  */
 public class TransDataToElasticsearchTest {
 
-    @Test
+    //@Test
     public void testTransData() {
         String host = "gaea-db.rwlb.rds.aliyuncs.com:3306";
         String dbName = "lesson";
@@ -64,7 +63,7 @@ public class TransDataToElasticsearchTest {
                 for (LessonWatchTimeLog lessonWatchTimeLog : lessonWatchTimeLogs) {
                     bulkRequest.add(new IndexRequest("jk_lessonwatchtimelog")
                             .id(String.valueOf(lessonWatchTimeLog.getId()))
-                            .source(Objects.requireNonNull(JsonUtil.toJSONString(lessonWatchTimeLog)), XContentType.JSON));
+                            .source(Objects.requireNonNull(JSON.toJSONString(lessonWatchTimeLog)), XContentType.JSON));
                 }
                 BulkResponse response = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
                 if (response.status().getStatus() != 200 || response.hasFailures()) {

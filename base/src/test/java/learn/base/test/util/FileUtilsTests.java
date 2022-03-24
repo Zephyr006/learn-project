@@ -1,7 +1,6 @@
 package learn.base.test.util;
 
 import learn.example.javase.io.filedb.util.FileUtils;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +15,7 @@ import java.util.zip.ZipInputStream;
 public class FileUtilsTests {
     private static final String path = "/Users/wang/Desktop/归档";
 
-    @Test
+    //@Test
     public void testUnZip() throws IOException {
         File file = new File(path + ".ccr");
         file = FileUtils.changeSuffix(file, "zip");
@@ -33,7 +32,7 @@ public class FileUtilsTests {
         }
     }
 
-    @Test
+    //@Test
     public void toCcr() {
         File file = new File(path + ".zip");
         file = FileUtils.changeSuffix(file, "ccr");

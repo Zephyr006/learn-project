@@ -1,6 +1,6 @@
 package learn.example.javase.http;
 
-import learn.base.utils.JsonUtil;
+import com.alibaba.fastjson.JSON;
 import learn.example.javase.SleepUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -9,7 +9,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class ColorfulCloudTest {
 
 
-    @Test
+    //@Test
     public void testInviteUserToVip() throws IOException {
         for (int i = 0; i < 100; i++) {
             String token = getNewUserToken();
@@ -57,7 +56,7 @@ public class ColorfulCloudTest {
         inviteParams.put("invitation_code", "38523485");
 
         String inviteRespStr = doPost("https://biz.caiyunapp.com/v3/user/invitation_code/redeem", inviteHeaders, inviteParams);
-        Map<String, Object> inviteMap = (Map<String, Object>) JsonUtil.parseMap(inviteRespStr);
+        Map<String, Object> inviteMap = (Map<String, Object>) JSON.parseObject(inviteRespStr, Map.class);
         if (Integer.valueOf(0) == inviteMap.get("rc")) {
             System.out.println();
             System.out.println(LocalTime.now().toString() + "  彩云天气新用户邀请成功，SVIP天数喜+ " + inviteMap.get("duration"));
@@ -91,7 +90,7 @@ public class ColorfulCloudTest {
             respStr = doPost("https://biz.caiyunapp.com/v1/login_by_code", registerHeaders, registerParams);
 
             System.out.println(LocalTime.now().toString() + "  请求了一次注册彩云天气用户的接口。。。");
-        } while ( !"ok".equals( (registerRespMap = JsonUtil.parseMap(respStr)).get("status") ) && !(firstTime = false));
+        } while ( !"ok".equals( (registerRespMap = JSON.parseObject(respStr, Map.class)).get("status") ) && !(firstTime = false));
 
         Map<String, Object> result = (Map<String, Object>) registerRespMap.get("result");
         return String.valueOf(result.get("token"));
@@ -118,7 +117,7 @@ public class ColorfulCloudTest {
         }
 
         Optional.ofNullable(params).ifPresent(paramMap -> {
-            String paramStr = JsonUtil.toJSONString(paramMap);
+            String paramStr = JSON.toJSONString(paramMap);
             post.setEntity(new StringEntity(Objects.requireNonNull(paramStr),
                     ContentType.create("application/json", "utf-8")));
         });

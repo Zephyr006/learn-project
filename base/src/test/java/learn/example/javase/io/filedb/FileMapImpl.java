@@ -1,7 +1,7 @@
 package learn.example.javase.io.filedb;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import learn.example.javase.io.filedb.util.FileChannelUtils;
 import learn.example.javase.io.filedb.util.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -36,7 +36,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
 
 
     public FileMapImpl(String dbName, FileMapOptions op) {
-        this.options = op;
+        options = op;
         this.dbName = dbName;
         try {
             File dbDir = new File(dir);
@@ -47,8 +47,8 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
             RandomAccessFile indexFile = new RandomAccessFile(dir + dbName + indexSuffix, options.getFileMode());
             dbChannel = dbFile.getChannel();
             indexChannel = indexFile.getChannel();
-            dbChannel.position(this.dbChannel.size());
-            indexChannel.position(this.indexChannel.size());
+            dbChannel.position(dbChannel.size());
+            indexChannel.position(indexChannel.size());
         } catch (IOException e) {
             logger.error("FileMap init failed!!!", e);
         }
@@ -60,7 +60,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
         waitForInit();
 
         Integer hashCode = key.hashCode();
-        MutablePair<FileMapIndex, V> pair = this.getCache(hashCode);
+        MutablePair<FileMapIndex, V> pair = getCache(hashCode);
         return Objects.isNull(pair) ? null : pair.right;
     }
 
@@ -75,7 +75,8 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
         FileLock indexLock = null;
         long stamped = 0;
         try {
-            byte[] valueBytes = objMapper.writeValueAsBytes(segment);
+            //byte[] valueBytes = objMapper.writeValueAsBytes(segment);
+            byte[] valueBytes = JSON.toJSONBytes(segment);
             MutablePair<FileMapIndex, V> oldCache = getCache(hashCode);
             stamped = lock.writeLock();
             // 下面这条语句不加锁访问时会导致数据出错，不信试试
@@ -96,7 +97,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
                 index = new FileMapIndex(indexChannel.position(), hashCode,
                         dbOriginPosition, valueBytes.length);
             }
-            this.putCache(index, value);
+            putCache(index, value);
             byte[] indexBytes = index.serialize();
 
             dbLock = dbChannel.lock(dbChannel.position(), valueBytes.length, false);
@@ -145,7 +146,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
     @Override
     public V put(String key, V value) {
         try {
-            return this.put(key, value, options.getSyncMode());
+            return put(key, value, options.getSyncMode());
         } catch (JsonProcessingException e) {
             logger.error("FileMap保存值时出错 -- key={}, value={}", key, value, e);
             return null;
@@ -165,7 +166,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
     public V remove(String key) {
         waitForInit();
         int hashCode = key.hashCode();
-        MutablePair<FileMapIndex, V> pair = this.getCache(hashCode);
+        MutablePair<FileMapIndex, V> pair = getCache(hashCode);
         if (pair == null)   return null;
         FileMapIndex index = pair.left;
         V v = pair.right;
@@ -190,7 +191,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
         if (m.size() > 0) {
             for (Map.Entry<String, ? extends V> e : m.entrySet()) {
                 try {
-                    this.put(e.getKey(), e.getValue(), FileMapOptions.ASYNC);
+                    put(e.getKey(), e.getValue(), FileMapOptions.ASYNC);
                 } catch (JsonProcessingException ex) {
                     logger.error("FileMap putAll error!", ex);
                 }
@@ -216,7 +217,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
         try {
             FileMapIndex index = new FileMapIndex(indexStr);
             bytes = FileChannelUtils.read(channel, index.dbStartPosition, index.valLength);
-            Map<String, Object> map = objMapper.readValue(bytes, Map.class);
+            Map<String, Object> map = JSON.parseObject(bytes, Map.class);
             putCache(index, (V) map.get("value"));
         } catch (Exception e) {
             logger.error("FileMap恢复历史数据时出错，索引信息为 {}， 出错值为 {}",
@@ -234,9 +235,9 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
     @Override
     public void init() {
         //objMapper = SpringContextUtil.getBean(ObjectMapper.class);
-        objMapper = new ObjectMapper();
+        //objMapper = new ObjectMapper();
         try {
-            if (this.indexChannel.size() <= 0) {
+            if (indexChannel.size() <= 0) {
                 initialized = true;
                 logger.info("FileMap <{}> 初始化完成，共初始化了 0 条原始数据", dbName);
                 return;
@@ -275,7 +276,7 @@ public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
                         if (Arrays.equals(blankArray, indexArray)
                                 || Arrays.equals(FileMapIndex.BLANK_IDX_BYTES, indexArray))
                             continue;
-                        this.putCache(new String(indexArray), rDbChannel);
+                        putCache(new String(indexArray), rDbChannel);
                     }
                 }
                 rDbChannel.close();

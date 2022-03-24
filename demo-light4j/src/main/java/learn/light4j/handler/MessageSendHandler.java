@@ -1,8 +1,8 @@
 package learn.light4j.handler;
 
+import com.alibaba.fastjson.JSON;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import learn.base.utils.JsonUtil;
 import learn.light4j.domain.EventTrackingMessage;
 import learn.light4j.provider.KafkaStartupHookProvider;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -20,7 +20,7 @@ public class MessageSendHandler implements HttpHandler {
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(
                 KafkaStartupHookProvider.KAFKA_CONFIG.getTopic(),
-                JsonUtil.toJSONString(getMessage(System.currentTimeMillis())).getBytes());
+                JSON.toJSONString(getMessage(System.currentTimeMillis())).getBytes());
         KafkaStartupHookProvider.producer.send(record);
 
         exchange.getResponseSender().send("{\"success\":\"true\"}");

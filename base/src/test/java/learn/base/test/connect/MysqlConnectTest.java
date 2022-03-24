@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.sql.*;
 import java.util.Properties;
@@ -94,7 +93,7 @@ public class MysqlConnectTest extends BaseTest {
         System.out.println("--- Mysql connect successfully! ---");
     }
 
-    @Test
+    //@Test
     public void testConnectionByHikariCP() {
         if (!checkContext()) {
             return;

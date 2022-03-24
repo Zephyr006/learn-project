@@ -1,6 +1,5 @@
 package learn.example.javase.io.filedb;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public abstract class AbstractFileMap<V extends Serializable> implements FileMap
     static final String projectPath = System.getProperty("user.dir") + File.separatorChar;
     static final String dbSuffix = ".db";
     static final String indexSuffix = ".idx";
-    static ObjectMapper objMapper;
+    //static ObjectMapper objMapper;
     static String dir = projectPath + File.separatorChar + "LocalStorage" + File.separatorChar;
 
     protected String dbName;

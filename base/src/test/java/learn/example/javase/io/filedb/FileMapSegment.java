@@ -1,8 +1,5 @@
 package learn.example.javase.io.filedb;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.Serializable;
 
 /**
@@ -49,10 +46,10 @@ public class FileMapSegment<V> implements Serializable {
         this.value = value;
     }
 
-    public byte[] serialize(ObjectMapper mapper) throws JsonProcessingException {
-        String jsonString = this.toJsonString(mapper.writeValueAsString(value));
-        return mapper.writeValueAsBytes(jsonString);
-    }
+    //public byte[] serialize(ObjectMapper mapper) throws JsonProcessingException {
+    //    String jsonString = this.toJsonString(mapper.writeValueAsString(value));
+    //    return mapper.writeValueAsBytes(jsonString);
+    //}
 
     public String toJsonString(String valueStr) {
         return  "{\"time\":" + time +

@@ -1,8 +1,8 @@
 package learn.light4j.domain.subscribe;
 
+import com.alibaba.fastjson.JSON;
 import com.networknt.utility.CollectionUtil;
 import com.networknt.utility.StringUtils;
-import learn.base.utils.JsonUtil;
 import learn.light4j.domain.EventTrackingMessage;
 import learn.light4j.domain.subscribe.request.SubscribeCriteria;
 import lombok.extern.slf4j.Slf4j;
@@ -148,7 +148,7 @@ public class SubscribeService {
 
     private void sendClientMessage(StreamSinkChannel channel, EventTrackingMessage message) {
 
-        ByteBuffer contentBuffer = ByteBuffer.wrap(("data: " + JsonUtil.toJSONString(message) + "\n\n").getBytes());
+        ByteBuffer contentBuffer = ByteBuffer.wrap(("data: " + JSON.toJSONString(message) + "\n\n").getBytes());
 
         try {
             if (channel.isOpen()) {

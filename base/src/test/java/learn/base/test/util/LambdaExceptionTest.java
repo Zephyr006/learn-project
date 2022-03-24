@@ -25,7 +25,7 @@ public class LambdaExceptionTest {
                 .forEach(LambdaExceptionUtil.rethrowConsumer(System.out::println));
     }
 
-    @Test
+    @Test(expected = ClassNotFoundException.class)
     public void test_Function_with_checked_exceptions() throws ClassNotFoundException {
         List<Class> classes1
                 = Stream.of("Object", "Integer2", "String")
