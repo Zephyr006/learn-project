@@ -2,6 +2,7 @@
 *.class
 /target/
 */target/
+/*/*/target/
 learn-project.*
 */dependency-reduced-pom.xml
 

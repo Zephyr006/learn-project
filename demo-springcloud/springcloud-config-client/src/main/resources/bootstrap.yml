@@ -1,0 +1,53 @@
+
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://39.106.73.19:3306/crm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password:
+        hikari:
+            idle-timeout: 300000
+            max-lifetime: 0
+            maximum-pool-size: 15
+    application:
+        name: me
+    security:
+        user:
+            password:
+    cloud:
+        config:
+            name: crm
+            profile: dev
+            label: master
+            uri: http://localhost:8888
+            username: user
+            password:
+            enabled: false
+        bus:
+            enabled: false
+eureka:
+    client:
+        service-url:
+            defaultZone:  http://192.168.11.91:8761/eureka
+    instance:
+        prefer-ip-address: true
+
+server:
+    port: 11009
+
+logging:
+    level:
+        learn:
+            springcloud:
+                config:
+                    client:
+                        mapper: info
+            datasource:
+                mapper: info
+        base-mybatis: info
+mybatis-plus:
+    mapper-locations: /mapper/*.xml
+base:
+    mybatis:
+        log:
+            enable: false
