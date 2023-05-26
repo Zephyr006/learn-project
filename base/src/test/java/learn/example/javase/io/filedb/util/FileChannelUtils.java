@@ -11,7 +11,7 @@ import java.nio.channels.FileLock;
 
 /**
  * @author Zephyr
- * @date 2020/5/21.
+ * @since 2020-05-21.
  */
 public class FileChannelUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileChannelUtils.class);

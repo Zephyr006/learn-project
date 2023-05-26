@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
  * @see com.networknt.openapi.JwtVerifyHandler
  *
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-01.
  */
 public class CustomJwtVerifyHandler implements MiddlewareHandler, IJwtVerifyHandler {
     static final Logger logger = LoggerFactory.getLogger(JwtVerifyHandler.class);

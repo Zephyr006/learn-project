@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @author: cao
- * @time: 2020/12/3 5:52 下午
+ * @time: 2020-12-3 5:52 下午
  */
 @Data
 public class KafkaConfig {

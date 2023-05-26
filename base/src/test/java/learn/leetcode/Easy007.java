@@ -1,5 +1,6 @@
 package learn.leetcode;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 /**
@@ -31,7 +32,7 @@ import java.util.Stack;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author Zephyr
- * @date 2020/7/4.
+ * @since 2020-07-04.
  */
 public class Easy007 {
 
@@ -42,7 +43,7 @@ public class Easy007 {
      *
      * @return  The object at the top of this stack (the last item
      *          of the <tt>Vector</tt> object).
-     * @throws  EmptyStackException  if this stack is empty.
+     * @throws EmptyStackException  if this stack is empty.
      */
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();

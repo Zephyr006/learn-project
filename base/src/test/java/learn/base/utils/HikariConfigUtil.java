@@ -13,7 +13,7 @@ import java.util.Properties;
  *
  *
  * @author Zephyr
- * @date 2021/4/8.
+ * @since 2021-04-08.
  */
 public class HikariConfigUtil {
 

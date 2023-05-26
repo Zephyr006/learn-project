@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * 服务器相关信息，应用在XxxApi的类名上
  *
  * @author Zephyr
- * @date 2020/11/22.
+ * @since 2020-11-22.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

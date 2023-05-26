@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author Zephyr
- * @date 2021/1/12.
+ * @since 2021-01-12.
  */
 @DataServerMapper(dataSource = QuestionDataSource.class)
 public interface QuestionTagMapper extends BaseMapper<QuestionTag> {

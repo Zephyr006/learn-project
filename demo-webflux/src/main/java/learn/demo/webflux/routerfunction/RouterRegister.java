@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 /**
  * RouterFunction编程的路由注册 （注册 url path）
  * @author Zephyr
- * @date 2020/11/22.
+ * @since 2020-11-22.
  */
 @Configuration
 public class RouterRegister {

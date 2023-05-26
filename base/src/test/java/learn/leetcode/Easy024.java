@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
  * 链接：https://leetcode-cn.com/leetbook/read/meituan/ohsjgd
  *
  * @author Zephyr
- * @date 2022/2/26.
+ * @since 2022-02-26.
  */
 public class Easy024 {
 

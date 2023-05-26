@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * 用户 id 和 dataCenterId
  *
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-01.
  */
 @Data
 @NoArgsConstructor

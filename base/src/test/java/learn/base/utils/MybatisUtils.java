@@ -25,7 +25,7 @@ import java.util.Optional;
 
 /**
  * @author Zephyr
- * @date 2021/5/26.
+ * @since 2021-05-26.
  */
 public final class MybatisUtils {
     public static final boolean MAP_UNDERSCORE_TO_CAMEL_CASE = true;

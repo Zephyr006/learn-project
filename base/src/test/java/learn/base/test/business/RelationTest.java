@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Zephyr
- * @date 2021/3/30.
+ * @since 2021-03-30.
  */
 public class RelationTest {
     private static final String driverClassName = "com.mysql.jdbc.Driver";
@@ -43,7 +43,8 @@ public class RelationTest {
 
         try (final HikariDataSource dataSource = initDataSource()) {
             long nowTime = System.currentTimeMillis();
-            StopWatch stopWatch = StopWatch.createAndStart("查询指定做题集下满足指定正确率的用户id");
+            StopWatch stopWatch = new StopWatch("查询指定做题集下满足指定正确率的用户id");
+            stopWatch.start();
             ExecutorService executorService = Executors.newFixedThreadPool(10);
             try (final Connection connection = dataSource.getConnection()) {
                 System.out.println(connection.isValid(3));
@@ -86,7 +87,7 @@ public class RelationTest {
                     }).flatMap(Collection::stream).limit(1000).collect(Collectors.toList());
 
                     System.out.println("result.size = " + list.size());
-                    System.out.println(stopWatch.stopAndPrint());
+                    System.out.println(stopWatch.stopAndPrettyPrint());
                     System.out.println(list);
                 }
             }

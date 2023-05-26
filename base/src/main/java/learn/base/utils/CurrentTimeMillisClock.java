@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * System.currentTimeMillis() Cache
- * 
+ *
  * @author Zephyr
- * @date 2020/12/18.
+ * @since 2020-12-18.
  */
 public class CurrentTimeMillisClock {
     private volatile long now;
@@ -28,7 +28,7 @@ public class CurrentTimeMillisClock {
             now = System.currentTimeMillis();
         }, 1, 1, TimeUnit.MILLISECONDS);
 
-        //如果执行某一绝对时间(如2014/02/14 17:13:06)执行任务，此时可使用Timer
+        //如果执行某一绝对时间(如2014/02-14 17:13:06)执行任务，此时可使用Timer
         //new Timer("timer-current-time-millis", true).scheduleAtFixedRate(new TimerTask() {
         //    @Override
         //    public void run() {

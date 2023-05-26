@@ -4,7 +4,7 @@ import com.networknt.server.Server;
 
 /**
  * @author Zephyr
- * @date 2020/11/30.
+ * @since 2020-11-30.
  */
 public class Light4jServer {
 

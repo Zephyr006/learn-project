@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
  * 将收到的埋点数据发送到 kafka
  *
  * @author Zephyr
- * @date 2020/12/3.
+ * @since 2020-12-03.
  */
 public class KafkaProducerHandler implements LightHttpHandler {
     private static final Logger log = LoggerFactory.getLogger(KafkaProducerHandler.class);

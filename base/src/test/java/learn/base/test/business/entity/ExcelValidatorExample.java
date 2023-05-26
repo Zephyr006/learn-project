@@ -5,7 +5,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 /**
  * @author Zephyr
- * @date 2021/4/17.
+ * @since 2021-4-17.
  */
 public class ExcelValidatorExample implements ExcelValidator {
 

@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  *
  * 索引文件数据结构： {index_start_position}:{key_hashCode}:{db_start_position}:{value_full_length}
  * @author Zephyr
- * @date 2020/5/25.
+ * @since 2020-05-25.
  */
 public class FileMapIndex implements Serializable {
     private static final long serialVersionUID = 977629995856925165L;

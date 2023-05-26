@@ -20,7 +20,7 @@ import static io.undertow.Handlers.resource;
 
 /**
  * @author cao
- * @time: 2020/12/2 6:18 下午
+ * @time: 2020-12-2 6:18 下午
  */
 public class PathHandlerProvider implements HandlerProvider {
 

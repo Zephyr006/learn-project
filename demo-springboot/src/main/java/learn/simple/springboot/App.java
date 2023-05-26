@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * @author Zephyr
- * @date 2021/11/27.
+ * @since 2021-11-27.
  */
 @SpringBootApplication
         //(scanBasePackages = {"learn.simple.datasource.lesson", "learn.simple.datasource.question"})

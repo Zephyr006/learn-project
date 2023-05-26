@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Zephyr
- * @date 2021/4/30.
+ * @since 2021-04-30.
  */
 public class ResultSetUtils {
 

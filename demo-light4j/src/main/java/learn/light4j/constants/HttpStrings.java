@@ -5,7 +5,7 @@ import io.undertow.util.HttpString;
 
 /**
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-01.
  */
 public class HttpStrings extends HttpStringConstants{
 

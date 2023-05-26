@@ -2,7 +2,7 @@ package learn.example.javase.io.filedb;
 
 /**
  * @author Zephyr
- * @date 2020/5/27.
+ * @since 2020-05-27.
  */
 public class FileMapOptions {
     /**

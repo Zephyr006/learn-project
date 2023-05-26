@@ -9,7 +9,7 @@ package learn.leetcode;
  * 对于 n 字节 的字符 (n > 1)，第一个字节的前 n 位都设为1，第 n+1 位设为 0 ，后面字节的前两位一律设为 10 。剩下的没有提及的二进制位，全部为这个符号的 unicode 码。
  *
  * @author Zephyr
- * @date 2022/3/16.
+ * @since 2022-03-16.
  */
 public class Medium12 {
 

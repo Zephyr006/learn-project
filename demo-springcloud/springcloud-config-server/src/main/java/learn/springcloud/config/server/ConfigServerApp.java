@@ -7,7 +7,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
  * @author Zephyr
- * @date 2020/10/9.
+ * @since 2020-10-09.
  */
 @EnableConfigServer
 @EnableDiscoveryClient

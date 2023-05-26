@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
  * JPA可以根据方法名自动生成sql
  *
  * @author Zephyr
- * @date 2020/11/13.
+ * @since 2020-11-13.
  */
 @Repository
 public interface BlogRepository extends ReactiveMongoRepository<Blog, String> {

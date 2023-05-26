@@ -2,11 +2,16 @@ package learn.base.test;
 
 import learn.example.javase.SleepUtil;
 
-import java.util.*;
+import java.util.AbstractQueue;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 /**
  * @author Zephyr
- * @date 2021/12/18.
+ * @since 2021-12-18.
  */
 public class CustomBlockingQueueTest {
 

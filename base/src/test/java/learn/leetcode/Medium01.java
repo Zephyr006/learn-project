@@ -22,7 +22,7 @@ package learn.leetcode;
  * 链接：https://leetcode-cn.com/problems/string-to-integer-atoi
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  * @author Zephyr
- * @date 2020/7/1.
+ * @since 2020-07-01.
  */
 public class Medium01 {
 

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * @author Zephyr
- * @date 2021/4/14.
+ * @since 2021-4-14.
  */
 public interface UserDataConfig {
     String dbName = "relation";

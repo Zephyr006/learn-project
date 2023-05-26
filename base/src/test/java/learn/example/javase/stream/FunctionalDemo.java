@@ -41,7 +41,7 @@ import java.util.function.Supplier;
  * 完整表单参见 @link https://www.runoob.com/java/java8-functional-interfaces.html
  *
  * @author Zephyr
- * @date 2020/11/19.
+ * @since 2020-11-19.
  */
 public class FunctionalDemo {
 

@@ -26,7 +26,7 @@ import java.util.concurrent.locks.StampedLock;
  * （finished） 增加异步刷盘的支持，异步刷盘需要写入达到一定数量后执行强制刷盘
  * （Deprecated） 读写文件时申请操作系统中的内存，并回收
  * @author Zephyr
- * @date 2020/5/25.
+ * @since 2020-05-25.
  */
 public class FileMapImpl<V extends Serializable> extends AbstractFileMap<V> {
     private static final Logger logger = LoggerFactory.getLogger(FileMapImpl.class);

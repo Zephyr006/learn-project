@@ -2,7 +2,7 @@ package learn.leetcode;
 
 /**
  * @author Zephyr
- * @date 2020/8/15.
+ * @since 2020-08-15.
  */
 public class SortAlgorithm {
 

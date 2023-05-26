@@ -2,7 +2,7 @@ package learn.leetcode;
 
 /**
  * @author Zephyr
- * @date 2020/7/4.
+ * @since 2020-7/4.
  */
 public class Easy008 {
 

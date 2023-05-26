@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author Zephyr
- * @date 2021/11/27.
+ * @since 2021-11-27.
  */
 @Repository
 public interface TestEntityRepository extends ElasticsearchRepository<EsTestEntity, Integer> {

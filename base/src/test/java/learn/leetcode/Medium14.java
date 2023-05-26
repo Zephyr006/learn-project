@@ -7,7 +7,7 @@ import java.util.Arrays;
  * https://leetcode-cn.com/problems/merge-intervals/
  *
  * @author Zephyr
- * @date 2022/3/20.
+ * @since 2022-03-20.
  */
 public class Medium14 {
 

@@ -16,7 +16,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -28,7 +35,7 @@ import static learn.base.test.business.entity.UserQuestion.UserQuestionSummary;
 /**
  * map_questiontype - 客观：1、2、4 、5    ；主观：3
  * @author Zephyr
- * @date 2021/4/7.
+ * @since 2021-04-07.
  */
 public class UserStatV2 extends BaseUserStat {
     // 必须初始化
@@ -41,13 +48,14 @@ public class UserStatV2 extends BaseUserStat {
     //}
 
     public static void main(String[] args) throws InterruptedException {
-        StopWatch stopWatch = StopWatch.createAndStart("学员做题情况统计");
+        StopWatch stopWatch = new StopWatch("学员做题情况统计");
+        stopWatch.start();
         Map<Long, List<Long>> partitionToUserIdMap = allUserIds.stream()
                 .collect(Collectors.groupingBy(userId -> userId % 100));
         System.out.println("开始并发查询用户相关做题记录，并发线程数 = " + parallelism + "，学员总数 = " + allUserIds.size());
 
         mainProcess(partitionToUserIdMap);
-        System.out.println(stopWatch.stopAndPrint());
+        System.out.println(stopWatch.stopAndPrettyPrint());
     }
 
     private static void mainProcess(final Map<Long, List<Long>> partitionToUserIdMap) throws InterruptedException {

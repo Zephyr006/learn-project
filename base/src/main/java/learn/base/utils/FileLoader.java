@@ -1,13 +1,18 @@
 package learn.base.utils;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
  * @author Zephyr
- * @date 2021/3/25.
+ * @since 2021-03-25.
  */
 public class FileLoader {
 

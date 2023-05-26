@@ -5,7 +5,7 @@ import org.jose4j.jwt.ReservedClaimNames;
 
 /**
  * @author Zephyr
- * @date 2020/12/4.
+ * @since 2020-12-04.
  */
 public class JwtConstants {
 

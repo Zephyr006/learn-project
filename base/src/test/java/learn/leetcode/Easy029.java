@@ -6,7 +6,7 @@ package learn.leetcode;
  * https://leetcode-cn.com/problems/largest-number-at-least-twice-of-others/
  *
  * @author Zephyr
- * @date 2022/3/13.
+ * @since 2022-3-13.
  */
 public class Easy029 {
 

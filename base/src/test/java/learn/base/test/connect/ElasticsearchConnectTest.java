@@ -16,7 +16,7 @@ import java.io.IOException;
 
 /**
  * @author Zephyr
- * @date 2021/3/25.
+ * @since 2021-3-25.
  */
 public class ElasticsearchConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";

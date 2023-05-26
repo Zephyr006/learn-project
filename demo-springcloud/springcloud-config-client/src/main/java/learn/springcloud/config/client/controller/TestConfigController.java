@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Zephyr
- * @date 2020/10/9.
+ * @since 2020-10/9.
  */
 @RestController
 public class TestConfigController {

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Zephyr
- * @date 2021/5/26.
+ * @since 2021-5-26.
  */
 @Target(value = {ElementType.TYPE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

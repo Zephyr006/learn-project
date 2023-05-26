@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 
 /**
  * @author Zephyr
- * @date 2021/3/7.
+ * @since 2021-3/7.
  */
 public class KafkaConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";

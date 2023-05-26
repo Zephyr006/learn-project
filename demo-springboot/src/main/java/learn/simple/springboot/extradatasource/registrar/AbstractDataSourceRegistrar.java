@@ -8,7 +8,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * 作用：动态注入Bean
  * @see org.springframework.context.annotation.ImportBeanDefinitionRegistrar
  * @author Zephyr
- * @date 2021/12/25.
+ * @since 2021-12-25.
  */
 public abstract class AbstractDataSourceRegistrar implements ImportBeanDefinitionRegistrar {
 

@@ -13,7 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +31,7 @@ import java.util.concurrent.Executors;
 
 /**
  * @author Zephyr
- * @date 2021/5/8.
+ * @since 2021-5/8.
  */
 public class UserQuestionLogStatusSync {
     static String url = "jdbc:mysql://%s/%s?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&useCursorFetch=true";

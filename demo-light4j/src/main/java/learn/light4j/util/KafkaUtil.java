@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 
 /**
  * @author Zephyr
- * @date 2020/11/19
+ * @since 2020-11-19
  */
 public class KafkaUtil {
     public static final Logger logger = LoggerFactory.getLogger(KafkaUtil.class);

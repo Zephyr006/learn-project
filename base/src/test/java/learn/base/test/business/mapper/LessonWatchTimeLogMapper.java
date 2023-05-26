@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * @author Zephyr
- * @date 2021/12/3.
+ * @since 2021-12-3.
  */
 @Mapper
 public interface LessonWatchTimeLogMapper {

@@ -1,187 +1,343 @@
 package learn.base.utils;
 
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 秒表 （计时器）
+ * 秒表 （计时器） Copied from {@link org.springframework.util.StopWatch}
  *
  * @author Zephyr
- * @date 2021/1/22.
+ * @since 2023-05-22.
  */
 public class StopWatch {
 
-    private String taskName;
-    private StopWatch.TaskState state = TaskState.UNSTARTED;
+    /**
+     * Identifier of this {@code StopWatch}.
+     * <p>Handy when we have output from multiple stop watches and need to
+     * distinguish between them in log or console output.
+     */
+    private final String id;
 
+    private boolean keepTaskList = true;
+
+    private final List<TaskInfo> taskList = new ArrayList<>(1);
 
     /** Start time of the current task. */
     private long startTimeNanos;
-    /** End time of the current task. */
-    private long stopTimeNanos;
+
+    /** Name of the current task. */
+    // @Nullable
+    private String currentTaskName;
+
+    // @Nullable
+    private TaskInfo lastTaskInfo;
+
+    private int taskCount;
+
+    /** Total running time. */
+    private long totalTimeNanos;
 
 
-    private StopWatch(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public static StopWatch createAndStart(String taskName) {
-        StopWatch stopWatch = new StopWatch(taskName == null ? "" : taskName);
-        stopWatch.start();
-        return stopWatch;
-    }
-
-
-    public void start() {
-        if (this.state == TaskState.STOPPED) {
-            throw new IllegalStateException("Stopwatch must be reset before being restarted. ");
-        } else if (this.state != TaskState.UNSTARTED) {
-            throw new IllegalStateException("Stopwatch already started. ");
-        } else {
-            this.startTimeNanos = System.nanoTime();
-            this.state = TaskState.RUNNING;
-        }
+    /**
+     * Construct a new {@code StopWatch}.
+     * <p>Does not start any task.
+     */
+    public StopWatch() {
+        this("");
     }
 
     /**
-     * 暂停计时
+     * Construct a new {@code StopWatch} with the given ID.
+     * <p>The ID is handy when we have output from multiple stop watches and need
+     * to distinguish between them.
+     * <p>Does not start any task.
+     * @param id identifier for this stop watch
      */
-    public void suspend() {
-        if (this.state != TaskState.RUNNING) {
-            throw new IllegalStateException("Stopwatch must be running to suspend. ");
-        } else {
-            this.stopTimeNanos = System.nanoTime();
-            this.state = TaskState.SUSPENDED;
-        }
+    public StopWatch(String id) {
+        this.id = id;
+    }
+
+
+    /**
+     * Get the ID of this {@code StopWatch}, as specified on construction.
+     * @return the ID (empty String by default)
+     * @since 4.2.2
+     * @see #StopWatch(String)
+     */
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * 继续计时
+     * Configure whether the {@link TaskInfo} array is built over time.
+     * <p>Set this to {@code false} when using a {@code StopWatch} for millions
+     * of intervals; otherwise, the {@code TaskInfo} structure will consume
+     * excessive memory.
+     * <p>Default is {@code true}.
      */
-    public void resume() {
-        if (this.state != TaskState.SUSPENDED) {
-            throw new IllegalStateException("Stopwatch must be suspended to resume. ");
-        } else {
-            this.startTimeNanos += System.nanoTime() - this.stopTimeNanos;
-            this.state = TaskState.RUNNING;
-        }
+    public void setKeepTaskList(boolean keepTaskList) {
+        this.keepTaskList = keepTaskList;
     }
 
-    public void stop() {
-        if (this.state != TaskState.RUNNING && this.state != TaskState.SUSPENDED) {
+
+    /**
+     * Start an unnamed task.
+     * <p>The results are undefined if {@link #stop()} or timing methods are
+     * called without invoking this method first.
+     * @see #start(String)
+     * @see #stop()
+     */
+    public void start() throws IllegalStateException {
+        start("");
+    }
+
+    /**
+     * Start a named task.
+     * <p>The results are undefined if {@link #stop()} or timing methods are
+     * called without invoking this method first.
+     * @param taskName the name of the task to start
+     * @see #start()
+     * @see #stop()
+     */
+    public void start(String taskName) throws IllegalStateException {
+        if (this.currentTaskName != null) {
+            throw new IllegalStateException("Can't start StopWatch: it's already running");
+        }
+        this.currentTaskName = taskName;
+        this.startTimeNanos = System.nanoTime();
+    }
+
+    /**
+     * Stop the current task.
+     * <p>The results are undefined if timing methods are called without invoking
+     * at least one pair of {@code start()} / {@code stop()} methods.
+     * @see #start()
+     * @see #start(String)
+     */
+    public void stop() throws IllegalStateException {
+        if (this.currentTaskName == null) {
             throw new IllegalStateException("Can't stop StopWatch: it's not running");
         }
-        this.stopTimeNanos = System.nanoTime();
-        this.state = TaskState.STOPPED;
-    }
-
-    public String stopAndPrint() {
-        this.stop();
-        return this.prettyPrint();
-    }
-
-    public String prettyPrint() {
-        long timeMillisThreshold = 3_000L;
-        long costNanoTimes = (this.state.isStopped() ? this.stopTimeNanos : System.nanoTime()) - startTimeNanos;
-        long costMillis = TimeUnit.NANOSECONDS.toMillis(costNanoTimes);
-        if (this.state.isStopped()) {
-            if (costMillis < timeMillisThreshold) {
-                return String.format("=== StopWatch : %s cost %d ns , means %d ms ===\n",
-                        this.taskName, costNanoTimes, costMillis);
-            } else {
-                return String.format("=== StopWatch : %s cost %d ms , means %d s ===\n",
-                        this.taskName, costMillis, TimeUnit.NANOSECONDS.toSeconds(costNanoTimes));
-            }
-        } else {
-            if (costMillis < timeMillisThreshold) {
-                return "=== StopWatch is still running, it has been started for " + costMillis + " ms ===\n";
-            } else {
-                return String.format("=== StopWatch is still running, it has been started for %d ms , means %d s ===\n", costMillis, costMillis / 1000);
-            }
+        long lastTime = System.nanoTime() - this.startTimeNanos;
+        this.totalTimeNanos += lastTime;
+        this.lastTaskInfo = new TaskInfo(this.currentTaskName, lastTime);
+        if (this.keepTaskList) {
+            this.taskList.add(this.lastTaskInfo);
         }
+        ++this.taskCount;
+        this.currentTaskName = null;
     }
 
+    /**
+     * Determine whether this {@code StopWatch} is currently running.
+     * @see #currentTaskName()
+     */
     public boolean isRunning() {
-        return this.state == TaskState.RUNNING;
+        return (this.currentTaskName != null);
     }
 
-    public long getTime() {
-        return this.getNanoTime() / 1000000L;
+    /**
+     * Get the name of the currently running task, if any.
+     * @since 4.2.2
+     * @see #isRunning()
+     */
+    // @Nullable
+    public String currentTaskName() {
+        return this.currentTaskName;
     }
 
-    public long getTime(TimeUnit timeUnit) {
-        return timeUnit.convert(this.getNanoTime(), TimeUnit.NANOSECONDS);
-    }
-
-    public long getNanoTime() {
-        if (this.state != TaskState.STOPPED && this.state != TaskState.SUSPENDED) {
-            if (this.state == TaskState.UNSTARTED) {
-                return 0L;
-            } else if (this.state == TaskState.RUNNING) {
-                return System.nanoTime() - this.startTimeNanos;
-            } else {
-                throw new RuntimeException("Illegal running state has occurred.");
-            }
-        } else {
-            return this.stopTimeNanos - this.startTimeNanos;
+    /**
+     * Get the last task as a {@link TaskInfo} object.
+     */
+    public TaskInfo getLastTaskInfo() throws IllegalStateException {
+        if (this.lastTaskInfo == null) {
+            throw new IllegalStateException("No tasks run: can't get last task info");
         }
+        return this.lastTaskInfo;
     }
 
 
     /**
-     * 计时器状态枚举
+     * Get the total time in nanoseconds for all tasks.
+     * @since 5.2
+     * @see #getTotalTimeMillis()
+     * @see #getTotalTimeSeconds()
      */
-    private enum TaskState {
-        UNSTARTED {
-            boolean isStarted() {
-                return false;
-            }
-            boolean isStopped() {
-                return true;
-            }
-            boolean isSuspended() {
-                return false;
-            }
-        },
-        RUNNING {
-            boolean isStarted() {
-                return true;
-            }
-            boolean isStopped() {
-                return false;
-            }
-            boolean isSuspended() {
-                return false;
-            }
-        },
-        STOPPED {
-            boolean isStarted() {
-                return false;
-            }
-            boolean isStopped() {
-                return true;
-            }
-            boolean isSuspended() {
-                return false;
-            }
-        },
-        SUSPENDED {
-            boolean isStarted() {
-                return true;
-            }
-            boolean isStopped() {
-                return false;
-            }
-            boolean isSuspended() {
-                return true;
-            }
-        };
+    public long getTotalTimeNanos() {
+        return this.totalTimeNanos;
+    }
 
-        private TaskState() {
+    /**
+     * Get the total time in milliseconds for all tasks.
+     * @see #getTotalTimeNanos()
+     * @see #getTotalTimeSeconds()
+     */
+    public long getTotalTimeMillis() {
+        return TimeUnit.NANOSECONDS.toMillis(this.totalTimeNanos);
+    }
+
+    /**
+     * Get the total time in seconds for all tasks.
+     * @see #getTotalTimeNanos()
+     * @see #getTotalTimeMillis()
+     */
+    public double getTotalTimeSeconds() {
+        return nanosToSeconds(this.totalTimeNanos);
+    }
+
+    /**
+     * 将纳秒值转换为毫秒值,如果毫秒值的小数部分大于0.1,则额外输出2位小数
+     */
+    public String getMillisWithNanos(long totalNanos) {
+        long nanos = totalNanos % 1_000_000;
+        return TimeUnit.NANOSECONDS.toMillis(totalNanos) + (nanos > 100_000 ? "." + (nanos / 10_000) : "");
+    }
+
+    /**
+     * Get the number of tasks timed.
+     */
+    public int getTaskCount() {
+        return this.taskCount;
+    }
+
+    /**
+     * Get an array of the data for tasks performed.
+     */
+    public TaskInfo[] getTaskInfo() {
+        if (!this.keepTaskList) {
+            throw new UnsupportedOperationException("Task info is not being kept!");
+        }
+        return this.taskList.toArray(new TaskInfo[0]);
+    }
+
+
+    /**
+     * Get a short description of the total running time.
+     */
+    public String shortSummary() {
+        return "StopWatch '" + getId() + "': running time = " + getMillisWithNanos(this.totalTimeNanos) + " ms";
+    }
+
+    /**
+     * Generate a string with a table describing all tasks performed.
+     * <p>For custom reporting, call {@link #getTaskInfo()} and use the task info
+     * directly.
+     */
+    public String prettyPrint() {
+        StringBuilder sb = new StringBuilder(shortSummary());
+        sb.append('\n');
+        if (!this.keepTaskList) {
+            sb.append("No task info kept");
+        }
+        else {
+            sb.append("---------------------------------------------\n");
+            sb.append("ns         ms   %     Task name\n");
+            sb.append("---------------------------------------------\n");
+            NumberFormat nf = NumberFormat.getNumberInstance();
+            nf.setMinimumIntegerDigits(9);
+            nf.setGroupingUsed(false);
+            NumberFormat mf = NumberFormat.getNumberInstance();
+            mf.setMinimumIntegerDigits(2);
+            mf.setGroupingUsed(false);
+            NumberFormat pf = NumberFormat.getPercentInstance();
+            pf.setMinimumIntegerDigits(3);
+            pf.setGroupingUsed(false);
+            for (TaskInfo task : getTaskInfo()) {
+                sb.append(nf.format(task.getTimeNanos())).append("  ");
+                sb.append(mf.format(task.getTimeMillis())).append("  ");
+                sb.append(pf.format((double) task.getTimeNanos() / getTotalTimeNanos())).append("  ");
+                sb.append(task.getTaskName()).append('\n');
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Generate an informative string describing all tasks performed
+     * <p>For custom reporting, call {@link #getTaskInfo()} and use the task info
+     * directly.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(shortSummary());
+        if (this.keepTaskList) {
+            for (TaskInfo task : getTaskInfo()) {
+                sb.append("; [").append(task.getTaskName()).append("] took ").append(getMillisWithNanos(task.getTimeNanos())).append(" ms");
+                long percent = Math.round(100.0 * task.getTimeNanos() / getTotalTimeNanos());
+                sb.append(" = ").append(percent).append('%');
+            }
+        }
+        else {
+            sb.append("; no task info kept");
+        }
+        return sb.toString();
+    }
+
+    public void stopAndStart(String taskName) {
+        stop();
+        start(taskName);
+    }
+
+    public String stopAndPrettyPrint() {
+        stop();
+        return prettyPrint();
+    }
+
+    private static double nanosToSeconds(long duration) {
+        return duration / 1_000_000_000.0;
+    }
+
+    /**
+     * Nested class to hold data about one task executed within the {@code StopWatch}.
+     */
+    public static final class TaskInfo {
+
+        private final String taskName;
+
+        private final long timeNanos;
+
+        TaskInfo(String taskName, long timeNanos) {
+            this.taskName = taskName;
+            this.timeNanos = timeNanos;
         }
 
-        abstract boolean isStarted();
-        abstract boolean isStopped();
-        abstract boolean isSuspended();
+        /**
+         * Get the name of this task.
+         */
+        public String getTaskName() {
+            return this.taskName;
+        }
+
+        /**
+         * Get the time in nanoseconds this task took.
+         * @since 5.2
+         * @see #getTimeMillis()
+         * @see #getTimeSeconds()
+         */
+        public long getTimeNanos() {
+            return this.timeNanos;
+        }
+
+        /**
+         * Get the time in milliseconds this task took.
+         * @see #getTimeNanos()
+         * @see #getTimeSeconds()
+         */
+        public long getTimeMillis() {
+            return TimeUnit.NANOSECONDS.toMillis(this.timeNanos);
+        }
+
+        /**
+         * Get the time in seconds this task took.
+         * @see #getTimeMillis()
+         * @see #getTimeNanos()
+         */
+        public double getTimeSeconds() {
+            return nanosToSeconds(this.timeNanos);
+        }
+
     }
 }

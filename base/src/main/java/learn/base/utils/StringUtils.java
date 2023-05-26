@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Zephyr
- * @date 2022/1/1.
+ * @since 2022-01-01.
  */
 public class StringUtils {
     protected static final Pattern UNDERLINE_PATTERN = Pattern.compile("_(.)");

@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
  * 当计数器到达0时，表示所有的线程都已完成任务，然后在闭锁上等待的线程就可以恢复执行任务。
  *
  * @author Zephyr
- * @date 2020/8/11.
+ * @since 2020-8-11.
  */
 public class CountDownLatchExample {
 

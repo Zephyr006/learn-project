@@ -5,12 +5,17 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * @author Zephyr
- * @date 2021/4/11.
+ * @since 2021-4-11.
  */
 public class ExecutorServiceExample {
     Callable<Integer> action = () -> {
@@ -30,7 +35,8 @@ public class ExecutorServiceExample {
      */
     @Test
     public void testAwaitTermination() {
-        StopWatch stopWatch = StopWatch.createAndStart(this.getClass().getName());
+        StopWatch stopWatch = new StopWatch(this.getClass().getName());
+        stopWatch.start();
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         Callable<Integer> action = () -> {
             try {
@@ -53,7 +59,7 @@ public class ExecutorServiceExample {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(stopWatch.stopAndPrint());
+        System.out.println(stopWatch.stopAndPrettyPrint());
     }
 
     /**
@@ -61,7 +67,8 @@ public class ExecutorServiceExample {
      */
     @Test
     public void testInvokeAll() throws InterruptedException {
-        StopWatch stopWatch = StopWatch.createAndStart(this.getClass().getName());
+        StopWatch stopWatch = new StopWatch(this.getClass().getName());
+        stopWatch.start();
         ExecutorService executorService = Executors.newWorkStealingPool(2);
 
 
@@ -81,6 +88,6 @@ public class ExecutorServiceExample {
         //} catch (InterruptedException e) {
         //    e.printStackTrace();
         //}
-        System.out.println(stopWatch.stopAndPrint());
+        System.out.println(stopWatch.stopAndPrettyPrint());
     }
 }

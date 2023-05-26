@@ -10,7 +10,7 @@ import java.util.function.Function;
  * 按 java.util.Map 的方式使用即可
  * 对 FileMap 进行数据操作时（读写数据），必须先调用 waitForInit 方法，以保证原始数据已经被初始化
  * @author Zephyr
- * @date 2020/5/25.
+ * @since 2020-05-25.
  */
 public interface FileMap<V extends Serializable> {
 

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  *
  * @author Zephyr
- * @date 2021/4/17.
+ * @since 2021-4-17.
  */
 public interface ExcelValidator {
     // 正则 - 逗号分隔的数字：^\d+(,\d+)*$或者^(\d+,)*\d+$

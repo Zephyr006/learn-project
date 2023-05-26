@@ -19,7 +19,7 @@ import java.util.Map;
  * 根据用户 id 和 dataCenterId 生成 token
  *
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-01.
  */
 public class JwtTokenGenerateHandler implements LightHttpHandler {
     private static final Logger log = LoggerFactory.getLogger(JwtTokenGenerateHandler.class);

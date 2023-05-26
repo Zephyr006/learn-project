@@ -28,7 +28,7 @@ import java.util.Map;
  * @see com.networknt.exception.ExceptionHandler
  *
  * @author Zephyr
- * @date 2020/12/3.
+ * @since 2020-12-03.
  */
 public class CustomExceptionHandler implements MiddlewareHandler {
     static final Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);

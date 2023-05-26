@@ -2,7 +2,7 @@ package learn.leetcode;
 
 /**
  * @author Zephyr
- * @date 2022/3/13.
+ * @since 2022-3-13.
  */
 public class Search01 {
 

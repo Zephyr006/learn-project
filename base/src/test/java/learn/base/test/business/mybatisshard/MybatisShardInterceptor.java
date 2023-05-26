@@ -26,7 +26,7 @@ import java.util.Map;
  * 分表拦截器
  *
  * @author Zephyr
- * @date 2021/5/26.
+ * @since 2021-5-26.
  */
 @Intercepts({
         @Signature(
@@ -126,7 +126,7 @@ public class MybatisShardInterceptor implements Interceptor {
      * @methodName: isBaseType
      * @author: 程序员阿星
      * @description: 基本数据类型验证，true是，false否
-     * @date: 2021/5/9
+     * @date: 2021-5/9
      * @return: boolean
      */
     private boolean isBaseType(Object object) {
@@ -152,7 +152,7 @@ public class MybatisShardInterceptor implements Interceptor {
      * @param boundSql   sql信息对象
      * @author: 程序猿阿星
      * @description: 替换sql
-     * @date: 2021/5/9
+     * @date: 2021-5/9
      * @return: void
      */
     private void replaceSql(TableShard tableShard, Object value, MetaObject metaObject, BoundSql boundSql) {
@@ -179,7 +179,7 @@ public class MybatisShardInterceptor implements Interceptor {
      * @param invocation
      * @author: 程序猿阿星
      * @description: 获取MetaObject对象-mybatis里面提供的一个工具类，类似反射的效果
-     * @date: 2021/5/9
+     * @date: 2021-5/9
      * @return: org.apache.ibatis.reflection.MetaObject
      */
     private MetaObject getMetaObject(Invocation invocation) {
@@ -199,7 +199,7 @@ public class MybatisShardInterceptor implements Interceptor {
      * @description: 获取分表注解
      * @param method
      * @param mappedStatement
-     * @date: 2021/5/9
+     * @date: 2021-5/9
      * @return: com.xing.shard.interceptor.TableShard
      */
     private TableShard getTableShard(Method method, MappedStatement mappedStatement) throws ClassNotFoundException, NoSuchMethodException {

@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Zephyr
- * @date 2021/12/19.
+ * @since 2021-12-19.
  */
 public class NameNode {
     private volatile boolean shouldRun = true;

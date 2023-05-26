@@ -46,7 +46,7 @@ import java.util.List;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author Zephyr
- * @date 2022/2/26.
+ * @since 2022-02-26.
  */
 public class Medium08 {
     //给定string数组，严格按照出现顺序打印出现次数前k多的字符串，复杂度最优

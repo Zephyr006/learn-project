@@ -5,7 +5,7 @@ import learn.demo.webclient.beans.MethodInfo;
 /**
  * http请求处理
  * @author Zephyr
- * @date 2020/11/28.
+ * @since 2020-11-28.
  */
 public interface RestHandler {
 

@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 
 /**
  * @author: cao
- * @time: 2020/12/3 5:44 下午
+ * @time: 2020-12-3 5:44 下午
  */
 @Slf4j
 public class KafkaStartupHookProvider implements StartupHookProvider {

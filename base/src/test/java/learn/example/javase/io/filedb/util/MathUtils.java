@@ -2,7 +2,7 @@ package learn.example.javase.io.filedb.util;
 
 /**
  * @author Zephyr
- * @date 2020/5/26.
+ * @since 2020-05-26.
  */
 public class MathUtils {
 

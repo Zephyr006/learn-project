@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Content-Type 对应的 MediaType
  *
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-1.
  */
 public class MediaType implements Serializable {
     private static final long serialVersionUID = 2069937152339670231L;

@@ -1,6 +1,11 @@
 package learn.example.javase.stream;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,7 +28,7 @@ import java.util.stream.Stream;
  *
  *
  * @author Zephyr
- * @date 2020/11/19.
+ * @since 2020-11-19.
  */
 public class StreamDemo {
 

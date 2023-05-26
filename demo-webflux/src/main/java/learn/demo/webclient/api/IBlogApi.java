@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
  * Blog相关请求api的声明
  *
  * @author Zephyr
- * @date 2020/11/22.
+ * @since 2020-11-22.
  */
 @ApiServer(baseUrl = "http://127.0.0.1:8080/mongo")
 public interface IBlogApi {

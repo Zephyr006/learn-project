@@ -12,7 +12,7 @@ import java.util.Collection;
 /**
  * 正确率=correct_count/answer_count ; 做题速度=sum_cost_time/answer_count
  * @author Zephyr
- * @date 2021/4/8.
+ * @since 2021-4/8.
  */
 @Getter
 @Setter

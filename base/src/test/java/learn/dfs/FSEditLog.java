@@ -6,7 +6,7 @@ import java.util.LinkedList;
  * 负责管理edit log日志
  *
  * @author Zephyr
- * @date 2021/12/19.
+ * @since 2021-12-19.
  */
 public class FSEditLog {
 

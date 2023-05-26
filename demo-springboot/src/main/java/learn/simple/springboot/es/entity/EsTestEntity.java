@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * @author Zephyr
- * @date 2021/11/27.
+ * @since 2021-11-27.
  */
 @Data
 @Accessors(chain = true)

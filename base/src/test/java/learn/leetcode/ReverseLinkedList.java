@@ -5,7 +5,7 @@ package learn.leetcode;
  * https://blog.csdn.net/superxiaolong123/article/details/86687733
  *
  * @author Zephyr
- * @date 2020/7/12.
+ * @since 2020-07-12.
  */
 public class ReverseLinkedList {
 

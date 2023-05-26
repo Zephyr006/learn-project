@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
  * { @link https://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams }
  * { @see http://www.philandstuff.com/2012/04/28/sneakily-throwing-checked-exceptions.html }
  * @author Zephyr
- * @date 2021/4/11.
+ * @since 2021-04-11.
  */
 public final class LambdaExceptionUtil {
 

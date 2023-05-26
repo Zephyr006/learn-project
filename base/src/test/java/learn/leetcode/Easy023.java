@@ -21,7 +21,7 @@ package learn.leetcode;
  * 所有输入只包含小写字母 a-z 。
  *
  * @author Zephyr
- * @date 2020/8/15.
+ * @since 2020-08-15.
  */
 public class Easy023 {
 

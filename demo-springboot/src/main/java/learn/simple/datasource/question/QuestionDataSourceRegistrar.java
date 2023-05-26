@@ -7,7 +7,7 @@ import learn.simple.springboot.extradatasource.registrar.AbstractDataSourceRegis
  * 用于将java中的mapper文件解析为bean，重点是实现了ImportBeanDefinitionRegistrar接口
  *
  * @author Zephyr
- * @date 2021/12/26.
+ * @since 2021-12-26.
  */
 public class QuestionDataSourceRegistrar extends AbstractDataSourceRegistrar {
 

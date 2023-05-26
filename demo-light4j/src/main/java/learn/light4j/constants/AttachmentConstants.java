@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @author Zephyr
- * @date 2020/12/2.
+ * @since 2020-12-02.
  */
 public class AttachmentConstants extends com.networknt.httpstring.AttachmentConstants {
 

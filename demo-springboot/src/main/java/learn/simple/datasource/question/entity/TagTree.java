@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author Zephyr
- * @date 2021/1/12.
+ * @since 2021-1-12.
  */
 @Data
 public class TagTree {

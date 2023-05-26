@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Zephyr
- * @date 2022/1/3.
+ * @since 2022-1-3.
  */
 @CustomController
 @CustomRequestMapping(value = "/custom")

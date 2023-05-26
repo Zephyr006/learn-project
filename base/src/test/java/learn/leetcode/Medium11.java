@@ -2,7 +2,7 @@ package learn.leetcode;
 
 /**
  * @author Zephyr
- * @date 2022/3/15.
+ * @since 2022-03-15.
  */
 public class Medium11 {
 

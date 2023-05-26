@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * @author Zephyr
- * @date 2021/3/7.
+ * @since 2021-3/7.
  */
 public class RedisConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";

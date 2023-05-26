@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author Zephyr
- * @date 2020/6/11.
+ * @since 2020-06-11.
  */
 public class FileMapSegment<V> implements Serializable {
     private static final long serialVersionUID = 8045152871910439442L;

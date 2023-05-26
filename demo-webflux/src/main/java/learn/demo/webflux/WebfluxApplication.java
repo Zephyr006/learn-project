@@ -8,7 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * @author Zephyr
- * @date 2020/11/19.
+ * @since 2020-11-19.
  */
 @SpringBootApplication
 public class WebfluxApplication {

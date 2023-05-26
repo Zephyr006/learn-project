@@ -8,7 +8,7 @@ import java.util.Map;
  * 工具类：获取在"values.yaml"中定义的变量值
  *
  * @author Zephyr
- * @date 2020/12/1.
+ * @since 2020-12-01.
  */
 public class LightConfigValues {
 

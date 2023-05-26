@@ -5,7 +5,7 @@ import learn.light4j.model.Result;
 
 /**
  * @author Zephyr
- * @date 2020/12/2.
+ * @since 2020-12-2.
  */
 public class Results {
 

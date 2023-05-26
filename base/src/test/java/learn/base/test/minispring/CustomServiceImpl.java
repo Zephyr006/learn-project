@@ -4,7 +4,7 @@ import learn.base.test.minispring.annotation.CustomService;
 
 /**
  * @author Zephyr
- * @date 2022/1/3.
+ * @since 2022-1-3.
  */
 @CustomService
 public class CustomServiceImpl implements ICustomService {

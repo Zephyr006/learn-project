@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author Zephyr
- * @date 2020/12/29.
+ * @since 2020-12-29.
  */
 public class YamlConfigLoader {
 

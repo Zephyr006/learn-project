@@ -5,7 +5,7 @@ import learn.simple.springboot.extradatasource.registrar.AbstractDataSourceRegis
 
 /**
  * @author Zephyr
- * @date 2021/12/26.
+ * @since 2021-12-26.
  */
 public class LessonDataSourceRegistrar extends AbstractDataSourceRegistrar {
 

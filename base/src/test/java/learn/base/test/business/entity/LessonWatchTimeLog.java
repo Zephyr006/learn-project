@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 日志（用户每次看课）
  * @author : yangming
- * @date : 2019/9/23
+ * @since : 2019/9-23
  */
 @Data
 public class LessonWatchTimeLog {

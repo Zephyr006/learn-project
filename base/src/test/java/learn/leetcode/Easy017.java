@@ -25,7 +25,7 @@ package learn.leetcode;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author Zephyr
- * @date 2020/7/8.
+ * @since 2020-07-08.
  */
 public class Easy017 {
 

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Zephyr
- * @date 2020/11/16.
+ * @since 2020-11-16.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ConfigClientApp.class)

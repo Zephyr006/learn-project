@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 逻辑分页工具类
  * @author Zephyr
- * @date 2021/3/18.
+ * @since 2021-03-18.
  */
 public class LogicalPageUtil {
 

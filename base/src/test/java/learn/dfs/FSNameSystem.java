@@ -3,7 +3,7 @@ package learn.dfs;
 /**
  * 负责管理集群中文件元数据的核心组件
  * @author Zephyr
- * @date 2021/12/19.
+ * @since 2021-12-19.
  */
 public class FSNameSystem {
 

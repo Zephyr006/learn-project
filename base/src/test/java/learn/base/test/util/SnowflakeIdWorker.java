@@ -12,7 +12,7 @@ import java.time.ZoneOffset;
  * 4. 12位的计数序列号，序列号即一系列的自增id，可以支持同一节点同一毫秒生成多个ID序号，12位的计数序列号支持每个节点每毫秒最多产生4096个ID序号。
  *
  * @author Zephyr
- * @date 2022/1/9.
+ * @since 2022-1/9.
  */
 public class SnowflakeIdWorker {
     private static final int BITS_OF_TIMESTAMP = 41;  // 能保存69年的

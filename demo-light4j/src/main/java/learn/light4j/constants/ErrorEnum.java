@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * @author Zephyr
- * @date 2020/12/3.
+ * @since 2020-12-03.
  */
 @Getter
 public enum ErrorEnum {

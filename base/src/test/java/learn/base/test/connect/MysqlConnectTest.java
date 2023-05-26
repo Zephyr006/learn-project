@@ -6,12 +6,17 @@ import learn.base.BaseTest;
 import learn.base.utils.FileLoader;
 import org.junit.Assert;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
  * @author Zephyr
- * @date 2021/3/7.
+ * @since 2021-3/7.
  */
 public class MysqlConnectTest extends BaseTest {
     private static final String FILE_PATH = "conn-test.properties";

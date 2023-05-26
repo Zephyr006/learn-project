@@ -29,7 +29,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -44,7 +52,7 @@ import static learn.base.test.business.entity.UserQuestion.userQuestionSql;
 
 /**
  * @author Zephyr
- * @date 2021/4/7.
+ * @since 2021-04-07.
  */
 public abstract class BaseUserStat {
     static UserDataConfig config = new UserDataConfig.JkSearch2();

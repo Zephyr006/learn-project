@@ -17,7 +17,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
@@ -26,12 +33,13 @@ import static learn.base.test.business.entity.UserQuestion.UserQuestionSummary;
 /**
  * map_questiontype - 客观：1、2、4 、5    ；主观：3
  * @author Zephyr
- * @date 2021/4/7.
+ * @since 2021-04-07.
  */
 public class UserStatV3 extends BaseUserStat {
 
     public static void main(String[] args) {
-        StopWatch stopWatch = StopWatch.createAndStart("学员做题情况统计");
+        StopWatch stopWatch = new StopWatch("学员做题情况统计");
+        stopWatch.start();
         final Map<Long, List<Long>> partitionToUserIdMap = allUserIds.stream()
                 .collect(Collectors.groupingBy(userId -> userId % 1000));
         System.out.println("开始并发查询用户相关做题记录，并发线程数 = " + parallelism + "，学员总数 = " + allUserIds.size());
@@ -44,7 +52,7 @@ public class UserStatV3 extends BaseUserStat {
         } else {
             System.err.println("Error：没有统计数据可供输出！");
         }
-        System.out.println(stopWatch.stopAndPrint());
+        System.out.println(stopWatch.stopAndPrettyPrint());
     }
 
     private static List<Statistics> mainProcess(final Map<Long, List<Long>> partitionToUserIdMap) {

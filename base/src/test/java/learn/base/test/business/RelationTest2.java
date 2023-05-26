@@ -15,12 +15,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
  * @author Zephyr
- * @date 2021/3/30.
+ * @since 2021-03-30.
  */
 public class RelationTest2 {
     private static final String driverClassName = "com.mysql.jdbc.Driver";
@@ -41,7 +46,8 @@ public class RelationTest2 {
 
 
         try (final HikariDataSource dataSource = initDataSource()) {
-            StopWatch stopWatch = StopWatch.createAndStart("查询指定做题集下满足指定正确率的用户id");
+            StopWatch stopWatch = new StopWatch("查询指定做题集下满足指定正确率的用户id");
+            stopWatch.start();
             ExecutorService executorService = Executors.newFixedThreadPool(33);
 
             try (final Connection connection = dataSource.getConnection()) {
@@ -86,7 +92,7 @@ public class RelationTest2 {
                     }).flatMap(Collection::stream).limit(1000).collect(Collectors.toList());
 
                     System.out.println("result.size = " + list.size());
-                    System.out.println(stopWatch.stopAndPrint());
+                    System.out.println(stopWatch.stopAndPrettyPrint());
                     System.out.println(realSql);
                     System.out.println(list);
 

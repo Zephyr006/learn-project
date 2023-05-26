@@ -6,7 +6,7 @@ import org.junit.Test;
 
 /**
  * @author Zephyr
- * @date 2020/12/29.
+ * @since 2020-12-29.
  */
 public class YamlConfigLoaderTest extends BaseTest {
     String path = "/app.yaml";

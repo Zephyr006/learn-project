@@ -21,7 +21,7 @@ package learn.leetcode;
  * https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
  *
  * @author Zephyr
- * @date 2020/8/15.
+ * @since 2020-08-15.
  */
 public class Medium06 {
 

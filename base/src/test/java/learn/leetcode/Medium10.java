@@ -12,7 +12,7 @@ import java.util.Map;
  * https://leetcode-cn.com/problems/minimum-index-sum-of-two-lists/
  *
  * @author Zephyr
- * @date 2022/3/14.
+ * @since 2022-3-14.
  */
 public class Medium10 {
 

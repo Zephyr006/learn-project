@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * 注意：如果提供的#FileMapOptions设置不同，以FileMap第一次创建时的参数为准
  * @author Zephyr
- * @date 2020/6/4.
+ * @since 2020-06-04.
  */
 public class FileMapFactory {
     static Map<String/*dbName*/, FileMap>

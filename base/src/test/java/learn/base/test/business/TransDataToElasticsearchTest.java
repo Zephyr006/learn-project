@@ -25,7 +25,7 @@ import java.util.Objects;
 
 /**
  * @author Zephyr
- * @date 2021/12/3.
+ * @since 2021-12-03.
  */
 public class TransDataToElasticsearchTest {
 

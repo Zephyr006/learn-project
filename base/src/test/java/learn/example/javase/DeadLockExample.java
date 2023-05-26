@@ -4,7 +4,7 @@ package learn.example.javase;
  * 手写一个死锁的示例
  *
  * @author Zephyr
- * @date 2020/8/11.
+ * @since 2020-08-11.
  */
 public class DeadLockExample {
 
