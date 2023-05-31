@@ -13,7 +13,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>simple-springboot</name>
+  <name>demo-springboot</name>
 
 
   <properties>

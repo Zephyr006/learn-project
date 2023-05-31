@@ -36,7 +36,7 @@ public class KafkaUtil {
     static {
         KafkaUtil.topic = System.getProperty("kafka.topic", "test_topic");
         String kafkaServerUrl = System.getProperty("kafka.server", "192.168.2.55:9092");
-        logger.debug("kafka server path use [{}]", kafkaServerUrl);
+        System.out.printf("kafka server path use [%s] with topic [%s]%n", kafkaServerUrl, topic);
 
         initProducer(kafkaServerUrl);
         initConsumer(kafkaServerUrl, "test");
@@ -100,6 +100,10 @@ public class KafkaUtil {
 
     public static ConsumerRecords<String, String> poll(Duration duration) {
         return consumer.poll(duration != null ? duration : Duration.ofSeconds(5));
+    }
+
+    public static KafkaConsumer<String, String> getConsumer() {
+        return consumer;
     }
 
 }
