@@ -6,8 +6,10 @@ package learn.leetcode;
  */
 public class SortAlgorithm {
 
-    // 冒泡排序
-    public void bubbleSort(Integer[] arr) {
+    /**
+     * 冒泡排序
+     */
+    public void bubbleSort(int[] arr) {
         //如果只有一个元素就不用排序了
         if (arr == null || arr.length <= 1)
             return;
@@ -36,7 +38,7 @@ public class SortAlgorithm {
 
 
     public static void main(String[] args) {
-        Integer[] arr = {2, 4, 7, 6, 8, 5, 9};
+        int[] arr = {2, 4, 7, 6, 8, 5, 9};
         SortAlgorithm bubbleSort = new SortAlgorithm();
         bubbleSort.bubbleSort(arr);
         for (Integer integer : arr) {

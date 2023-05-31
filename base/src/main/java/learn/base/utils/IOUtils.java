@@ -1,5 +1,6 @@
 package learn.base.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +31,19 @@ public class IOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return "error";
+        }
+    }
+
+    public static byte[] toByteArray(InputStream inputStream) {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            return bos.toByteArray();
+        } catch (IOException ignore) {
+            return new byte[0];
         }
     }
 
