@@ -11,7 +11,7 @@ package learn.leetcode;
 public class Medium16 {
 
     public static void main(String[] args) {
-        LeetcodeHelper.invokeSolutions(Solution.class, new int[]{2,7,11,15}, 9);
+        new Solution().twoSum(new int[]{2, 7, 11, 15}, 9);
     }
 
     static class Solution {
