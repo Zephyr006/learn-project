@@ -10,7 +10,7 @@ package learn.leetcode;
 public class Offer47 {
 
     public static void main(String[] args) {
-        int[][] grid = LeetCodeHelper.toTwoDimensionalArray("[[1,2],[1,1]]");
+        int[][] grid = LeetcodeHelper.parse2DIntArray("[[1,2],[1,1]]");
         int maxValue = new Solution().maxValue(grid);
         System.out.println(maxValue);
 

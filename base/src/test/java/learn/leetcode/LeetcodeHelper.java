@@ -3,13 +3,35 @@ package learn.leetcode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 
-import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Zephyr
- * @since 2023-5-24.
+ * @since 2022-04-23.
  */
 public class LeetcodeHelper {
+
+    /**
+     * 字符串转二维数组，字符串示例如下
+     * <pre> {@code
+     *     [
+     *   [1,3,1],
+     *   [1,5,1],
+     *   [4,2,1]
+     * ]
+     * }</pre>
+     */
+    public static int[][] parse2DIntArray(String str) {
+        List<Integer[]> arrayList = JSONArray
+            .parseArray(str.replace("\n", ""), Integer[].class);
+        int[][] result = new int[arrayList.size()][arrayList.get(0).length];
+        for (int i = 0; i < arrayList.size(); i++) {
+            // Integer数组转为int数组
+            result[i] = Arrays.stream(arrayList.get(i)).mapToInt(Integer::valueOf).toArray();
+        }
+        return result;
+    }
 
     public static char[][] parse2DCharArray(String str) {
         if (str == null || str.length() <= 2) {
@@ -29,23 +51,15 @@ public class LeetcodeHelper {
         return charArray;
     }
 
-    public static void invokeSolutions(Class<?> solution, Object... params) {
+    public static int[] toIntArray(String s) {
+        if (s == null || s.length() <= 2) {
+            return new int[0];
+        }
+        s = s.substring(1, s.length() - 1);
         try {
-            Object instance = solution.newInstance();
-            for (Method method : solution.getMethods()) {
-                // 判断这个method是不是由'Solution'类声明的(还是从父类继承来的),只执行Solution类中的方法
-                if (!solution.equals(method.getDeclaringClass())) {
-                    continue;
-                }
-                // Class<?> declaringClass = method.getDeclaringClass();
-                // System.out.println(declaringClass);
-                Object invokeResult = method.invoke(instance, params);
-                if (invokeResult != null) {
-                    System.out.printf("%n方法[%s]返回结果为:%s %n", method.getName(), JSON.toJSONString(invokeResult));
-                }
-            }
+            return Arrays.stream(s.split(",")).mapToInt(Integer::parseInt).toArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            return Arrays.stream(s.split(", ")).mapToInt(Integer::parseInt).toArray();
         }
     }
 }

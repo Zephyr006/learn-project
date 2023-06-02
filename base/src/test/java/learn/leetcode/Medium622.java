@@ -14,7 +14,7 @@ package learn.leetcode;
  */
 public class Medium622 {
     public static void main(String[] args) {
-        learn.leetcode.MyCircularQueue queue = new learn.leetcode.MyCircularQueue(3);
+        MyCircularQueue queue = new MyCircularQueue(3);
         queue.enQueue(1);
         queue.enQueue(2);
         queue.enQueue(3);

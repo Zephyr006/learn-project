@@ -15,14 +15,14 @@ public class Easy101 {
         /**
          * 递归的实现
          */
-        public boolean isSymmetric(LeetCodeHelper.TreeNode root) {
+        public boolean isSymmetric(TreeNode root) {
             if (root == null) {
                 return false;
             }
             return recursion(root.left, root.right);
         }
 
-        boolean recursion(LeetCodeHelper.TreeNode left, LeetCodeHelper.TreeNode right) {
+        boolean recursion(TreeNode left, TreeNode right) {
             if ((left == null && right != null) || (left != null && right == null)) {
                 return false;
             }
@@ -37,17 +37,17 @@ public class Easy101 {
         /**
          * 递归的实现
          */
-        public boolean isSymmetric(LeetCodeHelper.TreeNode root) {
+        public boolean isSymmetric(TreeNode root) {
             if (root == null || (root.left==null && root.right==null)) {
                 return true;
             }
-            Queue<LeetCodeHelper.TreeNode> queue = new LinkedList<>();
+            Queue<TreeNode> queue = new LinkedList<>();
             queue.add(root.left);
             queue.add(root.right);
 
             while (!queue.isEmpty()) {
-                LeetCodeHelper.TreeNode left = queue.poll();
-                LeetCodeHelper.TreeNode right = queue.poll();
+                TreeNode left = queue.poll();
+                TreeNode right = queue.poll();
                 if (left == null && right == null) {
                     continue;
                 }

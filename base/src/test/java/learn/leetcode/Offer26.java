@@ -21,7 +21,7 @@ public class Offer26 {
         /**
          * https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/mian-shi-ti-26-shu-de-zi-jie-gou-xian-xu-bian-li-p/
          */
-        public boolean isSubStructure(LeetCodeHelper.TreeNode A, LeetCodeHelper.TreeNode B) {
+        public boolean isSubStructure(TreeNode A, TreeNode B) {
             if (A == null || B == null) {
                 return false;
             }
@@ -31,7 +31,7 @@ public class Offer26 {
         /**
          * 递归判断两棵树是否完全匹配
          */
-        boolean recursion(LeetCodeHelper.TreeNode A, LeetCodeHelper.TreeNode B) {
+        boolean recursion(TreeNode A, TreeNode B) {
             //节点 BB 为空：说明树 BB 已匹配完成（越过叶子节点），因此返回 true
             if(B == null)
                 return true;

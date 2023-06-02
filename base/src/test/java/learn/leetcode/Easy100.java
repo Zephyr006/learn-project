@@ -54,7 +54,7 @@ public class Easy100 {
      * @param q
      * @return
      */
-    public boolean isSameTree(LeetCodeHelper.TreeNode p, LeetCodeHelper.TreeNode q) {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
         // one of p and q is null, another one is not null
         if ((p == null && q != null) || (p != null && q == null)) {
             return false;
@@ -84,13 +84,13 @@ public class Easy100 {
      *
      * 若以上均满足，则压入子结点。
      */
-    public boolean isSameTreeOfficial(LeetCodeHelper.TreeNode p, LeetCodeHelper.TreeNode q) {
+    public boolean isSameTreeOfficial(TreeNode p, TreeNode q) {
         if (p == null && q == null) return true;
         if (!check(p, q)) return false;
 
         // init deques
-        ArrayDeque<LeetCodeHelper.TreeNode> deqP = new ArrayDeque<LeetCodeHelper.TreeNode>();
-        ArrayDeque<LeetCodeHelper.TreeNode> deqQ = new ArrayDeque<LeetCodeHelper.TreeNode>();
+        ArrayDeque<TreeNode> deqP = new ArrayDeque<TreeNode>();
+        ArrayDeque<TreeNode> deqQ = new ArrayDeque<TreeNode>();
         deqP.addLast(p);
         deqQ.addLast(q);
 
@@ -117,7 +117,7 @@ public class Easy100 {
     }
     // 检查当前两个节点是否相等：都为空、或都不为空并且val相等，则为“相等”，返回true
     // 一个节点为空，另一个不为空，则返回false
-    public boolean check(LeetCodeHelper.TreeNode p, LeetCodeHelper.TreeNode q) {
+    public boolean check(TreeNode p, TreeNode q) {
         // p and q are null
         if (p == null && q == null) return true;
         // one of p and q is null

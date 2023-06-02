@@ -7,7 +7,7 @@ package learn.leetcode;
 public class Offer21 {
 
     public static void main(String[] args) {
-        int[] nums = LeetCodeHelper.toIntArray("[1,2,3,5,4]");
+        int[] nums = LeetcodeHelper.toIntArray("[1,2,3,5,4]");
         int[] exchange = new Solution().exchange(nums);
         System.out.println(exchange);
     }
