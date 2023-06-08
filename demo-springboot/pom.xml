@@ -9,7 +9,7 @@
     <groupId>cn.zephyr006</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>simple-springboot</artifactId>
+  <artifactId>demo-springboot</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
