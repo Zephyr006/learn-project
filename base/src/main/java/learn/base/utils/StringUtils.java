@@ -56,4 +56,41 @@ public class StringUtils {
         }
         return str;
     }
+
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    public static boolean isNotEmpty(final CharSequence cs) {
+        return cs != null && cs.length() > 0;
+    }
+
+    /**
+     * 用"{}"占位符格式化输出,尽量只用于测试
+     */
+    public static String formatByBracket(String format, Object... args) {
+        if (format == null || format.length() < 2 || args == null || args.length == 0) {
+            return format;
+        }
+        int argsIndex = 0, offset = 0;
+        StringBuilder stringBuffer = new StringBuilder();
+        char[] chars = format.toCharArray();
+        for (int i = 1; i < chars.length; i++) {
+            if (chars[i] == '}' && chars[i - 1] == '{') {
+                if (argsIndex >= args.length) {
+                    System.err.println("StringUtils::formatByBracket 占位符与参数个数不符");
+                    break;
+                }
+                stringBuffer.append(chars, offset, i - offset - 1).append(String.valueOf(args[argsIndex++]));
+                offset = i + 1;
+                i++;
+            }
+        }
+        if (offset < chars.length - 1 && offset != 0) {
+            stringBuffer.append(chars, offset, chars.length - offset);
+        }
+        return offset == 0 ? format : stringBuffer.toString();
+    }
+
+
 }

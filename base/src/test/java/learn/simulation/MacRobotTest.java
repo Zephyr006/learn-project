@@ -1,4 +1,4 @@
-package learn.demo;
+package learn.simulation;
 
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @author Zephyr
  * @since 2021-11-21.
  */
-public class RobotTest {
+public class MacRobotTest {
 
     @Test
     public void openTom() throws IOException, AWTException {
