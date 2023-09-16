@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <environments default="default">
+        <environment id="default">
+            <transactionManager type="JDBC"/>
+            <dataSource type="UNPOOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://39.106.73.19:3306/question?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="JustDoIt2019"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 需要加载的mapper.xml文件 -->
+    <mappers>
+        <!--<mapper resource="mapper/question/QuestionKnowledgeMapper.xml"/>-->
+    </mappers>
+
+</configuration>

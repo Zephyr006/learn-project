@@ -39,7 +39,7 @@ public class KafkaUtil {
         logger.info("kafka server path use [{}]", kafkaServerUrl);
 
         initProducer(kafkaServerUrl);
-        initConsumer(kafkaServerUrl, "test");
+        initConsumer(kafkaServerUrl, "learn.test");
 
         DEFAULT_CALLBACK = (metadata, exception) -> {
             if (exception != null) {

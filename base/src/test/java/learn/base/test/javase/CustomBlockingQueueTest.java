@@ -1,4 +1,4 @@
-package learn.base.test;
+package learn.base.test.javase;
 
 import learn.example.javase.SleepUtil;
 

@@ -1,0 +1,16 @@
+dubbo:
+    application:
+        name: demo-dubbo-provider
+        # Qos (Quality of service)相关配置,qos是Dubbo的在线运维命令,可以对服务进行动态的配置/控制及查询,默认使用端口 22222
+        qos-enable: true
+#        qos-port: 33333
+        qos-accept-foreign-ip: false
+    # 指定网络协议进行通信,端口可以设置为-1,程序会基于默认端口号自动向后寻找可用的端口
+    protocol:
+        name: dubbo
+        port: 20880               # default
+        dispatcher: all           # 配置线程模型
+    registry:
+        address: zookeeper://${zookeeprer.address:192.168.11.91}:2181
+        register-mode: interface  # 默认同时注册 instance和interface,即 all
+

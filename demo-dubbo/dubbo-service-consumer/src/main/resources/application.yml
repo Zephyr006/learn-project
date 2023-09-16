@@ -1,0 +1,8 @@
+dubbo:
+    application:
+        name: demo-dubbo-consumer
+    protocol:
+        name: dubbo
+        port: -1  # 如果默认端口号被占用了,则dubbo会自动进行端口号递增并判断是否占用,直到找到可用的端口号
+    registry:
+        address: zookeeper://${zookeeprer.address:192.168.11.91}:2181

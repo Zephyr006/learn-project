@@ -22,26 +22,32 @@
         <module>demo-light4j</module>
         <module>demo-springboot</module>
         <module>demo-springcloud</module>
+        <module>demo-dubbo</module>
     </modules>
 
     <properties>
         <!-- Spring Boot 与 Spring Cloud 版本对应关系(*必须按要求对应*)： https://start.spring.io/actuator/info -->
+        <!-- Spring其他版本兼容信息: https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions -->
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
         <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
+
+        <!-- about database -->
         <mybatis-spring.version>2.1.3</mybatis-spring.version>
         <mybatis-plus.version>3.1.1</mybatis-plus.version>
-
-        <mysql.version>8.0.22</mysql.version>
         <mybatis.version>3.5.6</mybatis.version>
+        <mysql.version>8.0.22</mysql.version>
         <druid.version>1.1.23</druid.version>
         <HikariCP.version>3.4.5</HikariCP.version>
 
+        <!-- about middleware -->
         <kafka.version>2.5.1</kafka.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <vertx.version>3.8.5</vertx.version>
+        <dubbo.version>3.1.11</dubbo.version>
 
+        <!-- commons -->
         <commons-io.version>2.8.0</commons-io.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -50,13 +56,14 @@
         <httpclient.version>4.5.12</httpclient.version>
         <snakeyaml.version>1.26</snakeyaml.version>
 
+        <!-- log -->
         <slf4j.version>1.7.32</slf4j.version>
         <log4j.version>2.17.0</log4j.version>
 
         <lombok.version>1.18.12</lombok.version>
         <junit.version>4.13.1</junit.version>
 
-        <java.version>1.8</java.version>
+        <java.version>1.8</java.version> <!-- major version : 52 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +72,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
