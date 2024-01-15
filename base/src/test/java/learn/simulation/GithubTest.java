@@ -70,33 +70,33 @@ public class GithubTest {
 
     private static String lookupIp(String dns, String host) {
         long nowTime = System.currentTimeMillis();
-        String lookupResult = Commands.nslookup(host, dns);
+        String lookupResult = CommandUtil.nslookup(host, dns);
         System.out.printf("DNS [%s]  find %s's ip  %s , cost ms %d , ping = %d %n",
-            dns, host, lookupResult, (System.currentTimeMillis() - nowTime), Commands.ping(lookupResult));
+            dns, host, lookupResult, (System.currentTimeMillis() - nowTime), CommandUtil.ping(lookupResult));
         return lookupResult;
     }
 
     @Test
     public void testIpPattern() {
-        String ip = Commands.matchIp("Address: 20.205.243.166#1");
+        String ip = CommandUtil.matchIp("Address: 20.205.243.166#1");
         assert Objects.equals(ip, "20.205.243.166");
     }
 
     @Test
     public void testDetectDns() {
-        List<String> ipList = Commands.detectDnsConfiguration();
+        List<String> ipList = CommandUtil.detectDnsConfiguration();
         String dns = String.join(", ", ipList);
         System.out.println("Now dns is [" + dns + "]");
     }
 
     @Test
     public void testPing() {
-        System.out.println("github ping = " + Commands.ping("github.com") + " ms, google ping = " + Commands.ping("google.com"));
+        System.out.println("github ping = " + CommandUtil.ping("github.com") + " ms, google ping = " + CommandUtil.ping("google.com"));
     }
 
     @Test
     public void testClearDns() {
-        Commands.clearDnsCache();
+        CommandUtil.clearDnsCache();
     }
 
 }

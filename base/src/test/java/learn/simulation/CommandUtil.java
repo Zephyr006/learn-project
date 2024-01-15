@@ -1,7 +1,13 @@
 package learn.simulation;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,7 +22,7 @@ import java.util.stream.Collectors;
  * @author Zephyr
  * @date 2023-07-06
  */
-public class Commands {
+public class CommandUtil {
     public static final Pattern PATTERN_IP = Pattern.compile("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})");
 
     public static void clearDnsCache() {
@@ -134,5 +140,55 @@ public class Commands {
             }
         }
         return null;
+    }
+
+    /**
+     * Transferable content = new StringSelection("text chrome");
+     */
+    public static void copyToClipboard(Transferable content) {
+        Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clip.setContents(content, null);
+    }
+
+    public static String readFromClipboard() {
+        Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        try {
+            return (String) clip.getData(DataFlavor.stringFlavor);
+        } catch (UnsupportedFlavorException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static class FileTransferable implements Transferable {
+        private File file;
+        private DataFlavor[] supportedFlavors = {DataFlavor.javaFileListFlavor};
+
+        public FileTransferable(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            if (flavor.equals(DataFlavor.javaFileListFlavor)) {
+                return new java.util.ArrayList(java.util.Arrays.asList(file));
+            } else {
+                throw new UnsupportedFlavorException(flavor);
+            }
+        }
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return supportedFlavors;
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            for (DataFlavor supportedFlavor : supportedFlavors) {
+                if (supportedFlavor.equals(flavor)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
