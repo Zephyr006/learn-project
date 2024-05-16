@@ -318,6 +318,7 @@
                     <!--    <executions>-->
                     <!--        <execution>-->
                     <!--            <id>attach-sources</id>-->
+                    <!--            <phase>compile</phase>-->
                     <!--            <goals>-->
                     <!--                <goal>jar</goal>-->
                     <!--            </goals>-->

@@ -52,10 +52,12 @@ public class LeetcodeHelper {
     }
 
     public static int[] toIntArray(String s) {
-        if (s == null || s.length() <= 2) {
+        if (s == null || s.isEmpty()) {
             return new int[0];
         }
-        s = s.substring(1, s.length() - 1);
+        if (s.startsWith("[") && s.endsWith("]")) {
+            s = s.substring(1, s.length() - 1);
+        }
         try {
             return Arrays.stream(s.split(",")).mapToInt(Integer::parseInt).toArray();
         } catch (Exception e) {
