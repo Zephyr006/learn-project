@@ -54,7 +54,7 @@ public class CommandUtil {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             if (ipList.size() > 1) {
-                System.err.println("  nslookup对于host["+ host +"]有多个结果:" + ipList);
+                System.err.println("DNS [" +dns + "]  nslookup对于host["+ host +"]有多个结果:" + ipList);
             }
             return ipList.isEmpty() ? "" : ipList.get(0);
         }

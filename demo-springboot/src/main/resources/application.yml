@@ -3,7 +3,9 @@ spring:
     rest:
       uris: http://localhost:9200
 
-
+dubbo:
+    protocol:
+        name:
 logging:
   level:
     org.elasticsearch.client.*: debug

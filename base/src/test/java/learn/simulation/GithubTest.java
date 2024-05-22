@@ -44,11 +44,11 @@ public class GithubTest {
     @Test
     public void testLookup() {
         List<String> dnsList = Arrays.asList(
-            "223.5.5.5",     //阿里dns
-            "180.76.76.76",  //百度
+            // "223.5.5.5",     //阿里dns
+            // "180.76.76.76",  //百度
             "119.29.29.29",  //腾讯!
             "112.124.47.27",  //OneDns,官方说是可以屏蔽广告，加速Google等网站的访问等
-            "208.67.222.222",  //OpenDns,非常知名的，但延迟有点高，在180ms左右，偶尔掉包，除了延迟大点
+            // "208.67.222.222",  //OpenDns,非常知名的，但延迟有点高，在180ms左右，偶尔掉包，除了延迟大点
             // "199.91.73.222",  //V2EX DNS：延迟有点高，偶尔掉包
             "114.114.114.114"  //114!
         );
@@ -60,7 +60,7 @@ public class GithubTest {
             lookupIp(dns, "raw.githubusercontent.com");
         }
         for (String dns : dnsList) {
-            lookupIp(dns, "raw.githubusercontent.com");
+            lookupIp(dns, "google.com/chrome");
         }
         System.out.println("");
         // for (String dns : dnsList) {

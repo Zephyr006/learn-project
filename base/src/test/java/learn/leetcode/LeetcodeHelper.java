@@ -3,6 +3,9 @@ package learn.leetcode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,8 +37,11 @@ public class LeetcodeHelper {
     }
 
     public static char[][] parse2DCharArray(String str) {
-        if (str == null || str.length() <= 2) {
+        if (str == null || str.isEmpty()) {
             return new char[0][0];
+        }
+        if (!str.startsWith("[") && !str.startsWith("]")) {
+            str = "[" + str + "]";
         }
         JSONArray jsonArray = JSON.parseArray(str);
 
@@ -63,5 +69,48 @@ public class LeetcodeHelper {
         } catch (Exception e) {
             return Arrays.stream(s.split(", ")).mapToInt(Integer::parseInt).toArray();
         }
+    }
+
+    // Java获取堆栈信息 https://blog.csdn.net/devcloud/article/details/136685119
+    @SuppressWarnings("unchecked")
+    public static void invokePublicMethods(Object... params) {
+        // R result = null;
+        try {
+            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+            // 获取调用本方法的堆栈信息
+            StackTraceElement stackTraceElement = stackTraceElements[stackTraceElements.length - 1];
+            Class<?> prevClass = Class.forName(stackTraceElement.getClassName());
+            Object invokeClassInstance = prevClass.newInstance();
+            List<Method> methodNameMatch = new ArrayList<>(2);
+            for (Method method : prevClass.getDeclaredMethods()) {
+                // 寻找public非静态方法
+                if (!Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers())) {
+                    methodNameMatch.add(method);
+                }
+            }
+
+            for (Method method : methodNameMatch) {
+                try {
+                    method.setAccessible(true);
+                    Object result = method.invoke(invokeClassInstance, params);
+                    System.out.println("--> 调用方法 [" + method.getName() + "] 的执行结果为：" + JSON.toJSONString(result));
+                } catch (Exception e) {
+                    System.err.println("--> 调用方法 [" + method + "] 执行失败: " + e.getClass().getName());
+                }
+            }
+
+            // Method method = methodNameMatch.isEmpty() ? null : methodNameMatch.get(0);
+            // if (methodNameMatch.size() > 1) {
+            //     method = methodNameMatch.stream().filter(m -> m.getReturnType() != Void.class).findAny().get();
+            // }
+            // if (method != null) {
+            //     System.out.printf("--> 实际调用了方法 %s\n", method);
+            //     result = (R) method.invoke(invokeClassInstance, params);
+            // }
+            // System.out.println("--> 方法调用结果为：" + JSON.toJSONString(result));
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        // return result;
     }
 }

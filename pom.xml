@@ -42,7 +42,7 @@
         <HikariCP.version>3.4.5</HikariCP.version>
 
         <!-- about middleware -->
-        <kafka.version>2.5.1</kafka.version>
+        <kafka.version>2.6.3</kafka.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <vertx.version>3.8.5</vertx.version>
         <dubbo.version>3.1.11</dubbo.version>
