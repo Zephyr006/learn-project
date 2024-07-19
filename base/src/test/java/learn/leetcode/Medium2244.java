@@ -16,7 +16,7 @@ public class Medium2244 {
         int[] param = LeetcodeHelper.toIntArray("[5,5,5,5]");
         int result = new Medium2244().minimumRounds(param);
         System.out.println(result);
-        Arrays.stream(new int[0]).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        Arrays.stream(new int[0]).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
     public int minimumRounds(int[] tasks) {

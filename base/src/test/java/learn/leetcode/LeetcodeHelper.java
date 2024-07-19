@@ -93,9 +93,10 @@ public class LeetcodeHelper {
                 try {
                     method.setAccessible(true);
                     Object result = method.invoke(invokeClassInstance, params);
-                    System.out.println("--> 调用方法 [" + method.getName() + "] 的执行结果为：" + JSON.toJSONString(result));
+                    System.out.println("--> 调用方法【 " + method.getName() + " 】的执行结果为：" + JSON.toJSONString(result));
                 } catch (Exception e) {
-                    System.err.println("--> 调用方法 [" + method + "] 执行失败: " + e.getClass().getName());
+                    System.err.println("--> 调用方法【 " + method + " 】执行异常: "
+                        + e.getClass().getName() + ":" + e.getMessage());
                 }
             }
 
