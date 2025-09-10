@@ -1,5 +1,6 @@
 package learn.leetcode;
 
+import java.util.Arrays;
 /**
  * 88. 合并两个有序数组
  *
@@ -26,9 +27,10 @@ package learn.leetcode;
 public class Easy088 {
 
     public static void main(String[] args) {
-        int[] a = new int[]{1,2,3,0,0,0};
-        int[] b = new int[]{2,5,6};
+        int[] a = new int[]{4,5,6,0,0,0};
+        int[] b = new int[]{1,2,3};
         new Easy088().merge(a, 3, b, 3);
+        Arrays.stream(a).forEach(System.out::println);
     }
 
     public void merge(int[] nums1, int m, int[] nums2, int n) {

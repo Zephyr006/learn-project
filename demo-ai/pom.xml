@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>learn-project</artifactId>
+    <groupId>cn.zephyr006</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>demo-ai</artifactId>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+          <!--<exclusions>-->
+          <!--    <exclusion>-->
+          <!--        <groupId></groupId>-->
+          <!--        <artifactId></artifactId>-->
+          <!--    </exclusion>-->
+          <!--</exclusions>-->
+      </dependency>
+      <!--springboot-web 包里依赖的jackson版本是 2.11.4，openai4j 依赖的版本高很多-->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.12.5</version>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+          <version>2.12.5</version>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.12.5</version>
+      </dependency>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>${lombok.version}</version>
+          <scope>compile</scope>
+      </dependency>
+
+
+      <!--使用高级 AI Services API，还需要添加以下依赖项-->
+      <dependency>
+          <groupId>dev.langchain4j</groupId>
+          <artifactId>langchain4j-core</artifactId>
+          <version>${langchain4j.version}</version>
+          <!--<scope>test</scope>-->
+      </dependency>
+      <dependency>
+          <groupId>dev.langchain4j</groupId>
+          <artifactId>langchain4j-open-ai</artifactId>
+          <version>${langchain4j.version}</version>
+      </dependency>
+
+  </dependencies>
+
+</project>

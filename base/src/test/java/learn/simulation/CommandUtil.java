@@ -38,7 +38,7 @@ public class CommandUtil {
     }
 
     // nslookup GitHub.com 114.114.114.114
-    public static String nslookup(String host, String dns) {
+    public static List<String> nslookup(String host, String dns) {
         List<String> exec = exec("nslookup " + host + " " + dns);
         if (exec == null || exec.isEmpty()) {
             throw new IllegalStateException("nslookup failed");
@@ -54,9 +54,9 @@ public class CommandUtil {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             if (ipList.size() > 1) {
-                System.err.println("DNS [" +dns + "]  nslookup对于host["+ host +"]有多个结果:" + ipList);
+                System.out.println("DNS [" +dns + "]  nslookup对于host["+ host +"]有多个结果，将返回第一个:" + ipList);
             }
-            return ipList.isEmpty() ? "" : ipList.get(0);
+            return ipList;
         }
     }
 
@@ -91,6 +91,9 @@ public class CommandUtil {
     }
 
     public static int ping(String host) {
+        if (host == null || host.isEmpty()) {
+            return Integer.MAX_VALUE;
+        }
         String cmd = "ping " + host + " -c 6 -W 500";
         List<String> result = exec(cmd);
         if (result == null || result.isEmpty()) {

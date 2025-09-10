@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Zephyr
  * @since 2022-03-20.
  */
-public class Hard01 {
+public class Hard432 {
 
     public static void main(String[] args) {
         //["AllOne","inc",    "inc",    "inc",    "dec",    "inc",    "inc", "getMaxKey","dec",    "dec",   "dec","getMaxKey"]

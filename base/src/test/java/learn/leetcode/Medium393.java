@@ -11,15 +11,15 @@ package learn.leetcode;
  * @author Zephyr
  * @since 2022-03-16.
  */
-public class Medium12 {
+public class Medium393 {
 
 
     public static void main(String[] args) {
-        assert  new Medium12().validUtf8(new int[]{197, 130, 1});
-        assert new Medium12().validUtf8(new int[]{230, 136, 145});
-        assert ! new Medium12().validUtf8(new int[]{235,140,4});
-        assert ! new Medium12().validUtf8(new int[]{255});
-        assert new Medium12().validUtf8(new int[]{145});
+        assert  new Medium393().validUtf8(new int[]{197, 130, 1});
+        assert new Medium393().validUtf8(new int[]{230, 136, 145});
+        assert ! new Medium393().validUtf8(new int[]{235,140,4});
+        assert ! new Medium393().validUtf8(new int[]{255});
+        assert new Medium393().validUtf8(new int[]{145});
 
     }
 

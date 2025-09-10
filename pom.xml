@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>2.3.12.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,6 +23,7 @@
         <module>demo-springboot</module>
         <module>demo-springcloud</module>
         <module>demo-dubbo</module>
+        <module>demo-ai</module>
     </modules>
 
     <properties>
@@ -33,19 +34,22 @@
         <spring-cloud-config.version>2.1.9.RELEASE</spring-cloud-config.version>
         <spring-cloud-bus-kafka.version>2.2.3.RELEASE</spring-cloud-bus-kafka.version>
 
-        <!-- about database -->
-        <mybatis-spring.version>2.1.3</mybatis-spring.version>
-        <mybatis-plus.version>3.1.1</mybatis-plus.version>
-        <mybatis.version>3.5.6</mybatis.version>
-        <mysql.version>8.0.22</mysql.version>
-        <druid.version>1.1.23</druid.version>
-        <HikariCP.version>3.4.5</HikariCP.version>
-
         <!-- about middleware -->
+        <dubbo.version>3.1.11</dubbo.version>
+        <!--<dubbo.version>2.7.23</dubbo.version>-->
         <kafka.version>2.6.3</kafka.version>
         <elasticsearch.version>7.6.2</elasticsearch.version>
         <vertx.version>3.8.5</vertx.version>
-        <dubbo.version>3.1.11</dubbo.version>
+        <redisson.version>3.13.6</redisson.version>
+        <langchain4j.version>0.35.0</langchain4j.version>
+
+        <!-- about database -->
+        <mybatis-spring.version>2.1.3</mybatis-spring.version>
+        <mybatis-plus.version>3.5.9</mybatis-plus.version>
+        <mybatis.version>3.5.16</mybatis.version>
+        <mysql.version>8.0.22</mysql.version>
+        <druid.version>1.1.23</druid.version>
+        <HikariCP.version>3.4.5</HikariCP.version>
 
         <!-- commons -->
         <commons-io.version>2.8.0</commons-io.version>
@@ -60,7 +64,7 @@
         <slf4j.version>1.7.32</slf4j.version>
         <log4j.version>2.17.0</log4j.version>
 
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
         <junit.version>4.13.1</junit.version>
 
         <java.version>1.8</java.version> <!-- major version : 52 -->
@@ -83,6 +87,18 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2.2.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-bom</artifactId>
+                <version>${dubbo.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

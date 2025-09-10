@@ -10,7 +10,7 @@ package learn.leetcode;
  */
 public class Medium200 {
     public static void main(String[] args) {
-        char[][] array = LeetcodeHelper.parse2DCharArray("[[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]");
+        char[][] array = LeetcodeHelper.to2DCharArray("[[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]");
         System.out.println(new Solution().numIslands(array));
     }
 

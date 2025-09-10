@@ -1,58 +1,55 @@
 package learn.leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 209. 长度最小的子数组
- * { @link https://leetcode.cn/problems/minimum-size-subarray-sum/}
- *
- * @author Zephyr
- * @since 2023-5-25.
+ * 17. 电话号码的字母组合
+ * https://leetcode.cn/problems/letter-combinations-of-a-phone-number/?envType=study-plan-v2&envId=leetcode-75
  */
 public class Medium17 {
-
     public static void main(String[] args) {
-        System.out.println(new Solution().minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3}));
+        List<String> strings = new Medium17().letterCombinations("23");
+        System.out.println(strings);
     }
-    static class Solution {
-        /**
-         * 滑动窗口解法:每次右移right指针,如果满足条件,则记录满足条件的结果值,并且将left和right指针右移
-         */
-        public int minSubArrayLen(int target, int[] nums) {
-            int minLen = Integer.MAX_VALUE,sum = 0;
 
-            int left = 0;
-            int right = 0;
-            /* // 自己写的解法
-            for (int left = 0; left < nums.length; left++) {
-                while (right < nums.length) {
-                    sum += nums[right];
-                    // 如果找到了满足条件的子数组,则记录结果值,并且使left指针右移1位,right指针不动
-                    if (sum >= target) {
-                        minLen = Math.min(minLen, right - left + 1);
-                        // if ( minLen == 1) {
-                        // return minLen;
-                        // }
-                        sum -= nums[left];
-                        // 由于这层for循环每次都要先执行 sum += nums[right];  所以要先相应的减去nums[right]的值
-                        sum -= nums[right];
-                        break;
-                    } else {
-                        right++;
-                    }
-                }
-            }*/
-            while (right < nums.length) {
-                sum += nums[right];
-                // 官方写法:满足 sum >= target 的要求,则记录最小长度,并且使left指针右移1位,right指针不动
-                while (sum >= target) {
-                    minLen = Math.min(minLen, right - left + 1);
-                    sum -= nums[left];
-                    left++;
-                }
-                right++;
-            }
-            // 如果没找到满足条件的结果值,返回 0
-            return minLen >= Integer.MAX_VALUE ? 0 : minLen;
+    List<String> result = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.isEmpty()) {
+            return result;
+        }
+        Map<Character, List<Character>> map = new HashMap<>();
+        map.put('2', Arrays.asList('a', 'b', 'c'));
+        map.put('3', Arrays.asList('d', 'e', 'f'));
+        map.put('4', Arrays.asList('g', 'h', 'i'));
+        map.put('5', Arrays.asList('j', 'k', 'l'));
+        map.put('6', Arrays.asList('m', 'n', 'o'));
+        map.put('7', Arrays.asList('p', 'q', 'r', 's'));
+        map.put('8', Arrays.asList('t', 'u', 'v'));
+        map.put('9', Arrays.asList('w', 'x', 'y', 'z'));
+
+        dfs(map, digits, 0, new StringBuilder());
+        return result;
+    }
+
+    private void dfs(Map<Character, List<Character>> map, String digits, int index, StringBuilder builder) {
+        // 结束条件：digits遍历到了结尾
+        if (index == digits.length()) {
+            result.add(builder.toString());
+            return;
+        }
+
+        // dfs：针对当前下标对应的数字进行追加操作
+        List<Character> characters = map.get(digits.charAt(index));
+        for (Character ch : characters) {
+            builder.append(ch);
+            dfs(map, digits, index + 1, builder);
+
+            // 回溯：删除上次最佳的字符
+            builder.deleteCharAt(builder.length() - 1);
         }
     }
 }

@@ -7,7 +7,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author Zephyr
@@ -25,7 +27,7 @@ public class LeetcodeHelper {
      * ]
      * }</pre>
      */
-    public static int[][] parse2DIntArray(String str) {
+    public static int[][] to2DIntArray(String str) {
         List<Integer[]> arrayList = JSONArray
             .parseArray(str.replace("\n", ""), Integer[].class);
         int[][] result = new int[arrayList.size()][arrayList.get(0).length];
@@ -36,7 +38,7 @@ public class LeetcodeHelper {
         return result;
     }
 
-    public static char[][] parse2DCharArray(String str) {
+    public static char[][] to2DCharArray(String str) {
         if (str == null || str.isEmpty()) {
             return new char[0][0];
         }
@@ -69,6 +71,74 @@ public class LeetcodeHelper {
         } catch (Exception e) {
             return Arrays.stream(s.split(", ")).mapToInt(Integer::parseInt).toArray();
         }
+    }
+
+    public static ListNode toListNode(int... nums) {
+        ListNode head = new ListNode(nums[0]);
+        ListNode node = head;
+
+        for (int i = 1; i < nums.length; i++) {
+            node.next = new ListNode(nums[i]);
+            node = node.next;
+        }
+        return head;
+    }
+
+    public static TreeNode toTree(Integer... array) {
+        TreeNode root = new TreeNode(array[0]);
+        Queue<TreeNode> nextLevelNodes = new LinkedList<>();
+        Queue<TreeNode> thisLevelNodes = new LinkedList<>();
+        TreeNode node = root;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] != null) {
+                node.left = new TreeNode(array[i]);
+                nextLevelNodes.add(node.left);
+            }
+            // 处理下一个数字并检查是否下标越界
+            if (++i >= array.length) {
+                break;
+            }
+            if (array[i] != null) {
+                node.right = new TreeNode(array[i]);
+                nextLevelNodes.add(node.right);
+            }
+
+            // 当前层元素已全部处理完,继续处理下一层节点
+            if (thisLevelNodes.isEmpty()) {
+                Queue<TreeNode> temp = thisLevelNodes;
+                thisLevelNodes = nextLevelNodes;
+                nextLevelNodes = temp;
+            }
+            node = thisLevelNodes.poll();
+        }
+        return root;
+    }
+
+    public static void print(ListNode head) {
+        System.out.println("Print ListNode -->");
+        while (head != null) {
+            System.out.println(" -> " + head.val);
+            head = head.next;
+        }
+    }
+
+    public static void print(int[] nums) {
+        System.out.print("Print int array -->  [");
+        for (int i = 0; i < nums.length; i++) {
+            System.out.print(nums[i]);
+            if (i < nums.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println(']');
+    }
+
+    public static void print(List<?> list) {
+        System.out.println("Print list -->[");
+        for (Object o : list) {
+            System.out.print(o + ", ");
+        }
+        System.out.println("]");
     }
 
     // Java获取堆栈信息 https://blog.csdn.net/devcloud/article/details/136685119

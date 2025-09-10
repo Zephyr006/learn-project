@@ -9,6 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -26,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 public class ColorfulCloudTest {
 
 
-    //@Test
+    @Test
     public void testInviteUserToVip() throws IOException {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             String token = getNewUserToken();
             System.out.println("token = " + token);
 
@@ -87,7 +88,7 @@ public class ColorfulCloudTest {
             registerParams.put("code", "@time('" + nextRandom() + "')");  // 随机数5位-6位
             registerParams.put("device_id", "@time('" + nextRandom() + "')");
             registerParams.put("phone_num", "@time('" + nextRandom() + "')");
-            respStr = doPost("https://biz.caiyunapp.com/v1/login_by_code", registerHeaders, registerParams);
+            respStr = doPost("https://biz.caiyunapp.com/v2/login_by_code", registerHeaders, registerParams);
 
             System.out.println(LocalTime.now().toString() + "  请求了一次注册彩云天气用户的接口。。。");
         } while ( !"ok".equals( (registerRespMap = JSON.parseObject(respStr, Map.class)).get("status") ) && !(firstTime = false));

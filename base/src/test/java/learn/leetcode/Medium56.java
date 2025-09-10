@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author Zephyr
  * @since 2022-03-20.
  */
-public class Medium14 {
+public class Medium56 {
 
     public static void main(String[] args) {
         int[][] merge = new Solution().merge(new int[][]{{1, 4}, {4, 8}});

@@ -7,7 +7,7 @@ package learn.leetcode;
  * @author Zephyr
  * @since 2022-03-20.
  */
-public class Medium13 {
+public class Medium2043 {
 
     class Bank {
         long[] balance;

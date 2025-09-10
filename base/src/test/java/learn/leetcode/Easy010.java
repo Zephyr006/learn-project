@@ -37,6 +37,35 @@ package learn.leetcode;
  */
 public class Easy010 {
 
+    public static void main(String[] args) {
+        int[] intArray = LeetcodeHelper.toIntArray("[2,3,3,4]");
+        System.out.println(new Easy010().removeElement2025(intArray, 3));
+    }
+
+
+    public int removeElement2025(int[] nums, int val) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int left = 0 , right = 0;
+        while (right < nums.length) {
+            // 如果满足条件，左指针右移，不满足条件的话，左指针不动
+            if (nums[right] != val) {
+                // 针对左右指针相等的情况，不需要赋值
+                if (left < right) {
+                    nums[left] = nums[right];
+                }
+                left++;
+            }
+            // 右指针每次右移一位，用于遍历整个数组
+            right++;
+        }
+        return left;
+    }
+
+
+
+
     /**
      * 官方解法：双指针法 - 快指针遍历数组中的所有元素，慢指针 i 只对应 nums[i] != val 的元素
      * @param nums

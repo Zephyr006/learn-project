@@ -8,7 +8,7 @@ package learn.leetcode;
  * @author Zephyr
  * @since 2023-5-24.
  */
-public class Medium16 {
+public class Medium167 {
 
     public static void main(String[] args) {
         new Solution().twoSum(new int[]{2, 7, 11, 15}, 9);

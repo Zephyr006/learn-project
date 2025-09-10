@@ -26,7 +26,7 @@ package learn.leetcode;
 public class Medium06 {
 
     public static void main(String[] args) {
-        ListNode listNode = ListNode.build(1, 2, 3, 4);
+        ListNode listNode = LeetcodeHelper.toListNode(1, 2, 3, 4);
         new Medium06().removeNthFromEnd(listNode, 2);
     }
 

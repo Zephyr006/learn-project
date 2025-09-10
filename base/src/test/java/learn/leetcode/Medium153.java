@@ -1,11 +1,12 @@
 package learn.leetcode;
 
 /**
+ * https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/description/
  * { @link https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/}
  * @author Zephyr
  * @date 2023/5/28.
  */
-public class Medium18 {
+public class Medium153 {
 
     public static void main(String[] args) {
         System.out.println(new Solution().findMin(new int[]{4,5,6,7,0,1,2}));

@@ -1,80 +1,134 @@
 package learn.leetcode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 15. 三数之和
+ * 5. 最长回文子串
  *
- * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
+ * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
  *
- * 注意：答案中不可以包含重复的三元组。
+ * 示例 1：
  *
- *  
+ * 输入: "babad"
+ * 输出: "bab"
+ * 注意: "aba" 也是一个有效答案。
+ * 示例 2：
  *
- * 示例：
- *
- * 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
- *
- * 满足要求的三元组集合为：
- * [
- *   [-1, 0, 1],
- *   [-1, -1, 2]
- * ]
+ * 输入: "cbbd"
+ * 输出: "bb"
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/3sum
+ * 链接：https://leetcode-cn.com/problems/longest-palindromic-substring
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author Zephyr
- * @since 2020-07-20.
+ * @since 2020-07-19.
  */
 public class Medium05 {
-// XXX
+
     public static void main(String[] args) {
-        new Medium05().threeSum(new int[]{-1,0,1,2,-1,-4});
+        new Medium05().longestPalindrome("babad");
+        ReentrantLock lock = new ReentrantLock();
+        lock.unlock();
     }
 
-    /**
-     * 首先对数组进行排序，排序后固定一个数 nums[i]，再使用左右指针指向 nums[i]后面的两端，数字分别为 nums[L] 和 nums[R]，计算三个数的和 sum 判断是否满足为 0，满足则添加进结果集
-     * 如果 nums[i]大于 0，则三数之和必然无法等于 0，结束循环
-     * 如果 nums[i] == nums[i-1]，则说明该数字重复，会导致结果重复，所以应该跳过
-     * 当 sum == 0 时，nums[L] == nums[L+1] 则会导致结果重复，应该跳过，L++
-     * 当 sum == 0 时，nums[R] == nums[R-1] 则会导致结果重复，应该跳过，R--
-     */
-    public List<List<Integer>> threeSum(int[] nums) {
-        // 特殊输入值判断
-        List<List<Integer>> result = new ArrayList<>();
-        if (nums == null || nums.length<3){
-            return result;
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() <= 1)
+            return s;
+
+        // 每次判断是否是回文的子字符串长度
+        int len = s.length();
+        char[] chars = s.toCharArray();
+        while (len > 1) {
+            // i <= s.length() - len ： 子串能在完整字符串s中的偏移次数
+            for (int i = 0; i <= s.length() - len; i++) {
+                //String substring = s.substring(i, i + s.length() - len);
+                char[] copyOfRange = Arrays.copyOfRange(chars, i, i + len);
+                if (isPalindrome(copyOfRange))
+                    return new String(copyOfRange);
+            }
+            len--;
         }
+        return s.substring(0,1);
+    }
 
-        Arrays.sort(nums);  //排序
-        for (int i = 0; i < nums.length; i++) {
-            // 如果 nums[i]nums[i]大于 0，则三数之和必然无法等于 0，结束循环
-            if (nums[i] > 0)
-                break;
-            // 去重
-            if(i > 0 && nums[i] == nums[i-1])
-                continue;
-            int L = i+1;
-            int R = nums.length-1;
-
-            while (L < R) {
-                int sum = nums[i] + nums[L] + nums[R];
-                if (sum == 0) {
-                    result.add(Arrays.asList(nums[i],nums[L],nums[R]));
-                    while (L<R && nums[L] == nums[L+1]) L++; // 去重!
-                    while (L<R && nums[R] == nums[R-1]) R--; // 去重!
-                    L++;
-                    R--;
-                }
-                if (sum < 0) L++;
-                if (sum > 0) R--;
+    boolean isPalindrome(char[] chars) {
+        for (int i = 0; i < chars.length / 2; i++) {
+            if (chars[i] != chars[chars.length-i-1]) {
+                return false;
             }
         }
-        return result;
+        return true;
     }
 
+    class Solution2 {
+        /**
+         * 中心回文:从某个位置开始向两端遍历判断子串是否回文,注意 子串回文有奇数和偶数两种情况
+         */
+        public String longestPalindrome(String s) {
+            if (s.length() == 1)
+                return s;
+            if (s.length() == 2) {
+                return s.charAt(0) == s.charAt(1) ? s : "" + s.charAt(0);
+            }
+            int left = 0, right = 0;
+            for (int i = 0; i< s.length(); i++) {
+                // 回文子串总长度是奇数
+                int len = longestPalindrome(s, i, i);
+                // 如果当前发现的回文字符串长度超过了之前发现的子串长度，更新 left、right 下标值
+                if (len > right - left + 1) {
+                    left = i - len / 2;
+                    right = i + len / 2;
+                }
+
+                // 在下标不越界的前提下，如果发现回文子串的总长度是偶数，则更新 left、right 下标值
+                len = longestPalindrome(s, i - 1, i);
+                if (len > right - left + 1) {
+                    left = i - len / 2;
+                    right = i + len / 2 - 1;
+                }
+            }
+            return s.substring(left, right + 1);
+        }
+
+        private int longestPalindrome(String s, int left, int right) {
+            while (left >= 0 && right < s.length()) {
+                if (s.charAt(left) == s.charAt(right)) {
+                    left--;
+                    right++;
+                } else {
+                    // 不满足回文条件时要跳出循环
+                    break;
+                }
+            }
+            // 注意此时的left和right位置的元素不满足回文条件，需要进行 -1 操作
+            return right - left - 1;
+        }
+    }
+
+    /*public String longestPalindrome(String s) {
+        if (s == null || s.length() <= 1)
+            return s;
+
+        int len = 0;
+        while (len < s.length()) {
+            for (int i = 0; i <= len; i++) {
+                String substring = s.substring(i, i + s.length() - len);
+                if (isPalindrome(substring))
+                    return substring;
+            }
+            len++;
+        }
+        return s.substring(0,1);
+    }
+
+    boolean isPalindrome(String s) {
+        for (int i = 0; i < s.length() / 2; i++) {
+            if (s.charAt(i) != s.charAt(s.length()-i-1)) {
+                return false;
+            }
+        }
+        return true;
+    }*/
 }
