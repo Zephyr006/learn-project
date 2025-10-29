@@ -22,12 +22,15 @@ public class Medium236 {
         // 2 dfs：向下遍历左子树和右子树，判断是否能返回公共节点
         TreeNode left = dfs(root.left, p, q);
         TreeNode right = dfs(root.right, p, q);
+
+        // 当节点 p,q 在节点 root 的异侧时，节点 root 即为最近公共祖先
         if (left != null && right != null) {
             return root;
         } else if (left != null) {
             return left;
         } else if (right != null) {
             return right;
+        // 当 left 和 right 同时为空 ：说明 root 的左 / 右子树中都不包含 p,q
         } else {
             return null;
         }
