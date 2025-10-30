@@ -16,7 +16,7 @@ public class Medium394 {
 
     public String decodeString(String s) {
         StringBuilder result = new StringBuilder();
-        int num = 0;
+        int multi = 0;
 
         LinkedList<String> stackRes = new LinkedList<>();
         LinkedList<Integer> stackTimes = new LinkedList<>();
@@ -28,22 +28,27 @@ public class Medium394 {
             // 记录此 [ 前的倍数 multi 至栈，用于发现对应 ] 后，获取 multi × [...] 字符串。
             // 进入到新 [ 后，res 和 multi 重新记录。
             if (ch == '[') {
-                stackTimes.addLast(num);
+                stackTimes.addLast(multi);
                 stackRes.addLast(result.toString());
-                num = 0;
+                multi = 0;
                 result = new StringBuilder();
             }
+            // 当 c 为 ']' 时，从栈中取出要拼接的次数 curr_times，用于字符串拼接
+            // 拼接完成后，从字符串结果栈中取出拼接字符串前面的字符串，把两部分组装到一起
             else if (ch == ']') {
-                StringBuilder temp = new StringBuilder();
+                // StringBuilder temp = new StringBuilder();
+                String temp = result.toString();
                 int curr_times = stackTimes.removeLast();
-                for (int i1 = 0; i1 < curr_times; i1++) {
-                    temp.append(result);
+                for (int i1 = 1; i1 < curr_times; i1++) {
+                    result.append(temp);
                 }
-                result = new StringBuilder(stackRes.removeLast() + temp);
+                result.insert(0, stackRes.removeLast());
             }
+            // 如果是数字，把数字信息记录到拼接次数 multi 中
             else if (ch >= '0' && ch <= '9') {
-                num = num * 10 + ch - '0';
+                multi = multi * 10 + ch - '0';
             }
+            // 保存当前字符，有两种情况：1 不需要进行拼接，直接保存； 2 需要拼接，此时保存的字符是 [] 中间的字符，会在后面和 multi 一起用于拼接
             else {
                 result.append(ch);
             }
