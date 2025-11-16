@@ -15,7 +15,7 @@ public class Medium560 {
         // map 中 key：从下标 0 开始的子数组和； val：子数组和出现的次数
         Map<Integer, Integer> map = new HashMap<>();
         // 问：为什么要把 s[0]=0 也加到哈希表中？
-        // 答：举个最简单的例子，nums=[1], k=1。如果不把 s[0]=0 加到哈希表中，按照我们的算法，没法算出这里有 1 个符合要求的子数组。
+        // 答：举个最简单的例子，nums=[1]，k=1。如果不把 s[0]=0 加到哈希表中，按照我们的算法，没法算出这里有 1 个符合要求的子数组。
         // 也可以这样理解，要想把任意子数组都表示成两个前缀和的差，必须添加 s[0]=0，否则当子数组是前缀时，没法减去一个数，
         // 具体见 前缀和及其扩展 中的讲解。
         map.put(0, 1);
@@ -23,12 +23,14 @@ public class Medium560 {
         // preSum 为从下表 0 到当前位置的和
         int preSum = 0;
         int result = 0;
-        for  (int i = 0; i < nums.length; i++) {
-            preSum += nums[i];
+        for (int num : nums) {
+            preSum += num;
+            // map 中记录了下标从 0 开始的子数组和出现次数，如果 preSum - k 存在于 map 中，
+            // 说明从下标 0 开始的子数组和为 preSum - k 的子数组存在，那么就有和为 k 的子数组存在
             if (map.containsKey(preSum - k)) {
                 result += map.get(preSum - k);
             }
-            map.compute(preSum, (key,val) -> val == null ? 1 : val + 1);
+            map.compute(preSum, (key, val) -> val == null ? 1 : val + 1);
         }
         return result;
     }
